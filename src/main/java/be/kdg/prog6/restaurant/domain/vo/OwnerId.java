@@ -11,4 +11,5 @@ public record OwnerId(
         return new OwnerId(uuid);
     }
 
+
 }
