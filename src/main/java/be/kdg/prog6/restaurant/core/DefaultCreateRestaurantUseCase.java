@@ -6,11 +6,13 @@ import be.kdg.prog6.restaurant.port.in.CreateRestaurantCommand;
 import be.kdg.prog6.restaurant.port.in.CreateRestaurantUseCase;
 import be.kdg.prog6.restaurant.port.out.LoadRestaurantPort;
 import be.kdg.prog6.restaurant.port.out.UpdateRestaurantPort;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.logging.Logger;
 
+@Service
 public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
     private final Logger logger = Logger.getLogger(DefaultCreateRestaurantUseCase.class.getName());
 
@@ -35,12 +37,12 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
 
         return updateRestaurantPort.addRestaurant(new Restaurant(
                 OwnerId.MICHAEL,
-                "Michael's Pizza",
-                new Address("Gijselsstraat","31","2160","Antwerp","Belgium"),
-                new EmailAddress("michael@pizza.com"),
-                CUISINE_TYPE.ITALIAN,
-                new PrepTime(10,25),
-                new OpeningHours(LocalTime.of(12,0,0),LocalTime.of(22,30,0))
-        ));
+                command.name(),
+                command.address(),
+                command.emailAddress(),
+                command.CUISINETYPE(),
+                command.defaultPrepTime(),
+                command.openingHours())
+        );
     }
 }

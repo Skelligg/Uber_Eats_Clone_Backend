@@ -1,0 +1,24 @@
+### Create restaurant (owner must be authenticated)
+POST http://localhost:8080/restaurants
+Content-Type: application/json
+
+{
+  "name": "Trattoria Roma",
+  "address": {
+    "street": "Via Milano",
+    "number": "12",
+    "postalCode": "20100",
+    "city": "Milan",
+    "country": "Italy"
+  },
+  "emailAddress": "contact@trattoriaroma.it",
+  "pictures": [
+    "https://example.com/images/front.jpg",
+    "https://example.com/images/menu.jpg"
+  ],
+  "cuisineType": "ITALIAN",
+  "minPrepTime": 15,
+  "maxPrepTime": 25,
+  "openingTime": "12:00",
+  "closingTime": "23:00"
+}

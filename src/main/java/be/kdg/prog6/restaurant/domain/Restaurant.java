@@ -28,4 +28,12 @@ public class Restaurant {
         this.defaultPrepTime = defaultPrepTime;
         this.openingHours = openingHours;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public RestaurantId getRestaurantId() {
+        return restaurantId;
+    }
 }
