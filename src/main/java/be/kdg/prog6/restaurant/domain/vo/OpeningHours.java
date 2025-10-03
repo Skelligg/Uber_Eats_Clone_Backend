@@ -13,4 +13,8 @@ public record OpeningHours(
         throw new IllegalArgumentException("Closing Time cannot be before Opening Time");
     }
 }
+
+    public static OpeningHours of (LocalTime openingTime, LocalTime closingTime) {
+    return new OpeningHours(openingTime, closingTime);
+    }
 }

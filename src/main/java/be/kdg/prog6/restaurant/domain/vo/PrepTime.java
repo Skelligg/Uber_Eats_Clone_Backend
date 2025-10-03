@@ -12,4 +12,8 @@ public record PrepTime(
             throw new IllegalArgumentException("Min Time cannot be less than 0");
         }
     }
+
+    public static PrepTime of (int minTime, int maxTime) {
+        return new PrepTime(minTime, maxTime);
+    }
 }

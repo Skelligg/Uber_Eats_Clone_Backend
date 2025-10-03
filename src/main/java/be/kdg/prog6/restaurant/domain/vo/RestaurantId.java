@@ -8,4 +8,8 @@ public record RestaurantId(
     public static RestaurantId newId() {
         return new RestaurantId(UUID.randomUUID());
     }
+    public static RestaurantId of(UUID id) {
+        return new RestaurantId(id);
+    }
+
 }

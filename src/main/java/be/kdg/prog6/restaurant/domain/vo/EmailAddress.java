@@ -8,4 +8,8 @@ public record EmailAddress (
             throw new IllegalArgumentException("Invalid email format");
         }
     }
+
+    public static EmailAddress of (String emailAddress) {
+        return new EmailAddress(emailAddress);
+    }
 }

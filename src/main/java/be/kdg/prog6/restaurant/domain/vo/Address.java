@@ -12,4 +12,8 @@ public record Address (
             throw new IllegalArgumentException("Invalid Address");
         }
     }
+
+    public static Address of(String street, String number, String postalCode, String city, String country) {
+        return new Address(street, number, postalCode, city, country);
+    }
 }
