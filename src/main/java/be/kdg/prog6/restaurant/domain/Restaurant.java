@@ -1,5 +1,6 @@
 package be.kdg.prog6.restaurant.domain;
 
+import be.kdg.prog6.common.events.DomainEvent;
 import be.kdg.prog6.restaurant.domain.vo.*;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class Restaurant {
     private OpeningHours openingHours;
 
     private List<Dish> dishList;
+
+    private final List<DomainEvent> domainEvents = new ArrayList<>();
 
     public Restaurant(OwnerId ownerId, String name, Address address, EmailAddress emailAddress, CUISINE_TYPE cuisineType, PrepTime defaultPrepTime, OpeningHours openingHours) {
         this.restaurantId = RestaurantId.newId();
@@ -69,5 +72,13 @@ public class Restaurant {
 
     public List<Dish> getDishList() {
         return dishList;
+    }
+
+    public void addDomainEvent(DomainEvent event) {
+        domainEvents.add(event);
+    }
+
+    public List<DomainEvent> getDomainEvents() {
+        return domainEvents;
     }
 }

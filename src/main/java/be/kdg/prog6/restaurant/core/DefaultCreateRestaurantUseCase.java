@@ -1,5 +1,6 @@
 package be.kdg.prog6.restaurant.core;
 
+import be.kdg.prog6.common.events.RestaurantCreatedEvent;
 import be.kdg.prog6.restaurant.domain.Restaurant;
 import be.kdg.prog6.restaurant.domain.vo.*;
 import be.kdg.prog6.restaurant.port.in.CreateRestaurantCommand;
@@ -9,18 +10,18 @@ import be.kdg.prog6.restaurant.port.out.UpdateRestaurantPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalTime;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service
 public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
     private final Logger logger = Logger.getLogger(DefaultCreateRestaurantUseCase.class.getName());
 
-    private final UpdateRestaurantPort updateRestaurantPort;
+    private final List<UpdateRestaurantPort> updateRestaurantPorts;
     private final LoadRestaurantPort loadRestaurantPort;
 
-    public DefaultCreateRestaurantUseCase(UpdateRestaurantPort updateRestaurantPort, LoadRestaurantPort loadRestaurantPort){
-        this.updateRestaurantPort = updateRestaurantPort;
+    public DefaultCreateRestaurantUseCase(List<UpdateRestaurantPort> updateRestaurantPorts, LoadRestaurantPort loadRestaurantPort){
+        this.updateRestaurantPorts = updateRestaurantPorts;
         this.loadRestaurantPort = loadRestaurantPort;
     }
 
@@ -35,14 +36,35 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
             return loadRestaurantPort.LoadBy(ownerId).get();
         }
 
-        return updateRestaurantPort.addRestaurant(new Restaurant(
+        Restaurant restaurant = new Restaurant(
                 OwnerId.MICHAEL,
                 command.name(),
                 command.address(),
                 command.emailAddress(),
                 command.CUISINETYPE(),
                 command.defaultPrepTime(),
-                command.openingHours())
-        );
+                command.openingHours());
+
+        // **add the domain event**
+        restaurant.addDomainEvent(new RestaurantCreatedEvent(
+                restaurant.getRestaurantId().id().toString(),
+                restaurant.getOwnerId().id().toString(),
+                restaurant.getName(),
+                restaurant.getAddress().street(),
+                restaurant.getAddress().number(),
+                restaurant.getAddress().postalCode(),
+                restaurant.getAddress().city(),
+                restaurant.getAddress().country(),
+                restaurant.getEmailAddress().emailAddress(),
+                restaurant.getPictureList().stream().map(Picture::url).toList(),
+                restaurant.getCuisineType().name(),
+                restaurant.getDefaultPrepTime().minTime(),
+                restaurant.getDefaultPrepTime().maxTime(),
+                restaurant.getOpeningHours().openingTime(),
+                restaurant.getOpeningHours().closingTime()
+        ));
+
+        this.updateRestaurantPorts.forEach(port -> port.addRestaurant(restaurant));
+        return restaurant;
     }
 }

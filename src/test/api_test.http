@@ -22,3 +22,7 @@ Content-Type: application/json
   "openingTime": "12:00",
   "closingTime": "23:00"
 }
+
+###
+
+GET http://localhost:8080/customer/restaurants
