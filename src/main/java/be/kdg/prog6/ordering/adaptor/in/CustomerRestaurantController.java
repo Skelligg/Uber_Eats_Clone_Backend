@@ -23,7 +23,7 @@ public class CustomerRestaurantController {
     @GetMapping("/customer/restaurants")
     public ResponseEntity<List<RestaurantProjectionDto>> getRestaurants(
             @RequestParam(required = false) String cuisineType,
-            @RequestParam(required = false, defaultValue = "false") boolean onlyOpen) {
+            @RequestParam(required = false) boolean onlyOpen) {
 
         List<RestaurantProjectionDto> dtos = getRestaurantsUseCase.getRestaurants(
                         Optional.ofNullable(cuisineType),

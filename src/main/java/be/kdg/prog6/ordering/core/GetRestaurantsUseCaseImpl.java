@@ -24,8 +24,8 @@ public class GetRestaurantsUseCaseImpl implements GetRestaurantsUseCase {
         List<RestaurantProjection> all = loadRestaurantsPort.loadAll();
 
         return all.stream()
-                .filter(r -> cuisineType.isEmpty() || r.getCuisineType().equalsIgnoreCase(cuisineType.get()))
-                .filter(r -> onlyOpen.isEmpty() || (onlyOpen.get() && r.isOpenNow()))
+//                .filter(r -> cuisineType.isEmpty() || r.getCuisineType().equalsIgnoreCase(cuisineType.get()))
+//                .filter(r -> onlyOpen.isEmpty() || (onlyOpen.get() && r.isOpenNow()))
                 .toList();
     }
 

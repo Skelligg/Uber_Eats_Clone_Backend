@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "restaurant_projection")
+@Table(name = "restaurant_projection", schema = "public")
 public class RestaurantProjectionJpaEntity {
 
     @Id
@@ -25,7 +25,8 @@ public class RestaurantProjectionJpaEntity {
     private String emailAddress;
 
     @ElementCollection
-    @CollectionTable(name = "restaurant_projection_pictures", joinColumns = @JoinColumn(name = "restaurant_id"))
+    @CollectionTable(name = "projection_pictures", joinColumns = @JoinColumn(name = "restaurant_projection_id"))
+    @Column(name = "url")
     private List<String> pictures;
 
     private String cuisineType;
