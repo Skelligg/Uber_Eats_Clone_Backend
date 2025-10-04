@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "restaurant")
+@Table(name = "restaurant", schema = "restaurant")
 public class RestaurantJpaEntity {
 
     @Id
@@ -52,7 +52,7 @@ public class RestaurantJpaEntity {
 
     @Enumerated(EnumType.STRING)
     @ElementCollection
-    @CollectionTable(name = "restaurant_open_days", joinColumns = @JoinColumn(name="restaurant_id"))
+    @CollectionTable(name = "restaurant_open_days", schema = "restaurant", joinColumns = @JoinColumn(name="restaurant_id"))
     @Column(name = "day")
     private List<DAY> openDays;
 

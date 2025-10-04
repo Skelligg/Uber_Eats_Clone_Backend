@@ -1,57 +1,17 @@
--- Drop tables if they exist (start fresh)
-DROP TABLE IF EXISTS restaurant_open_days CASCADE;
-DROP TABLE IF EXISTS restaurant_pictures CASCADE;
-DROP TABLE IF EXISTS restaurant_projection_open_days CASCADE;
-DROP TABLE IF EXISTS restaurant_projection_pictures CASCADE;
-DROP TABLE IF EXISTS restaurant_projection CASCADE;
-DROP TABLE IF EXISTS restaurant CASCADE;
+-- Drop schemas if they exist
+DROP SCHEMA IF EXISTS restaurant CASCADE;
+DROP SCHEMA IF EXISTS ordering CASCADE;
+
+-- Create schemas
+CREATE SCHEMA restaurant;
+CREATE SCHEMA ordering;
 
 -- ==============================
--- Restaurant Table (write model)
+-- Restaurant Context (write model)
 -- ==============================
-CREATE TABLE restaurant (
-                            id UUID PRIMARY KEY,
-                            owner_id VARCHAR(255) NOT NULL,
-                            name VARCHAR(255) NOT NULL,
-                            street VARCHAR(255),
-                            number VARCHAR(50),
-                            postal_code VARCHAR(50),
-                            city VARCHAR(100),
-                            country VARCHAR(100),
-                            email_address VARCHAR(255),
-                            cuisine_type VARCHAR(50),
-                            min_prep_time INTEGER NOT NULL,
-                            max_prep_time INTEGER NOT NULL,
-                            opening_time TIME,
-                            closing_time TIME
-);
-
--- Pictures for Restaurant
-CREATE TABLE restaurant_pictures (
-                                     restaurant_id UUID NOT NULL,
-                                     url VARCHAR(2048),
-                                     CONSTRAINT fk_restaurant_pictures
-                                         FOREIGN KEY (restaurant_id)
-                                             REFERENCES restaurant(id)
-                                             ON DELETE CASCADE
-);
-
--- Days Open (Restaurant)
-CREATE TABLE restaurant_open_days (
-                                      restaurant_id UUID NOT NULL,
-                                      day VARCHAR(15),
-                                      CONSTRAINT fk_restaurant_open_days
-                                          FOREIGN KEY (restaurant_id)
-                                              REFERENCES restaurant(id)
-                                              ON DELETE CASCADE
-);
-
--- ==============================
--- Restaurant Projection Table (read model)
--- ==============================
-CREATE TABLE restaurant_projection (
+CREATE TABLE restaurant.restaurant (
                                        id UUID PRIMARY KEY,
-                                       owner_id UUID NOT NULL,
+                                       owner_id VARCHAR(255) NOT NULL,
                                        name VARCHAR(255) NOT NULL,
                                        street VARCHAR(255),
                                        number VARCHAR(50),
@@ -66,22 +26,58 @@ CREATE TABLE restaurant_projection (
                                        closing_time TIME
 );
 
--- Pictures for Restaurant Projection
-CREATE TABLE restaurant_projection_pictures (
-                                                restaurant_projection_id UUID NOT NULL,
+CREATE TABLE restaurant.restaurant_pictures (
+                                                restaurant_id UUID NOT NULL,
                                                 url VARCHAR(2048),
-                                                CONSTRAINT fk_restaurant_projection_pictures
-                                                    FOREIGN KEY (restaurant_projection_id)
-                                                        REFERENCES restaurant_projection(id)
+                                                CONSTRAINT fk_restaurant_pictures
+                                                    FOREIGN KEY (restaurant_id)
+                                                        REFERENCES restaurant.restaurant(id)
                                                         ON DELETE CASCADE
 );
 
--- Days Open (Restaurant Projection)
-CREATE TABLE restaurant_projection_open_days (
-                                                 restaurant_projection_id UUID NOT NULL,
+CREATE TABLE restaurant.restaurant_open_days (
+                                                 restaurant_id UUID NOT NULL,
                                                  day VARCHAR(15),
-                                                 CONSTRAINT fk_restaurant_projection_open_days
-                                                     FOREIGN KEY (restaurant_projection_id)
-                                                         REFERENCES restaurant_projection(id)
+                                                 CONSTRAINT fk_restaurant_open_days
+                                                     FOREIGN KEY (restaurant_id)
+                                                         REFERENCES restaurant.restaurant(id)
                                                          ON DELETE CASCADE
+);
+
+-- ==============================
+-- Ordering Context (read model)
+-- ==============================
+CREATE TABLE ordering.restaurant_projection (
+                                                id UUID PRIMARY KEY,
+                                                owner_id UUID NOT NULL,
+                                                name VARCHAR(255) NOT NULL,
+                                                street VARCHAR(255),
+                                                number VARCHAR(50),
+                                                postal_code VARCHAR(50),
+                                                city VARCHAR(100),
+                                                country VARCHAR(100),
+                                                email_address VARCHAR(255),
+                                                cuisine_type VARCHAR(50),
+                                                min_prep_time INTEGER NOT NULL,
+                                                max_prep_time INTEGER NOT NULL,
+                                                opening_time TIME,
+                                                closing_time TIME
+);
+
+CREATE TABLE ordering.restaurant_projection_pictures (
+                                                         restaurant_projection_id UUID NOT NULL,
+                                                         url VARCHAR(2048),
+                                                         CONSTRAINT fk_restaurant_projection_pictures
+                                                             FOREIGN KEY (restaurant_projection_id)
+                                                                 REFERENCES ordering.restaurant_projection(id)
+                                                                 ON DELETE CASCADE
+);
+
+CREATE TABLE ordering.restaurant_projection_open_days (
+                                                          restaurant_projection_id UUID NOT NULL,
+                                                          day VARCHAR(15),
+                                                          CONSTRAINT fk_restaurant_projection_open_days
+                                                              FOREIGN KEY (restaurant_projection_id)
+                                                                  REFERENCES ordering.restaurant_projection(id)
+                                                                  ON DELETE CASCADE
 );

@@ -1,6 +1,5 @@
 package be.kdg.prog6.ordering.adaptor.out;
 
-import be.kdg.prog6.restaurant.domain.vo.DAY;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
@@ -8,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "restaurant_projection", schema = "public")
+@Table(name = "restaurant_projection", schema = "ordering")
 public class RestaurantProjectionJpaEntity {
 
     @Id
@@ -40,7 +39,7 @@ public class RestaurantProjectionJpaEntity {
 
 
     @ElementCollection
-    @CollectionTable(name = "restaurant_projection_open_days", joinColumns = @JoinColumn(name="restaurant_projection_id"))
+    @CollectionTable(name = "restaurant_projection_open_days", schema = "ordering", joinColumns = @JoinColumn(name="restaurant_projection_id"))
     @Column(name = "day")
     private List<String> openDays;
 
