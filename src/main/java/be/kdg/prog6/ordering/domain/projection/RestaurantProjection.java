@@ -38,6 +38,8 @@ public class RestaurantProjection {
     private LocalTime openingTime;
     private LocalTime closingTime;
 
+    private List<String> openDays;
+
     protected RestaurantProjection() {
         // JPA only
     }
@@ -56,7 +58,8 @@ public class RestaurantProjection {
                                 int minPrepTime,
                                 int maxPrepTime,
                                 LocalTime openingTime,
-                                LocalTime closingTime) {
+                                LocalTime closingTime,
+                                List<String> openDays) {
         this.restaurantId = restaurantId;
         this.ownerId = ownerId;
         this.name = name;
@@ -72,6 +75,7 @@ public class RestaurantProjection {
         this.maxPrepTime = maxPrepTime;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
+        this.openDays = openDays;
     }
 
     // Getters (you might not need setters if projection is append-only)
@@ -141,4 +145,7 @@ public class RestaurantProjection {
         return !now.isBefore(openingTime) && !now.isAfter(closingTime);
     }
 
+    public List<String> getOpenDays() {
+        return openDays;
+    }
 }

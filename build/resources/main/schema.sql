@@ -1,5 +1,7 @@
 -- Drop tables if they exist (start fresh)
+DROP TABLE IF EXISTS restaurant_open_days CASCADE;
 DROP TABLE IF EXISTS restaurant_pictures CASCADE;
+DROP TABLE IF EXISTS restaurant_projection_open_days CASCADE;
 DROP TABLE IF EXISTS restaurant_projection_pictures CASCADE;
 DROP TABLE IF EXISTS restaurant_projection CASCADE;
 DROP TABLE IF EXISTS restaurant CASCADE;
@@ -26,12 +28,22 @@ CREATE TABLE restaurant (
 
 -- Pictures for Restaurant
 CREATE TABLE restaurant_pictures (
-                                     id UUID NOT NULL,
+                                     restaurant_id UUID NOT NULL,
                                      url VARCHAR(2048),
-                                     CONSTRAINT fk_restaurant
-                                         FOREIGN KEY(id)
+                                     CONSTRAINT fk_restaurant_pictures
+                                         FOREIGN KEY (restaurant_id)
                                              REFERENCES restaurant(id)
                                              ON DELETE CASCADE
+);
+
+-- Days Open (Restaurant)
+CREATE TABLE restaurant_open_days (
+                                      restaurant_id UUID NOT NULL,
+                                      day VARCHAR(15),
+                                      CONSTRAINT fk_restaurant_open_days
+                                          FOREIGN KEY (restaurant_id)
+                                              REFERENCES restaurant(id)
+                                              ON DELETE CASCADE
 );
 
 -- ==============================
@@ -58,8 +70,18 @@ CREATE TABLE restaurant_projection (
 CREATE TABLE restaurant_projection_pictures (
                                                 restaurant_projection_id UUID NOT NULL,
                                                 url VARCHAR(2048),
-                                                CONSTRAINT fk_restaurant_projection
-                                                    FOREIGN KEY(restaurant_projection_id)
+                                                CONSTRAINT fk_restaurant_projection_pictures
+                                                    FOREIGN KEY (restaurant_projection_id)
                                                         REFERENCES restaurant_projection(id)
                                                         ON DELETE CASCADE
+);
+
+-- Days Open (Restaurant Projection)
+CREATE TABLE restaurant_projection_open_days (
+                                                 restaurant_projection_id UUID NOT NULL,
+                                                 day VARCHAR(15),
+                                                 CONSTRAINT fk_restaurant_projection_open_days
+                                                     FOREIGN KEY (restaurant_projection_id)
+                                                         REFERENCES restaurant_projection(id)
+                                                         ON DELETE CASCADE
 );

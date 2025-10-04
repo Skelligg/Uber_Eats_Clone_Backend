@@ -37,7 +37,8 @@ public class RestaurantsChangedProjecterImpl implements RestaurantsChangedProjec
                 projectionCommand.minPrepTime(),
                 projectionCommand.maxPrepTime(),
                 projectionCommand.openingTime(),
-                projectionCommand.closingTime()
+                projectionCommand.closingTime(),
+                projectionCommand.openDays()
         );
 
         updateRestaurantsPort.update(restaurantProjection);

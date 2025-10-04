@@ -1,10 +1,12 @@
 package be.kdg.prog6.restaurant.domain.vo;
 
 import java.time.LocalTime;
+import java.util.List;
 
 public record OpeningHours(
         LocalTime openingTime,
-        LocalTime closingTime
+        LocalTime closingTime,
+        List<DAY> openDays
 ) { public OpeningHours {
     if (openingTime == null || closingTime == null) {
         throw new IllegalArgumentException("Opening Time and Closing Time cannot be null");
@@ -14,7 +16,7 @@ public record OpeningHours(
     }
 }
 
-    public static OpeningHours of (LocalTime openingTime, LocalTime closingTime) {
-    return new OpeningHours(openingTime, closingTime);
+    public static OpeningHours of (LocalTime openingTime, LocalTime closingTime, List<DAY> openDays) {
+    return new OpeningHours(openingTime, closingTime, openDays);
     }
 }

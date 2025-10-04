@@ -35,7 +35,8 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
                         entity.getMinPrepTime(),
                         entity.getMaxPrepTime(),
                         entity.getOpeningTime(),
-                        entity.getClosingTime()
+                        entity.getClosingTime(),
+                        entity.getOpenDays()
                 ))
                 .toList();
     }
@@ -57,7 +58,8 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
                 restaurantProjection.getMinPrepTime(),
                 restaurantProjection.getMaxPrepTime(),
                 restaurantProjection.getOpeningTime(),
-                restaurantProjection.getClosingTime()
+                restaurantProjection.getClosingTime(),
+                restaurantProjection.getOpenDays()
         );
 
         RestaurantProjectionJpaEntity saved = restaurantsJpaRepository.save(entity);
@@ -77,7 +79,8 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
                 saved.getMinPrepTime(),
                 saved.getMaxPrepTime(),
                 saved.getOpeningTime(),
-                saved.getClosingTime()
+                saved.getClosingTime(),
+                saved.getOpenDays()
         );
     }
 

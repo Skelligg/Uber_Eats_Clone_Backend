@@ -1,5 +1,7 @@
 package be.kdg.prog6.restaurant.adaptor.in.request;
 
+import be.kdg.prog6.restaurant.domain.vo.DAY;
+
 import java.time.LocalTime;
 import java.util.List;
 
@@ -13,7 +15,8 @@ public record CreateRestaurantRequest(
         Integer minPrepTime,
         Integer maxPrepTime,
         LocalTime openingTime,
-        LocalTime closingTime
+        LocalTime closingTime,
+        List<DAY> openDays
 ) {
 }
 

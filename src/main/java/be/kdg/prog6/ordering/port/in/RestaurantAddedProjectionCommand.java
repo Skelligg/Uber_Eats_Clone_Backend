@@ -19,7 +19,8 @@ public record RestaurantAddedProjectionCommand(
         int minPrepTime,
         int maxPrepTime,
         LocalTime openingTime,
-        LocalTime closingTime
+        LocalTime closingTime,
+        List<String> openDays
 ) {
     // Optionally, you can add a static 'fromEvent' method for convenience
     public static RestaurantAddedProjectionCommand fromEvent(be.kdg.prog6.common.events.RestaurantCreatedEvent event) {
@@ -38,7 +39,8 @@ public record RestaurantAddedProjectionCommand(
                 event.minPrepTime(),
                 event.maxPrepTime(),
                 event.openingTime(),
-                event.closingTime()
+                event.closingTime(),
+                event.openDays()
         );
     }
 }

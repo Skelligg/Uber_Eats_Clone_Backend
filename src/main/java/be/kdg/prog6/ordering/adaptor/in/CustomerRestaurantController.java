@@ -44,7 +44,8 @@ public class CustomerRestaurantController {
                         r.getMinPrepTime(),
                         r.getMaxPrepTime(),
                         r.getOpeningTime(),
-                        r.getClosingTime()
+                        r.getClosingTime(),
+                        r.getOpenDays()
                 ))
                 .toList();
 

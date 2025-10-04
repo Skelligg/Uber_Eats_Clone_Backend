@@ -1,6 +1,7 @@
 package be.kdg.prog6.restaurant.adaptor.out;
 
 import be.kdg.prog6.restaurant.domain.vo.CUISINE_TYPE;
+import be.kdg.prog6.restaurant.domain.vo.DAY;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
@@ -49,6 +50,12 @@ public class RestaurantJpaEntity {
     private LocalTime openingTime;
     private LocalTime closingTime;
 
+    @Enumerated(EnumType.STRING)
+    @ElementCollection
+    @CollectionTable(name = "restaurant_open_days", joinColumns = @JoinColumn(name="restaurant_id"))
+    @Column(name = "day")
+    private List<DAY> openDays;
+
     // Constructors
     protected RestaurantJpaEntity() {
     }
@@ -68,7 +75,8 @@ public class RestaurantJpaEntity {
             int minPrepTime,
             int maxPrepTime,
             LocalTime openingTime,
-            LocalTime closingTime
+            LocalTime closingTime,
+            List<DAY> openDays
     ) {
         this.id = id;
         this.ownerId = ownerId;
@@ -85,6 +93,7 @@ public class RestaurantJpaEntity {
         this.maxPrepTime = maxPrepTime;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
+        this.openDays = openDays;
     }
 
     // Getters/setters (can use Lombok if allowed)
@@ -146,5 +155,9 @@ public class RestaurantJpaEntity {
 
     public LocalTime getClosingTime() {
         return closingTime;
+    }
+
+    public List<DAY> getOpenDays() {
+        return openDays;
     }
 }

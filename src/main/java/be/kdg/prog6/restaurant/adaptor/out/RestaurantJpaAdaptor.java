@@ -45,7 +45,8 @@ public class RestaurantJpaAdaptor implements UpdateRestaurantPort, LoadRestauran
                 restaurant.getDefaultPrepTime().minTime(),
                 restaurant.getDefaultPrepTime().maxTime(),
                 restaurant.getOpeningHours().openingTime(),
-                restaurant.getOpeningHours().closingTime()
+                restaurant.getOpeningHours().closingTime(),
+                restaurant.getOpeningHours().openDays()
         );
         RestaurantJpaEntity saved = this.restaurants.save(restaurantJpaEntity);
         return restaurant;

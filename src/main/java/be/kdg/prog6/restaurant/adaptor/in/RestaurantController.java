@@ -39,7 +39,7 @@ public class RestaurantController {
                         .collect(Collectors.toList()),
                 CUISINE_TYPE.valueOf(request.cuisineType().toUpperCase()),
                 new PrepTime(request.minPrepTime(), request.maxPrepTime()),
-                new OpeningHours(request.openingTime(), request.closingTime())
+                new OpeningHours(request.openingTime(), request.closingTime(),request.openDays())
         );
 
         Restaurant created = createRestaurantUseCase.createRestaurant(command);

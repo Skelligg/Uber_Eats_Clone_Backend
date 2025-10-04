@@ -20,7 +20,13 @@ Content-Type: application/json
   "minPrepTime": 15,
   "maxPrepTime": 25,
   "openingTime": "12:00",
-  "closingTime": "23:00"
+  "closingTime": "23:00",
+  "openDays": [
+    "MONDAY",
+    "FRIDAY",
+    "SATURDAY",
+    "SUNDAY"
+  ]
 }
 
 ###

@@ -61,7 +61,10 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
                 restaurant.getDefaultPrepTime().minTime(),
                 restaurant.getDefaultPrepTime().maxTime(),
                 restaurant.getOpeningHours().openingTime(),
-                restaurant.getOpeningHours().closingTime()
+                restaurant.getOpeningHours().closingTime(),
+                restaurant.getOpeningHours().openDays().stream()
+                        .map(Enum::name)
+                        .toList()
         ));
 
         this.updateRestaurantPorts.forEach(port -> port.addRestaurant(restaurant));

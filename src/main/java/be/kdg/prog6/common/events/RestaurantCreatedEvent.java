@@ -20,7 +20,8 @@ public record RestaurantCreatedEvent(
         int minPrepTime,
         int maxPrepTime,
         LocalTime openingTime,
-        LocalTime closingTime
+        LocalTime closingTime,
+        List<String> openDays
 ) implements DomainEvent {
 
     public RestaurantCreatedEvent(
@@ -38,10 +39,11 @@ public record RestaurantCreatedEvent(
             int minPrepTime,
             int maxPrepTime,
             LocalTime openingTime,
-            LocalTime closingTime
+            LocalTime closingTime,
+            List<String> openDays
     ) {
         this(LocalDateTime.now(), restaurantId, ownerId, name, street, number, postalCode, city, country,
-                emailAddress, pictures, cuisineType, minPrepTime, maxPrepTime, openingTime, closingTime);
+                emailAddress, pictures, cuisineType, minPrepTime, maxPrepTime, openingTime, closingTime,openDays);
     }
 
 
