@@ -19,7 +19,6 @@ public class RestaurantsChangedListener {
 
     @EventListener(RestaurantCreatedEvent.class)
     public void restaurantsChanged(RestaurantCreatedEvent restaurantCreatedEvent) {
-        logger.info("RestaurantsChangedEvent received");
         projector.project(RestaurantAddedProjectionCommand.fromEvent(restaurantCreatedEvent));
     }
 }

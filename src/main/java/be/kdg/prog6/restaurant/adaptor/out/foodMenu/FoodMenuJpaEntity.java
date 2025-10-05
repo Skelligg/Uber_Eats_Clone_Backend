@@ -10,8 +10,6 @@ import java.util.UUID;
 @Table(name = "food_menu", schema = "restaurant")
 public class FoodMenuJpaEntity {
     @Id
-    private UUID id;
-
     private UUID restaurantId;
 
     private double averageMenuPrice;
@@ -20,17 +18,8 @@ public class FoodMenuJpaEntity {
     protected FoodMenuJpaEntity() {}
 
     public FoodMenuJpaEntity(FoodMenu menu) {
-        this.id = UUID.randomUUID();
         this.restaurantId = menu.getRestaurantId().id();
         this.averageMenuPrice = menu.getAverageMenuPrice().asDouble();
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public UUID getRestaurantId() {

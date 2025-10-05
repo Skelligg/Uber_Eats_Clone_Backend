@@ -10,15 +10,15 @@ import java.util.List;
 @Repository
 public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, UpdateRestaurantsPort {
 
-    private final RestaurantsJpaRepository restaurantsJpaRepository;
+    private final RestaurantProjectionJpaRepository restaurantProjectionJpaRepository;
 
-    public RestaurantProjectionJpaAdaptor(RestaurantsJpaRepository restaurantsJpaRepository) {
-        this.restaurantsJpaRepository = restaurantsJpaRepository;
+    public RestaurantProjectionJpaAdaptor(RestaurantProjectionJpaRepository restaurantProjectionJpaRepository) {
+        this.restaurantProjectionJpaRepository = restaurantProjectionJpaRepository;
     }
 
     @Override
     public List<RestaurantProjection> loadAll() {
-        List<RestaurantProjectionJpaEntity> restaurantProjections = this.restaurantsJpaRepository.findAll();
+        List<RestaurantProjectionJpaEntity> restaurantProjections = this.restaurantProjectionJpaRepository.findAll();
         return restaurantProjections.stream()
                 .map(entity -> new RestaurantProjection(
                         entity.getId(),
@@ -62,7 +62,7 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
                 restaurantProjection.getOpenDays()
         );
 
-        RestaurantProjectionJpaEntity saved = restaurantsJpaRepository.save(entity);
+        RestaurantProjectionJpaEntity saved = restaurantProjectionJpaRepository.save(entity);
 
         return new RestaurantProjection(
                 saved.getId(),

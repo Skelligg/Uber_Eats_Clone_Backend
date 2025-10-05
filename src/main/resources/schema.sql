@@ -45,8 +45,7 @@ CREATE TABLE restaurant.restaurant_open_days (
 );
 
 CREATE TABLE restaurant.food_menu (
-                                      id UUID PRIMARY KEY,                        -- Unique menu ID
-                                      restaurant_id UUID NOT NULL UNIQUE,          -- 1:1 relationship with restaurant
+                                      restaurant_id UUID PRIMARY KEY ,          -- 1:1 relationship with restaurant
                                       average_menu_price NUMERIC(10,2) NOT NULL,   -- Average price of published dishes
 
                                       CONSTRAINT fk_food_menu_restaurant
@@ -93,3 +92,14 @@ CREATE TABLE ordering.restaurant_projection_open_days (
                        REFERENCES ordering.restaurant_projection(id)
                        ON DELETE CASCADE
 );
+
+CREATE TABLE ordering.food_menu_projection (
+                                               restaurant_id UUID PRIMARY KEY ,
+                                               average_menu_price NUMERIC(10,2) NOT NULL,
+
+                                               CONSTRAINT fk_food_menu_projection_restaurant
+                                                   FOREIGN KEY (restaurant_id)
+                                                       REFERENCES ordering.restaurant_projection(id)
+                                                       ON DELETE CASCADE
+);
+

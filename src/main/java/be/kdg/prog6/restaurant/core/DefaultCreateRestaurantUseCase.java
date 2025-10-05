@@ -71,6 +71,8 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
                         .toList()
         ));
 
+
+
         this.updateRestaurantPort.addRestaurant(restaurant);
         this.publishRestaurantEventPort.publishRestaurantCreated(restaurant);
         return restaurant;

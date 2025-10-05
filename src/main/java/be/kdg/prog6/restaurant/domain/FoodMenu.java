@@ -1,5 +1,6 @@
 package be.kdg.prog6.restaurant.domain;
 
+import be.kdg.prog6.common.events.DomainEvent;
 import be.kdg.prog6.restaurant.domain.vo.Price;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
@@ -17,6 +18,8 @@ public class FoodMenu {
     private Price averageMenuPrice;
 
     private static final int MAX_PUBLISHED_DISHES = 10;
+
+    private final List<DomainEvent> domainEvents = new ArrayList<>();
 
     public FoodMenu(RestaurantId restaurantId) {
         this.restaurantId = restaurantId;
@@ -100,5 +103,13 @@ public class FoodMenu {
 
     private boolean isPublished(Dish d) {
         return d.getState() == DISH_STATE.PUBLISHED || d.getState() == DISH_STATE.OUT_OF_STOCK;
+    }
+
+    public void addDomainEvent(DomainEvent event) {
+        domainEvents.add(event);
+    }
+
+    public List<DomainEvent> getDomainEvents() {
+        return domainEvents;
     }
 }

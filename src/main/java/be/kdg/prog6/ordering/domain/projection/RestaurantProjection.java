@@ -1,19 +1,11 @@
 package be.kdg.prog6.ordering.domain.projection;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
-@Table(name = "restaurant_projection")
 public class RestaurantProjection {
 
-    @Id
     private UUID restaurantId;
 
     private UUID ownerId;
@@ -27,7 +19,6 @@ public class RestaurantProjection {
 
     private String emailAddress;
 
-    @ElementCollection
     private List<String> pictures;
 
     private String cuisineType;
