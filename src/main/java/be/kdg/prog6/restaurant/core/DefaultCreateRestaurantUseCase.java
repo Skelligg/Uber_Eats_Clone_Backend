@@ -7,6 +7,7 @@ import be.kdg.prog6.restaurant.domain.vo.restaurant.Picture;
 import be.kdg.prog6.restaurant.port.in.CreateRestaurantCommand;
 import be.kdg.prog6.restaurant.port.in.CreateRestaurantUseCase;
 import be.kdg.prog6.restaurant.port.out.LoadRestaurantPort;
+import be.kdg.prog6.restaurant.port.out.PublishRestaurantEventPort;
 import be.kdg.prog6.restaurant.port.out.UpdateRestaurantPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +19,13 @@ import java.util.logging.Logger;
 public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
     private final Logger logger = Logger.getLogger(DefaultCreateRestaurantUseCase.class.getName());
 
-    private final List<UpdateRestaurantPort> updateRestaurantPorts;
+    private final UpdateRestaurantPort updateRestaurantPort;
+    private final PublishRestaurantEventPort publishRestaurantEventPort;
     private final LoadRestaurantPort loadRestaurantPort;
 
-    public DefaultCreateRestaurantUseCase(List<UpdateRestaurantPort> updateRestaurantPorts, LoadRestaurantPort loadRestaurantPort){
-        this.updateRestaurantPorts = updateRestaurantPorts;
+    public DefaultCreateRestaurantUseCase(UpdateRestaurantPort updateRestaurantPort, PublishRestaurantEventPort publishRestaurantEventPort, LoadRestaurantPort loadRestaurantPort){
+        this.updateRestaurantPort = updateRestaurantPort;
+        this.publishRestaurantEventPort = publishRestaurantEventPort;
         this.loadRestaurantPort = loadRestaurantPort;
     }
 
@@ -68,7 +71,8 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
                         .toList()
         ));
 
-        this.updateRestaurantPorts.forEach(port -> port.addRestaurant(restaurant));
+        this.updateRestaurantPort.addRestaurant(restaurant);
+        this.publishRestaurantEventPort.publishRestaurantCreated(restaurant);
         return restaurant;
     }
 }
