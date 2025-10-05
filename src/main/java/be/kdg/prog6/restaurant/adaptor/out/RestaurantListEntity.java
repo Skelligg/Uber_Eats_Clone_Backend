@@ -1,10 +1,9 @@
 package be.kdg.prog6.restaurant.adaptor.out;
 
 import be.kdg.prog6.restaurant.domain.Restaurant;
-import be.kdg.prog6.restaurant.domain.vo.OwnerId;
+import be.kdg.prog6.restaurant.domain.vo.restaurant.OwnerId;
 import be.kdg.prog6.restaurant.port.out.LoadRestaurantPort;
 import be.kdg.prog6.restaurant.port.out.UpdateRestaurantPort;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;

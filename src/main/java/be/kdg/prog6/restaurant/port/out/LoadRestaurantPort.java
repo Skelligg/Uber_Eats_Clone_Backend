@@ -1,8 +1,7 @@
 package be.kdg.prog6.restaurant.port.out;
 
 import be.kdg.prog6.restaurant.domain.Restaurant;
-import be.kdg.prog6.restaurant.domain.vo.OwnerId;
-import be.kdg.prog6.restaurant.domain.vo.RestaurantId;
+import be.kdg.prog6.restaurant.domain.vo.restaurant.OwnerId;
 
 import java.util.Optional;
 

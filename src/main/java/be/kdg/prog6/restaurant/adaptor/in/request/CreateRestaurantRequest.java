@@ -1,6 +1,6 @@
 package be.kdg.prog6.restaurant.adaptor.in.request;
 
-import be.kdg.prog6.restaurant.domain.vo.DAY;
+import be.kdg.prog6.restaurant.domain.vo.restaurant.DAY;
 
 import java.time.LocalTime;
 import java.util.List;

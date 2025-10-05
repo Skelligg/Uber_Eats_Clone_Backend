@@ -1,6 +1,6 @@
 package be.kdg.prog6.restaurant.port.in;
 
-import be.kdg.prog6.restaurant.domain.vo.*;
+import be.kdg.prog6.restaurant.domain.vo.restaurant.*;
 
 import java.util.List;
 

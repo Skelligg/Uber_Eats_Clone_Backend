@@ -2,7 +2,8 @@ package be.kdg.prog6.restaurant.core;
 
 import be.kdg.prog6.common.events.RestaurantCreatedEvent;
 import be.kdg.prog6.restaurant.domain.Restaurant;
-import be.kdg.prog6.restaurant.domain.vo.*;
+import be.kdg.prog6.restaurant.domain.vo.restaurant.OwnerId;
+import be.kdg.prog6.restaurant.domain.vo.restaurant.Picture;
 import be.kdg.prog6.restaurant.port.in.CreateRestaurantCommand;
 import be.kdg.prog6.restaurant.port.in.CreateRestaurantUseCase;
 import be.kdg.prog6.restaurant.port.out.LoadRestaurantPort;

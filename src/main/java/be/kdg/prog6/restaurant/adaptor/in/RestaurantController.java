@@ -4,7 +4,7 @@ import be.kdg.prog6.restaurant.adaptor.in.request.CreateRestaurantRequest;
 import be.kdg.prog6.restaurant.adaptor.in.response.RestaurantDto;
 import be.kdg.prog6.restaurant.core.DefaultCreateRestaurantUseCase;
 import be.kdg.prog6.restaurant.domain.Restaurant;
-import be.kdg.prog6.restaurant.domain.vo.*;
+import be.kdg.prog6.restaurant.domain.vo.restaurant.*;
 import be.kdg.prog6.restaurant.port.in.CreateRestaurantCommand;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

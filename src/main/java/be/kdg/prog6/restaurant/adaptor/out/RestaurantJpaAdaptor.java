@@ -1,7 +1,8 @@
 package be.kdg.prog6.restaurant.adaptor.out;
 
 import be.kdg.prog6.restaurant.domain.Restaurant;
-import be.kdg.prog6.restaurant.domain.vo.*;
+import be.kdg.prog6.restaurant.domain.vo.restaurant.OwnerId;
+import be.kdg.prog6.restaurant.domain.vo.restaurant.Picture;
 import be.kdg.prog6.restaurant.port.out.LoadRestaurantPort;
 import be.kdg.prog6.restaurant.port.out.UpdateRestaurantPort;
 import org.slf4j.Logger;
@@ -9,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public class RestaurantJpaAdaptor implements UpdateRestaurantPort, LoadRestaurantPort {

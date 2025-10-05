@@ -1,4 +1,4 @@
-package be.kdg.prog6.restaurant.domain.vo;
+package be.kdg.prog6.restaurant.domain.vo.restaurant;
 
 import java.time.LocalTime;
 import java.util.List;
