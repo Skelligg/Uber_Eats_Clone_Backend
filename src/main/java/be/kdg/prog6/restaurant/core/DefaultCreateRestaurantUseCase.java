@@ -53,6 +53,7 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
         restaurant.addDomainEvent(new RestaurantCreatedEvent(
                 restaurant.getRestaurantId().id().toString(),
                 restaurant.getOwnerId().id().toString(),
+                restaurant.getOwnerId().name(),
                 restaurant.getName(),
                 restaurant.getAddress().street(),
                 restaurant.getAddress().number(),

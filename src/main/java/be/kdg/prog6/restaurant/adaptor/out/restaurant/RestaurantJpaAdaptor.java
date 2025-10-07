@@ -31,6 +31,7 @@ public class RestaurantJpaAdaptor implements UpdateRestaurantPort, LoadRestauran
         RestaurantJpaEntity restaurantJpaEntity = new RestaurantJpaEntity(
                 restaurant.getRestaurantId().id(), // UUID
                 restaurant.getOwnerId().id().toString(), // OwnerId flattened
+                restaurant.getOwnerId().name(),
                 restaurant.getName(),
                 restaurant.getAddress().street(),
                 restaurant.getAddress().number(),

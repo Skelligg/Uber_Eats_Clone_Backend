@@ -25,6 +25,7 @@ public class RestaurantsChangedProjecterImpl implements RestaurantsChangedProjec
         RestaurantProjection restaurantProjection = new RestaurantProjection(
                 projectionCommand.restaurantId(),
                 projectionCommand.ownerId(),
+                projectionCommand.ownerName(),
                 projectionCommand.name(),
                 projectionCommand.street(),
                 projectionCommand.number(),

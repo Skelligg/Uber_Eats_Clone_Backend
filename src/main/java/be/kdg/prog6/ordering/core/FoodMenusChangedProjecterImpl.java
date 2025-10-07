@@ -17,7 +17,7 @@ public class FoodMenusChangedProjecterImpl implements FoodMenusChangedProjector 
 
     @Override
     public void project(FoodMenuCreatedEvent event) {
-        var projection = new FoodMenuProjection(
+        FoodMenuProjection projection = new FoodMenuProjection(
                 event.restaurantId(),
                 event.averageMenuPrice()
         );

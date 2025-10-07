@@ -23,6 +23,7 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
                 .map(entity -> new RestaurantProjection(
                         entity.getId(),
                         entity.getOwnerId(),
+                        entity.getOwnerName(),
                         entity.getName(),
                         entity.getStreet(),
                         entity.getNumber(),
@@ -46,6 +47,7 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
         RestaurantProjectionJpaEntity entity = new RestaurantProjectionJpaEntity(
                 restaurantProjection.getRestaurantId(),
                 restaurantProjection.getOwnerId(),
+                restaurantProjection.getOwnerName(),
                 restaurantProjection.getName(),
                 restaurantProjection.getStreet(),
                 restaurantProjection.getNumber(),
@@ -67,6 +69,7 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
         return new RestaurantProjection(
                 saved.getId(),
                 saved.getOwnerId(),
+                saved.getOwnerName(),
                 saved.getName(),
                 saved.getStreet(),
                 saved.getNumber(),

@@ -32,6 +32,7 @@ public class CustomerRestaurantController {
                 .map(r -> new RestaurantProjectionDto(
                         r.getRestaurantId(),
                         r.getOwnerId(),
+                        r.getOwnerName(),
                         r.getName(),
                         r.getStreet(),
                         r.getNumber(),

@@ -9,6 +9,7 @@ public class RestaurantProjection {
     private UUID restaurantId;
 
     private UUID ownerId;
+    private String ownerName;
     private String name;
 
     private String street;
@@ -37,6 +38,7 @@ public class RestaurantProjection {
 
     public RestaurantProjection(UUID restaurantId,
                                 UUID ownerId,
+                                String ownerName,
                                 String name,
                                 String street,
                                 String number,
@@ -53,6 +55,7 @@ public class RestaurantProjection {
                                 List<String> openDays) {
         this.restaurantId = restaurantId;
         this.ownerId = ownerId;
+        this.ownerName = ownerName;
         this.name = name;
         this.street = street;
         this.number = number;
@@ -129,6 +132,10 @@ public class RestaurantProjection {
 
     public LocalTime getClosingTime() {
         return closingTime;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
     }
 
     public boolean isOpenNow() {

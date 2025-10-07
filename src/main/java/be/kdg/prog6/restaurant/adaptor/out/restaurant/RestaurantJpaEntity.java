@@ -20,6 +20,9 @@ public class RestaurantJpaEntity {
     private String ownerId;
 
     @Column(nullable = false)
+    private String ownerName;
+
+    @Column(nullable = false)
     private String name;
 
     // Address (flattened)
@@ -63,6 +66,7 @@ public class RestaurantJpaEntity {
     public RestaurantJpaEntity(
             UUID id,
             String ownerId,
+            String ownerName,
             String name,
             String street,
             String number,
@@ -80,6 +84,7 @@ public class RestaurantJpaEntity {
     ) {
         this.id = id;
         this.ownerId = ownerId;
+        this.ownerName = ownerName;
         this.name = name;
         this.street = street;
         this.number = number;
@@ -103,6 +108,10 @@ public class RestaurantJpaEntity {
 
     public String getOwnerId() {
         return ownerId;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
     }
 
     public String getName() {

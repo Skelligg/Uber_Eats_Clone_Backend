@@ -12,6 +12,7 @@ CREATE SCHEMA ordering;
 CREATE TABLE restaurant.restaurant (
                                        id UUID PRIMARY KEY,
                                        owner_id VARCHAR(255) NOT NULL,
+                                       owner_name VARCHAR(255) NOT NULL,
                                        name VARCHAR(255) NOT NULL,
                                        street VARCHAR(255),
                                        number VARCHAR(50),
@@ -54,6 +55,24 @@ CREATE TABLE restaurant.food_menu (
                                               ON DELETE CASCADE
 );
 
+CREATE TABLE restaurant.dish (
+                                 id UUID PRIMARY KEY,
+                                 restaurant_id UUID NOT NULL,
+                                 name VARCHAR(255) NOT NULL,
+                                 description TEXT,
+                                 price NUMERIC(10, 2) NOT NULL,
+                                 picture_url VARCHAR(2048),
+                                 tags TEXT,
+                                 dish_type VARCHAR(50),
+                                 state VARCHAR(50) NOT NULL,
+                                 scheduled_publish_time TIMESTAMP,
+                                 CONSTRAINT fk_dish_restaurant
+                                     FOREIGN KEY (restaurant_id)
+                                         REFERENCES restaurant.restaurant(id)
+                                         ON DELETE CASCADE
+);
+
+
 
 -- ==============================
 -- Ordering Context (read model)
@@ -61,6 +80,7 @@ CREATE TABLE restaurant.food_menu (
 CREATE TABLE ordering.restaurant_projection (
      id UUID PRIMARY KEY,
      owner_id UUID NOT NULL,
+     owner_name VARCHAR(255) NOT NULL,
      name VARCHAR(255) NOT NULL,
      street VARCHAR(255),
      number VARCHAR(50),
@@ -103,3 +123,19 @@ CREATE TABLE ordering.food_menu_projection (
                                                        ON DELETE CASCADE
 );
 
+
+CREATE TABLE ordering.dish_projection (
+                                          dish_id UUID PRIMARY KEY,
+                                          restaurant_id UUID NOT NULL,
+                                          name VARCHAR(255) NOT NULL,
+                                          description TEXT,
+                                          price NUMERIC(10, 2) NOT NULL,
+                                          picture_url VARCHAR(2048),
+                                          tags TEXT,
+                                          dish_type VARCHAR(50),
+
+                                          CONSTRAINT fk_dish_projection_restaurant
+                                              FOREIGN KEY (restaurant_id)
+                                                  REFERENCES ordering.restaurant_projection(id)
+                                                  ON DELETE CASCADE
+);

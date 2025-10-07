@@ -7,6 +7,7 @@ import java.util.UUID;
 public record RestaurantProjectionDto (
     UUID restaurantId,
     UUID ownerId,
+    String ownerName,
     String name,
     String street,
     String number,

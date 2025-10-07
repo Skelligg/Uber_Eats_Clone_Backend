@@ -8,6 +8,7 @@ public record RestaurantCreatedEvent(
         LocalDateTime eventPit,
         String restaurantId,
         String ownerId,
+        String ownerName,
         String name,
         String street,
         String number,
@@ -27,6 +28,7 @@ public record RestaurantCreatedEvent(
     public RestaurantCreatedEvent(
             String restaurantId,
             String ownerId,
+            String ownerName,
             String name,
             String street,
             String number,
@@ -42,7 +44,7 @@ public record RestaurantCreatedEvent(
             LocalTime closingTime,
             List<String> openDays
     ) {
-        this(LocalDateTime.now(), restaurantId, ownerId, name, street, number, postalCode, city, country,
+        this(LocalDateTime.now(), restaurantId, ownerId, ownerName, name, street, number, postalCode, city, country,
                 emailAddress, pictures, cuisineType, minPrepTime, maxPrepTime, openingTime, closingTime,openDays);
     }
 
