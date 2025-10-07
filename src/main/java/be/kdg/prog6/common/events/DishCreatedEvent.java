@@ -7,7 +7,7 @@ import java.util.UUID;
 public record DishCreatedEvent(
         LocalDateTime eventPit,
         UUID dishId,
-        UUID restaurantId,
+        UUID foodMenuId,
         String name,
         String description,
         BigDecimal price,
@@ -16,9 +16,9 @@ public record DishCreatedEvent(
         String dishType
 ) implements DomainEvent {
 
-    public DishCreatedEvent(UUID dishId, UUID restaurantId, String name, String description,
+    public DishCreatedEvent(UUID dishId, UUID foodMenuId, String name, String description,
                             BigDecimal price, String pictureUrl, String tags, String dishType) {
-        this(LocalDateTime.now(), dishId, restaurantId, name, description, price, pictureUrl, tags, dishType);
+        this(LocalDateTime.now(), dishId, foodMenuId, name, description, price, pictureUrl, tags, dishType);
     }
 
     @Override

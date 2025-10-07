@@ -35,9 +35,9 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
         // implement search for restaurant by ownerId to see if owner already has restaurant
         // for now statically done
         OwnerId ownerId = command.ownerId();
-        if (loadRestaurantPort.LoadBy(ownerId).isPresent()) {
+        if (loadRestaurantPort.findByOwnerId(ownerId).isPresent()) {
             logger.info("Restaurant exists with owner id:" + ownerId);
-            return loadRestaurantPort.LoadBy(ownerId).get();
+            return loadRestaurantPort.findByOwnerId(ownerId).get();
         }
 
         Restaurant restaurant = new Restaurant(

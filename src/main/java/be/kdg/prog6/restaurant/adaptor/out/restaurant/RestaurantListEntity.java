@@ -25,7 +25,7 @@ public class RestaurantListEntity implements UpdateRestaurantPort, LoadRestauran
     }
 
     @Override
-    public Optional<Restaurant> LoadBy(OwnerId ownerId) {
+    public Optional<Restaurant> findByOwnerId(OwnerId ownerId) {
         return Optional.empty();
     }
 }

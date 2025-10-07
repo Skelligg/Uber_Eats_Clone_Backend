@@ -57,7 +57,7 @@ CREATE TABLE restaurant.food_menu (
 
 CREATE TABLE restaurant.dish (
                                  id UUID PRIMARY KEY,
-                                 restaurant_id UUID NOT NULL,
+                                 food_menu_id UUID NOT NULL,
                                  name VARCHAR(255) NOT NULL,
                                  description TEXT,
                                  price NUMERIC(10, 2) NOT NULL,
@@ -66,11 +66,12 @@ CREATE TABLE restaurant.dish (
                                  dish_type VARCHAR(50),
                                  state VARCHAR(50) NOT NULL,
                                  scheduled_publish_time TIMESTAMP,
-                                 CONSTRAINT fk_dish_restaurant
-                                     FOREIGN KEY (restaurant_id)
-                                         REFERENCES restaurant.restaurant(id)
+                                 CONSTRAINT fk_dish_food_menu
+                                     FOREIGN KEY (food_menu_id)
+                                         REFERENCES restaurant.food_menu(restaurant_id)
                                          ON DELETE CASCADE
 );
+
 
 
 
@@ -126,7 +127,7 @@ CREATE TABLE ordering.food_menu_projection (
 
 CREATE TABLE ordering.dish_projection (
                                           dish_id UUID PRIMARY KEY,
-                                          restaurant_id UUID NOT NULL,
+                                          food_menu_id UUID NOT NULL,
                                           name VARCHAR(255) NOT NULL,
                                           description TEXT,
                                           price NUMERIC(10, 2) NOT NULL,
@@ -134,8 +135,9 @@ CREATE TABLE ordering.dish_projection (
                                           tags TEXT,
                                           dish_type VARCHAR(50),
 
-                                          CONSTRAINT fk_dish_projection_restaurant
-                                              FOREIGN KEY (restaurant_id)
-                                                  REFERENCES ordering.restaurant_projection(id)
+                                          CONSTRAINT fk_dish_projection_food_menu
+                                              FOREIGN KEY (food_menu_id)
+                                                  REFERENCES ordering.food_menu_projection(restaurant_id)
                                                   ON DELETE CASCADE
 );
+

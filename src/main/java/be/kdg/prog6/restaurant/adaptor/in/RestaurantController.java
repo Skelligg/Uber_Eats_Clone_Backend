@@ -9,11 +9,13 @@ import be.kdg.prog6.restaurant.port.in.CreateRestaurantCommand;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/restaurants")
 public class RestaurantController {
     private final DefaultCreateRestaurantUseCase createRestaurantUseCase;
 
@@ -21,7 +23,7 @@ public class RestaurantController {
         this.createRestaurantUseCase = createRestaurantUseCase;
     }
 
-    @PostMapping("/restaurants")
+    @PostMapping()
     public ResponseEntity<RestaurantDto> createRestaurant(@RequestBody CreateRestaurantRequest request) {
         CreateRestaurantCommand command = new CreateRestaurantCommand(
                 OwnerId.MICHAEL,
@@ -45,4 +47,5 @@ public class RestaurantController {
         Restaurant created = createRestaurantUseCase.createRestaurant(command);
         return ResponseEntity.ok(new RestaurantDto(created.getRestaurantId().id().toString(),created.getName()));
     }
+
 }

@@ -11,7 +11,7 @@ public class DishProjectionJpaEntity {
     private UUID dishId;
 
     @Column(nullable = false)
-    private UUID restaurantId;
+    private UUID foodMenuId;
 
     private String name;
     private String description;
@@ -20,10 +20,10 @@ public class DishProjectionJpaEntity {
     private String tags;
     private String dishType;
 
-    public DishProjectionJpaEntity(UUID dishId, UUID restaurantId, String name, String description,
+    public DishProjectionJpaEntity(UUID dishId, UUID foodMenuId, String name, String description,
                                    BigDecimal price, String pictureUrl, String tags, String dishType) {
         this.dishId = dishId;
-        this.restaurantId = restaurantId;
+        this.foodMenuId = foodMenuId;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -44,11 +44,11 @@ public class DishProjectionJpaEntity {
     }
 
     public UUID getRestaurantId() {
-        return restaurantId;
+        return foodMenuId;
     }
 
-    public void setRestaurantId(UUID restaurantId) {
-        this.restaurantId = restaurantId;
+    public void setRestaurantId(UUID foodMenuId) {
+        this.foodMenuId = foodMenuId;
     }
 
     public String getName() {

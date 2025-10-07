@@ -18,8 +18,6 @@ public class Restaurant {
     private PrepTime defaultPrepTime;
     private OpeningHours openingHours;
 
-    private List<Dish> dishList;
-
     private final List<DomainEvent> domainEvents = new ArrayList<>();
 
     public Restaurant(OwnerId ownerId, String name, Address address, EmailAddress emailAddress, CUISINE_TYPE cuisineType, PrepTime defaultPrepTime, OpeningHours openingHours) {
@@ -33,6 +31,20 @@ public class Restaurant {
         this.defaultPrepTime = defaultPrepTime;
         this.openingHours = openingHours;
     }
+
+    public Restaurant(RestaurantId restaurantId, OwnerId ownerId, String name, Address address, EmailAddress emailAddress,
+                      List<Picture> pictures, CUISINE_TYPE cuisineType, PrepTime defaultPrepTime, OpeningHours openingHours) {
+        this.restaurantId = restaurantId; // use existing
+        this.ownerId = ownerId;
+        this.name = name;
+        this.address = address;
+        this.emailAddress = emailAddress;
+        this.pictureList = pictures != null ? pictures : new ArrayList<>();
+        this.cuisineType = cuisineType;
+        this.defaultPrepTime = defaultPrepTime;
+        this.openingHours = openingHours;
+    }
+
 
     public String getName() {
         return name;
@@ -70,9 +82,6 @@ public class Restaurant {
         return openingHours;
     }
 
-    public List<Dish> getDishList() {
-        return dishList;
-    }
 
     public void addDomainEvent(DomainEvent event) {
         domainEvents.add(event);

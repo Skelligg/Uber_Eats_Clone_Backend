@@ -1,5 +1,5 @@
 ### Create restaurant (owner must be authenticated)
-POST http://localhost:8080/restaurants
+POST http://localhost:8080/api/restaurants
 Content-Type: application/json
 
 {

@@ -16,7 +16,7 @@ public class DishProjectionJpaAdaptor implements UpdateDishesPort {
     public void updateDishes(DishProjection projection) {
         var entity = new DishProjectionJpaEntity();
         entity.setDishId(projection.dishId());
-        entity.setRestaurantId(projection.restaurantId());
+        entity.setRestaurantId(projection.foodMenuId());
         entity.setName(projection.name());
         entity.setDescription(projection.description());
         entity.setPrice(projection.price());

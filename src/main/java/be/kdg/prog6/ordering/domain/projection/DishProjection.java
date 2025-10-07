@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public record DishProjection(
         UUID dishId,
-        UUID restaurantId,
+        UUID foodMenuId,
         String name,
         String description,
         BigDecimal price,

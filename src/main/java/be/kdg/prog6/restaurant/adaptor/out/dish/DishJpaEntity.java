@@ -1,5 +1,6 @@
 package be.kdg.prog6.restaurant.adaptor.out.dish;
 
+import be.kdg.prog6.restaurant.adaptor.out.foodMenu.FoodMenuJpaEntity;
 import be.kdg.prog6.restaurant.domain.Dish;
 import be.kdg.prog6.restaurant.domain.vo.dish.DISH_STATE;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishVersion;
@@ -14,8 +15,9 @@ public class DishJpaEntity {
     @Id
     private UUID id;
 
-    @Column(nullable = false)
-    private UUID restaurantId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "food_menu_id", nullable = false)
+    private FoodMenuJpaEntity foodMenu;
 
     private String name;
     private String description;
@@ -30,9 +32,9 @@ public class DishJpaEntity {
 
     protected DishJpaEntity() {}
 
-    public DishJpaEntity(Dish dish, UUID restaurantId) {
+    public DishJpaEntity(Dish dish, FoodMenuJpaEntity foodMenu) {
         this.id = dish.getDishId().id();
-        this.restaurantId = restaurantId;
+        this.foodMenu = foodMenu;
 
         DishVersion published = dish.getPublishedVersion();
         this.name = published.name();
@@ -100,12 +102,12 @@ public class DishJpaEntity {
         this.name = name;
     }
 
-    public UUID getRestaurantId() {
-        return restaurantId;
+    public FoodMenuJpaEntity getFoodMenu() {
+        return foodMenu;
     }
 
-    public void setRestaurantId(UUID restaurantId) {
-        this.restaurantId = restaurantId;
+    public void setFoodMenu(FoodMenuJpaEntity foodMenu) {
+        this.foodMenu = foodMenu;
     }
 
     public UUID getId() {

@@ -18,7 +18,7 @@ public class DishesChangedProjecterImpl implements DishesChangedProjector {
     public void project(DishCreatedEvent event) {
         DishProjection projection = new DishProjection(
                 event.dishId(),
-                event.restaurantId(),
+                event.foodMenuId(),
                 event.name(),
                 event.description(),
                 event.price(),
