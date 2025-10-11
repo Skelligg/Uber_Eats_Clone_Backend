@@ -3,6 +3,7 @@ POST http://localhost:8080/api/restaurants
 Content-Type: application/json
 
 {
+  "ownerId": "Michael",
   "name": "Trattoria Roma",
   "address": {
     "street": "Via Milano",
@@ -32,3 +33,18 @@ Content-Type: application/json
 ###
 
 GET http://localhost:8080/customer/restaurants
+
+###
+
+POST http://localhost:8080/api/restaurants/dishes
+Content-Type: application/json
+
+{
+  "restaurantId": "0b6a1328-a25d-42d1-9378-1bc6ec294f05",
+  "name": "Pizza",
+  "description": "yummy cheese and tomato sauce",
+  "price": 14.99,
+  "pictureUrl": "noPic",
+  "tags": "italian,cheese,fast-food",
+  "dishType": "MAIN"
+}

@@ -94,7 +94,7 @@ public class FoodMenu {
             this.averageMenuPrice = Price.of(0.0);
         } else {
             double avg = published.stream()
-                    .mapToDouble(d -> d.getPublishedVersion().price().asDouble())
+                    .mapToDouble(d -> d.getPublishedVersion().orElseThrow().price().asDouble())
                     .average()
                     .orElse(0.0);
             this.averageMenuPrice = Price.of(avg);

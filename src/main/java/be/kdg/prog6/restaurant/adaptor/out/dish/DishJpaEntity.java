@@ -36,13 +36,13 @@ public class DishJpaEntity {
         this.id = dish.getDishId().id();
         this.foodMenu = foodMenu;
 
-        DishVersion published = dish.getPublishedVersion();
-        this.name = published.name();
-        this.description = published.description();
-        this.price = BigDecimal.valueOf(published.price().asDouble());
-        this.pictureUrl = published.pictureUrl();
-        this.tags = published.tags();
-        this.dishType = published.dishType().name();
+        DishVersion draft = dish.getDraftVersion().orElseThrow(() -> new IllegalArgumentException("Dish has no draft version"));
+        this.name = draft.name();
+        this.description = draft.description();
+        this.price = BigDecimal.valueOf(draft.price().asDouble());
+        this.pictureUrl = draft.pictureUrl();
+        this.tags = draft.tags();
+        this.dishType = draft.dishType().name();
         this.state = dish.getState();
     }
 

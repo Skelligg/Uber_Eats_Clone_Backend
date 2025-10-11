@@ -25,6 +25,6 @@ public class DishJpaAdaptor implements UpdateDishPort {
 
         DishJpaEntity dishEntity = new DishJpaEntity(dish, foodMenu);
         foodMenu.addDish(dishEntity);
-        dishRepository.save(dishEntity);
+//        dishRepository.save(dishEntity);
     }
 }

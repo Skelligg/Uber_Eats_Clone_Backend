@@ -2,6 +2,7 @@ package be.kdg.prog6.restaurant.adaptor.out.restaurant;
 
 import be.kdg.prog6.restaurant.domain.Restaurant;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.OwnerId;
+import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 import be.kdg.prog6.restaurant.port.out.LoadRestaurantPort;
 import be.kdg.prog6.restaurant.port.out.UpdateRestaurantPort;
 
@@ -26,6 +27,11 @@ public class RestaurantListEntity implements UpdateRestaurantPort, LoadRestauran
 
     @Override
     public Optional<Restaurant> findByOwnerId(OwnerId ownerId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Restaurant> findById(RestaurantId restaurantId) {
         return Optional.empty();
     }
 }

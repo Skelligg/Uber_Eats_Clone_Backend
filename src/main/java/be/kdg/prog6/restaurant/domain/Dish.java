@@ -24,10 +24,10 @@ public class Dish {
 
     private final List<DomainEvent> domainEvents= new ArrayList<>();
 
-    public Dish(DishId dishId, DishVersion initialVersion) {
-        this.dishId = dishId;
-        this.publishedVersion = initialVersion;
-        this.state = DISH_STATE.PUBLISHED;
+    public Dish(DishVersion initialVersion) {
+        this.dishId = DishId.newId();
+        this.draftVersion = initialVersion;
+        this.state = DISH_STATE.UNPUBLISHED;
     }
 
     /**
@@ -88,8 +88,8 @@ public class Dish {
         return dishId;
     }
 
-    public DishVersion getPublishedVersion() {
-        return publishedVersion;
+    public Optional<DishVersion> getPublishedVersion() {
+        return Optional.ofNullable(publishedVersion);
     }
 
     public Optional<DishVersion> getDraftVersion() {

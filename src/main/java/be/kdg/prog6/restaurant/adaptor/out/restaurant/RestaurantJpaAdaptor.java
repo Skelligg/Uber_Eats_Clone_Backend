@@ -29,6 +29,12 @@ public class RestaurantJpaAdaptor implements UpdateRestaurantPort, LoadRestauran
     }
 
     @Override
+    public Optional<Restaurant> findById(RestaurantId restaurantId) {
+        return restaurants.findById(restaurantId.id())
+                .map(this::toDomain);
+    }
+
+    @Override
     public Restaurant addRestaurant(Restaurant restaurant) {
         restaurants.save(toJpaEntity(restaurant));
         return restaurant;

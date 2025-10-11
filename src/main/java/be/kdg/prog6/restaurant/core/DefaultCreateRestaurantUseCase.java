@@ -12,12 +12,12 @@ import be.kdg.prog6.restaurant.port.out.UpdateRestaurantPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
-    private final Logger logger = Logger.getLogger(DefaultCreateRestaurantUseCase.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(DefaultCreateRestaurantUseCase.class.getName());
 
     private final UpdateRestaurantPort updateRestaurantPort;
     private final PublishRestaurantEventPort publishRestaurantEventPort;
@@ -32,8 +32,7 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
     @Override
     @Transactional
     public Restaurant createRestaurant(CreateRestaurantCommand command) {
-        // implement search for restaurant by ownerId to see if owner already has restaurant
-        // for now statically done
+        // some error should be returned that restaurant already exists
         OwnerId ownerId = command.ownerId();
         if (loadRestaurantPort.findByOwnerId(ownerId).isPresent()) {
             logger.info("Restaurant exists with owner id:" + ownerId);
