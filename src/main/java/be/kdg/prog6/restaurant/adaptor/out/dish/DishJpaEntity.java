@@ -18,88 +18,58 @@ public class DishJpaEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_menu_id", nullable = false)
     private FoodMenuJpaEntity foodMenu;
-
-    private String name;
-    private String description;
-    private BigDecimal price;
-    private String pictureUrl;
-    private String tags;
-
     @Enumerated(EnumType.STRING)
     private DISH_STATE state;
 
-    private String dishType;
+    private String publishedName;
+    private String publishedDescription;
+    private BigDecimal publishedPrice;
+    private String publishedPictureUrl;
+    private String publishedTags;
+    private String publishedDishType;
+
+    // Draft version fields
+    private String draftName;
+    private String draftDescription;
+    private BigDecimal draftPrice;
+    private String draftPictureUrl;
+    private String draftTags;
+    private String draftDishType;
 
     protected DishJpaEntity() {}
 
     public DishJpaEntity(Dish dish, FoodMenuJpaEntity foodMenu) {
         this.id = dish.getDishId().id();
         this.foodMenu = foodMenu;
-
-        DishVersion draft = dish.getDraftVersion().orElseThrow(() -> new IllegalArgumentException("Dish has no draft version"));
-        this.name = draft.name();
-        this.description = draft.description();
-        this.price = BigDecimal.valueOf(draft.price().asDouble());
-        this.pictureUrl = draft.pictureUrl();
-        this.tags = draft.tags();
-        this.dishType = draft.dishType().name();
         this.state = dish.getState();
+
+        // Set published version if exists
+        dish.getPublishedVersion().ifPresent(published -> {
+            this.publishedName = published.name();
+            this.publishedDescription = published.description();
+            this.publishedPrice = BigDecimal.valueOf(published.price().asDouble());
+            this.publishedPictureUrl = published.pictureUrl();
+            this.publishedTags = published.tags();
+            this.publishedDishType = published.dishType().name();
+        });
+
+        // Set draft version if exists
+        dish.getDraftVersion().ifPresent(draft -> {
+            this.draftName = draft.name();
+            this.draftDescription = draft.description();
+            this.draftPrice = BigDecimal.valueOf(draft.price().asDouble());
+            this.draftPictureUrl = draft.pictureUrl();
+            this.draftTags = draft.tags();
+            this.draftDishType = draft.dishType().name();
+        });
     }
 
-    public String getDishType() {
-        return dishType;
+    public UUID getId() {
+        return id;
     }
 
-    public void setDishType(String dishType) {
-        this.dishType = dishType;
-    }
-
-    public DISH_STATE getState() {
-        return state;
-    }
-
-    public void setState(DISH_STATE state) {
-        this.state = state;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-
-    public String getPictureUrl() {
-        return pictureUrl;
-    }
-
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public FoodMenuJpaEntity getFoodMenu() {
@@ -110,11 +80,107 @@ public class DishJpaEntity {
         this.foodMenu = foodMenu;
     }
 
-    public UUID getId() {
-        return id;
+    public DISH_STATE getState() {
+        return state;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setState(DISH_STATE state) {
+        this.state = state;
+    }
+
+    public String getPublishedName() {
+        return publishedName;
+    }
+
+    public void setPublishedName(String publishedName) {
+        this.publishedName = publishedName;
+    }
+
+    public String getPublishedDescription() {
+        return publishedDescription;
+    }
+
+    public void setPublishedDescription(String publishedDescription) {
+        this.publishedDescription = publishedDescription;
+    }
+
+    public BigDecimal getPublishedPrice() {
+        return publishedPrice;
+    }
+
+    public void setPublishedPrice(BigDecimal publishedPrice) {
+        this.publishedPrice = publishedPrice;
+    }
+
+    public String getPublishedPictureUrl() {
+        return publishedPictureUrl;
+    }
+
+    public void setPublishedPictureUrl(String publishedPictureUrl) {
+        this.publishedPictureUrl = publishedPictureUrl;
+    }
+
+    public String getPublishedTags() {
+        return publishedTags;
+    }
+
+    public void setPublishedTags(String publishedTags) {
+        this.publishedTags = publishedTags;
+    }
+
+    public String getPublishedDishType() {
+        return publishedDishType;
+    }
+
+    public void setPublishedDishType(String publishedDishType) {
+        this.publishedDishType = publishedDishType;
+    }
+
+    public String getDraftName() {
+        return draftName;
+    }
+
+    public void setDraftName(String draftName) {
+        this.draftName = draftName;
+    }
+
+    public String getDraftDescription() {
+        return draftDescription;
+    }
+
+    public void setDraftDescription(String draftDescription) {
+        this.draftDescription = draftDescription;
+    }
+
+    public BigDecimal getDraftPrice() {
+        return draftPrice;
+    }
+
+    public void setDraftPrice(BigDecimal draftPrice) {
+        this.draftPrice = draftPrice;
+    }
+
+    public String getDraftPictureUrl() {
+        return draftPictureUrl;
+    }
+
+    public void setDraftPictureUrl(String draftPictureUrl) {
+        this.draftPictureUrl = draftPictureUrl;
+    }
+
+    public String getDraftTags() {
+        return draftTags;
+    }
+
+    public void setDraftTags(String draftTags) {
+        this.draftTags = draftTags;
+    }
+
+    public String getDraftDishType() {
+        return draftDishType;
+    }
+
+    public void setDraftDishType(String draftDishType) {
+        this.draftDishType = draftDishType;
     }
 }

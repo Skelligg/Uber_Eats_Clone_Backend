@@ -7,7 +7,7 @@ import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 import be.kdg.prog6.restaurant.port.in.CreateDishDraftCommand;
 import be.kdg.prog6.restaurant.port.in.CreateDishDraftUseCase;
 import be.kdg.prog6.restaurant.port.out.LoadRestaurantPort;
-import be.kdg.prog6.restaurant.port.out.UpdateDishPort;
+import be.kdg.prog6.restaurant.port.out.UpdateFoodMenuPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,11 +18,11 @@ public class CreateDishDraftUseCaseImpl implements CreateDishDraftUseCase {
 
     private final Logger logger = LoggerFactory.getLogger(CreateDishDraftUseCaseImpl.class.getName());
 
-    private final UpdateDishPort updateDishPort;
+    private final UpdateFoodMenuPort updateFoodMenuPort;
     private final LoadRestaurantPort loadRestaurantPort;
 
-    public CreateDishDraftUseCaseImpl(UpdateDishPort updateDishPort, LoadRestaurantPort loadRestaurantPort) {
-        this.updateDishPort = updateDishPort;
+    public CreateDishDraftUseCaseImpl(UpdateFoodMenuPort updateFoodMenuPort, LoadRestaurantPort loadRestaurantPort) {
+        this.updateFoodMenuPort = updateFoodMenuPort;
         this.loadRestaurantPort = loadRestaurantPort;
     }
 
@@ -46,7 +46,7 @@ public class CreateDishDraftUseCaseImpl implements CreateDishDraftUseCase {
                 )
         );
 
-        this.updateDishPort.addDish(dish,restaurantId.id());
+        this.updateFoodMenuPort.addDishToMenu(dish,restaurantId.id());
         return dish;
     }
 }

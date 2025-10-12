@@ -32,11 +32,16 @@ public class FoodMenu {
      * Enforces the invariant: no more than 10 published dishes.
      */
     public void addDish(Dish dish) {
-        if (isPublished(dish) && countPublishedDishes() >= MAX_PUBLISHED_DISHES) {
+        if (countPublishedDishes() >= MAX_PUBLISHED_DISHES) {
             throw new IllegalStateException("Cannot publish more than " + MAX_PUBLISHED_DISHES + " dishes at a time");
         }
 
         dishes.add(dish);
+        recalculateAveragePrice();
+    }
+
+    public void removeDish(Dish dish) {
+        dishes.remove(dish);
         recalculateAveragePrice();
     }
 

@@ -10,6 +10,7 @@ import be.kdg.prog6.restaurant.domain.vo.dish.DISH_TYPE;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -28,6 +29,14 @@ public class Dish {
         this.dishId = DishId.newId();
         this.draftVersion = initialVersion;
         this.state = DISH_STATE.UNPUBLISHED;
+    }
+
+    public Dish(DishId dishId, DishVersion publishedVersion, DishVersion draftVersion, DISH_STATE state, LocalDateTime scheduledPublishTime) {
+        this.dishId = dishId;
+        this.publishedVersion = publishedVersion;
+        this.draftVersion = draftVersion;
+        this.state = state;
+        this.scheduledPublishTime = scheduledPublishTime;
     }
 
     /**
@@ -76,11 +85,10 @@ public class Dish {
 
     // --- Unpublish a dish entirely ---
     public void unpublish() {
-        this.state = DISH_STATE.UNPUBLISHED; //ask chat about the 4 states and if everything adds up.
-        this.draftVersion = null;
+        this.state = DISH_STATE.UNPUBLISHED;
+        this.draftVersion = publishedVersion;
+        this.publishedVersion = null;
         this.scheduledPublishTime = null;
-        // keep publishedVersion? a decision: here we keep it but mark state UNPUBLISHED.
-        // If you want to remove published data, set publishedVersion = null;
     }
 
     // --- Accessors ---
@@ -114,6 +122,19 @@ public class Dish {
 
     protected void addDomainEvent(DomainEvent event) {
         domainEvents.add(event);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Dish)) return false;
+        Dish other = (Dish) o;
+        return dishId.equals(other.dishId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dishId);
     }
 
 }

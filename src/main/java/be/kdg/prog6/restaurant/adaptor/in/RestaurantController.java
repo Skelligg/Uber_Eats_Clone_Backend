@@ -8,15 +8,11 @@ import be.kdg.prog6.restaurant.core.DefaultCreateRestaurantUseCase;
 import be.kdg.prog6.restaurant.domain.Dish;
 import be.kdg.prog6.restaurant.domain.Restaurant;
 import be.kdg.prog6.restaurant.domain.vo.Price;
+import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.*;
-import be.kdg.prog6.restaurant.port.in.CreateDishDraftCommand;
-import be.kdg.prog6.restaurant.port.in.CreateDishDraftUseCase;
-import be.kdg.prog6.restaurant.port.in.CreateRestaurantCommand;
+import be.kdg.prog6.restaurant.port.in.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -26,10 +22,14 @@ import java.util.stream.Collectors;
 public class RestaurantController {
     private final DefaultCreateRestaurantUseCase createRestaurantUseCase;
     private final CreateDishDraftUseCase createDishDraftUseCase;
+    private final PublishDishUseCase publishDishUseCase;
+    private final UnpublishDishUseCase unpublishDishUseCase;
 
-    public RestaurantController(DefaultCreateRestaurantUseCase createRestaurantUseCase, CreateDishDraftUseCase createDishDraftUseCase) {
+    public RestaurantController(DefaultCreateRestaurantUseCase createRestaurantUseCase, CreateDishDraftUseCase createDishDraftUseCase, PublishDishUseCase publishDishUseCase, UnpublishDishUseCase unpublishDishUseCase) {
         this.createRestaurantUseCase = createRestaurantUseCase;
         this.createDishDraftUseCase = createDishDraftUseCase;
+        this.publishDishUseCase = publishDishUseCase;
+        this.unpublishDishUseCase = unpublishDishUseCase;
     }
 
     @PostMapping()
@@ -77,6 +77,50 @@ public class RestaurantController {
                 created.getDraftVersion().orElseThrow().pictureUrl(),
                 created.getDraftVersion().orElseThrow().tags(),
                 created.getDraftVersion().orElseThrow().dishType().toString()
+        ));
+    }
+
+    @PatchMapping("/{restaurantId}/dishes/{dishId}/publish")
+    public ResponseEntity<DishDto> publishDish(
+            @PathVariable String restaurantId,
+            @PathVariable String dishId) {
+
+        PublishingDishCommand command = new PublishingDishCommand(
+                RestaurantId.of(UUID.fromString(restaurantId)),
+                DishId.of(UUID.fromString(dishId))
+        );
+
+        Dish published = publishDishUseCase.publishDish(command);
+
+        return ResponseEntity.ok(new DishDto(
+                published.getPublishedVersion().orElseThrow().name(),
+                published.getPublishedVersion().orElseThrow().description(),
+                published.getPublishedVersion().orElseThrow().price().asDouble(),
+                published.getPublishedVersion().orElseThrow().pictureUrl(),
+                published.getPublishedVersion().orElseThrow().tags(),
+                published.getPublishedVersion().orElseThrow().dishType().toString()
+        ));
+    }
+
+    @PatchMapping("/{restaurantId}/dishes/{dishId}/unpublish")
+    public ResponseEntity<DishDto> unpublishDish(
+            @PathVariable String restaurantId,
+            @PathVariable String dishId) {
+
+        PublishingDishCommand command = new PublishingDishCommand(
+                RestaurantId.of(UUID.fromString(restaurantId)),
+                DishId.of(UUID.fromString(dishId))
+        );
+
+        Dish unpublished = unpublishDishUseCase.unpublishDish(command);
+
+        return ResponseEntity.ok(new DishDto(
+                unpublished.getDraftVersion().orElseThrow().name(),
+                unpublished.getDraftVersion().orElseThrow().description(),
+                unpublished.getDraftVersion().orElseThrow().price().asDouble(),
+                unpublished.getDraftVersion().orElseThrow().pictureUrl(),
+                unpublished.getDraftVersion().orElseThrow().tags(),
+                unpublished.getDraftVersion().orElseThrow().dishType().toString()
         ));
     }
 
