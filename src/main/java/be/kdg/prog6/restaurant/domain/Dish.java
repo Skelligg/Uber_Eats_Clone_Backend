@@ -40,24 +40,6 @@ public class Dish {
     }
 
     /**
-     * Edit (create or update) a draft version using individual fields.
-     * If there is an existing draft, update it; otherwise copy from publishedVersion if it exists,
-     * or create a fresh DishVersion when there is no published version.
-     */
-    public void editDraft(String name,
-                          String description,
-                          Price price,
-                          String pictureUrl,
-                          String tags,
-                          DISH_TYPE dishType) {
-        this.draftVersion = (this.draftVersion == null)
-                ? (publishedVersion != null
-                ? publishedVersion.update(name, description, price, pictureUrl, tags, dishType)
-                : new DishVersion(name, description, price, pictureUrl, tags, dishType))
-                : draftVersion.update(name, description, price, pictureUrl, tags, dishType);
-    }
-
-    /**
      * Convenience: set the whole draft from a DishVersion instance.
      */
     public void editDraft(DishVersion newDraft) {

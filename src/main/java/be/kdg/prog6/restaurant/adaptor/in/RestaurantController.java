@@ -2,7 +2,9 @@ package be.kdg.prog6.restaurant.adaptor.in;
 
 import be.kdg.prog6.restaurant.adaptor.in.request.CreateDishDraftRequest;
 import be.kdg.prog6.restaurant.adaptor.in.request.CreateRestaurantRequest;
+import be.kdg.prog6.restaurant.adaptor.in.request.EditDishRequest;
 import be.kdg.prog6.restaurant.adaptor.in.response.DishDto;
+import be.kdg.prog6.restaurant.adaptor.in.response.DishVersionDto;
 import be.kdg.prog6.restaurant.adaptor.in.response.RestaurantDto;
 import be.kdg.prog6.restaurant.core.DefaultCreateRestaurantUseCase;
 import be.kdg.prog6.restaurant.domain.Dish;
@@ -24,15 +26,22 @@ public class RestaurantController {
     private final CreateDishDraftUseCase createDishDraftUseCase;
     private final PublishDishUseCase publishDishUseCase;
     private final UnpublishDishUseCase unpublishDishUseCase;
+    private final EditDishUseCase editDishUseCase;
 
-    public RestaurantController(DefaultCreateRestaurantUseCase createRestaurantUseCase, CreateDishDraftUseCase createDishDraftUseCase, PublishDishUseCase publishDishUseCase, UnpublishDishUseCase unpublishDishUseCase) {
+    public RestaurantController(
+            DefaultCreateRestaurantUseCase createRestaurantUseCase,
+            CreateDishDraftUseCase createDishDraftUseCase,
+            PublishDishUseCase publishDishUseCase,
+            UnpublishDishUseCase unpublishDishUseCase,
+            EditDishUseCase editDishUseCase) {
         this.createRestaurantUseCase = createRestaurantUseCase;
         this.createDishDraftUseCase = createDishDraftUseCase;
         this.publishDishUseCase = publishDishUseCase;
         this.unpublishDishUseCase = unpublishDishUseCase;
+        this.editDishUseCase = editDishUseCase;
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<RestaurantDto> createRestaurant(@RequestBody CreateRestaurantRequest request) {
         CreateRestaurantCommand command = new CreateRestaurantCommand(
                 OwnerId.of(request.ownerId()),
@@ -50,13 +59,16 @@ public class RestaurantController {
                         .collect(Collectors.toList()),
                 CUISINE_TYPE.valueOf(request.cuisineType().toUpperCase()),
                 new PrepTime(request.minPrepTime(), request.maxPrepTime()),
-                new OpeningHours(request.openingTime(), request.closingTime(),request.openDays())
+                new OpeningHours(request.openingTime(), request.closingTime(), request.openDays())
         );
 
         Restaurant created = createRestaurantUseCase.createRestaurant(command);
-        return ResponseEntity.ok(new RestaurantDto(created.getRestaurantId().id().toString(),created.getName()));
+        return ResponseEntity.ok(new RestaurantDto(
+                created.getRestaurantId().id().toString(),
+                created.getName()
+        ));
     }
-    
+
     @PostMapping("/dishes")
     public ResponseEntity<DishDto> addDish(@RequestBody CreateDishDraftRequest request) {
         CreateDishDraftCommand command = new CreateDishDraftCommand(
@@ -64,19 +76,29 @@ public class RestaurantController {
                 request.name(),
                 request.description(),
                 Price.of(request.price()),
-                request.pictureUrl(), 
+                request.pictureUrl(),
                 request.tags(),
                 request.dishType()
         );
-        
+
         Dish created = createDishDraftUseCase.createDishDraftForFoodMenu(command);
+
+        DishVersionDto draftDto = created.getDraftVersion()
+                .map(v -> new DishVersionDto(
+                        v.name(),
+                        v.description(),
+                        v.price().asDouble(),
+                        v.pictureUrl(),
+                        v.tags(),
+                        v.dishType().toString()
+                ))
+                .orElse(null);
+
         return ResponseEntity.ok(new DishDto(
-                created.getDraftVersion().orElseThrow().name(),
-                created.getDraftVersion().orElseThrow().description(),
-                created.getDraftVersion().orElseThrow().price().asDouble(),
-                created.getDraftVersion().orElseThrow().pictureUrl(),
-                created.getDraftVersion().orElseThrow().tags(),
-                created.getDraftVersion().orElseThrow().dishType().toString()
+                created.getDishId().id(),
+                null,          // no published version yet
+                draftDto,
+                created.getState().name()
         ));
     }
 
@@ -92,13 +114,22 @@ public class RestaurantController {
 
         Dish published = publishDishUseCase.publishDish(command);
 
+        DishVersionDto publishedDto = published.getPublishedVersion()
+                .map(v -> new DishVersionDto(
+                        v.name(),
+                        v.description(),
+                        v.price().asDouble(),
+                        v.pictureUrl(),
+                        v.tags(),
+                        v.dishType().toString()
+                ))
+                .orElse(null);
+
         return ResponseEntity.ok(new DishDto(
-                published.getPublishedVersion().orElseThrow().name(),
-                published.getPublishedVersion().orElseThrow().description(),
-                published.getPublishedVersion().orElseThrow().price().asDouble(),
-                published.getPublishedVersion().orElseThrow().pictureUrl(),
-                published.getPublishedVersion().orElseThrow().tags(),
-                published.getPublishedVersion().orElseThrow().dishType().toString()
+                published.getDishId().id(),
+                publishedDto,
+                null,
+                published.getState().name()
         ));
     }
 
@@ -114,14 +145,70 @@ public class RestaurantController {
 
         Dish unpublished = unpublishDishUseCase.unpublishDish(command);
 
+        DishVersionDto draftDto = unpublished.getDraftVersion()
+                .map(v -> new DishVersionDto(
+                        v.name(),
+                        v.description(),
+                        v.price().asDouble(),
+                        v.pictureUrl(),
+                        v.tags(),
+                        v.dishType().toString()
+                ))
+                .orElse(null);
+
         return ResponseEntity.ok(new DishDto(
-                unpublished.getDraftVersion().orElseThrow().name(),
-                unpublished.getDraftVersion().orElseThrow().description(),
-                unpublished.getDraftVersion().orElseThrow().price().asDouble(),
-                unpublished.getDraftVersion().orElseThrow().pictureUrl(),
-                unpublished.getDraftVersion().orElseThrow().tags(),
-                unpublished.getDraftVersion().orElseThrow().dishType().toString()
+                unpublished.getDishId().id(),
+                null,
+                draftDto,
+                unpublished.getState().name()
         ));
     }
 
+    @PatchMapping("/{restaurantId}/dishes/{dishId}")
+    public ResponseEntity<DishDto> editDish(
+            @PathVariable String restaurantId,
+            @PathVariable String dishId,
+            @RequestBody EditDishRequest request) {
+        EditDishCommand command = new EditDishCommand(
+                DishId.of(UUID.fromString(dishId)),
+                RestaurantId.of(UUID.fromString(restaurantId)),
+                request.name(),
+                request.description(),
+                Price.of(request.price()),
+                request.pictureUrl(),
+                request.tags(),
+                request.dishType()
+        );
+
+        Dish editedDish = editDishUseCase.editDish(command);
+
+        DishVersionDto publishedDto = editedDish.getPublishedVersion()
+                .map(v -> new DishVersionDto(
+                        v.name(),
+                        v.description(),
+                        v.price().asDouble(),
+                        v.pictureUrl(),
+                        v.tags(),
+                        v.dishType().toString()
+                ))
+                .orElse(null);
+
+        DishVersionDto draftDto = editedDish.getDraftVersion()
+                .map(v -> new DishVersionDto(
+                        v.name(),
+                        v.description(),
+                        v.price().asDouble(),
+                        v.pictureUrl(),
+                        v.tags(),
+                        v.dishType().toString()
+                ))
+                .orElse(null);
+
+        return ResponseEntity.ok(new DishDto(
+                editedDish.getDishId().id(),
+                publishedDto,
+                draftDto,
+                editedDish.getState().name()
+        ));
+    }
 }

@@ -34,21 +34,15 @@ public class PublishDishUseCaseImpl implements PublishDishUseCase {
     @Override
     @Transactional
     public Dish publishDish(PublishingDishCommand command) {
-        // Load the dish
         Dish dish = loadDishPort.loadDish(command.dishId())
                 .orElseThrow(() -> new IllegalArgumentException("Dish not found with id: " + command.dishId()));
 
-        // Load the food menu to check invariants
         FoodMenu foodMenu = loadFoodMenuPort.loadBy(command.restaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("FoodMenu not found for restaurant: " + command.restaurantId()));
 
-        // Check if we can publish (FoodMenu enforces the 10-dish limit)
-        // The foodMenu.updateDish() will trigger recalculateAveragePrice
         try {
-            // Publish the dish (domain logic)
             dish.publishNow();
 
-            // Update the dish in the food menu (this checks the invariant)
             foodMenu.addDish(dish);
 
             dish.addDomainEvent(new DishPublishedToMenuEvent(

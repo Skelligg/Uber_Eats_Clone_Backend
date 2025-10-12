@@ -1,15 +1,10 @@
 package be.kdg.prog6.restaurant.adaptor.in.response;
 
-import be.kdg.prog6.restaurant.domain.vo.Price;
-import be.kdg.prog6.restaurant.domain.vo.dish.DISH_TYPE;
-import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
+import java.util.UUID;
 
-public record DishDto (
-        String name,
-        String description,
-        double price,
-        String pictureUrl,
-        String tags,
-        String dishType
-) {
-}
+public record DishDto(
+        UUID dishId,
+        DishVersionDto publishedVersion,
+        DishVersionDto draftVersion,
+        String state
+) {}
