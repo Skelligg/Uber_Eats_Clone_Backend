@@ -90,16 +90,16 @@ public class FoodMenuJpaAdaptor implements UpdateFoodMenuPort, LoadFoodMenuPort 
     }
 
     @Override
-    public void addDishToMenu(Dish dish, UUID restaurantId) {
-        FoodMenuJpaEntity foodMenu = repository.findById(restaurantId)
-                .orElseThrow(() -> new IllegalArgumentException("FoodMenu not found with id: " + restaurantId));
+    public void addDishToMenu(Dish dish, FoodMenu menu) {
+        FoodMenuJpaEntity foodMenu = repository.findById(menu.getRestaurantId().id())
+                .orElseThrow(() -> new IllegalArgumentException("FoodMenu not found with id: " + menu.getRestaurantId().id()));
 
         DishJpaEntity dishEntity = new DishJpaEntity(dish, foodMenu);
         foodMenu.addDish(dishEntity);
     }
 
     @Override
-    public Optional<FoodMenu> LoadBy(RestaurantId restaurantId) {
+    public Optional<FoodMenu> loadBy(RestaurantId restaurantId) {
         return repository.findById(restaurantId.id())
                 .map(this::toDomain);
     }

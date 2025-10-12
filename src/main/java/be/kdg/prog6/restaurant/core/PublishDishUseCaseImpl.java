@@ -1,11 +1,13 @@
 package be.kdg.prog6.restaurant.core;
 
+import be.kdg.prog6.common.events.DishPublishedToMenuEvent;
 import be.kdg.prog6.restaurant.domain.Dish;
 import be.kdg.prog6.restaurant.domain.FoodMenu;
 import be.kdg.prog6.restaurant.port.in.PublishingDishCommand;
 import be.kdg.prog6.restaurant.port.in.PublishDishUseCase;
 import be.kdg.prog6.restaurant.port.out.LoadDishPort;
 import be.kdg.prog6.restaurant.port.out.LoadFoodMenuPort;
+import be.kdg.prog6.restaurant.port.out.PublishDishEventPort;
 import be.kdg.prog6.restaurant.port.out.UpdateFoodMenuPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +22,13 @@ public class PublishDishUseCaseImpl implements PublishDishUseCase {
     private final LoadDishPort loadDishPort;
     private final LoadFoodMenuPort loadFoodMenuPort;
     private final UpdateFoodMenuPort updateFoodMenuPort;
+    private final PublishDishEventPort publishDishEventPort;
 
-    public PublishDishUseCaseImpl(LoadDishPort loadDishPort, LoadFoodMenuPort loadFoodMenuPort,UpdateFoodMenuPort updateFoodMenuPort) {
+    public PublishDishUseCaseImpl(LoadDishPort loadDishPort, LoadFoodMenuPort loadFoodMenuPort, UpdateFoodMenuPort updateFoodMenuPort, PublishDishEventPort publishDishEventPort) {
         this.loadDishPort = loadDishPort;
         this.loadFoodMenuPort = loadFoodMenuPort;
         this.updateFoodMenuPort = updateFoodMenuPort;
+        this.publishDishEventPort = publishDishEventPort;
     }
 
     @Override
@@ -35,7 +39,7 @@ public class PublishDishUseCaseImpl implements PublishDishUseCase {
                 .orElseThrow(() -> new IllegalArgumentException("Dish not found with id: " + command.dishId()));
 
         // Load the food menu to check invariants
-        FoodMenu foodMenu = loadFoodMenuPort.LoadBy(command.restaurantId())
+        FoodMenu foodMenu = loadFoodMenuPort.loadBy(command.restaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("FoodMenu not found for restaurant: " + command.restaurantId()));
 
         // Check if we can publish (FoodMenu enforces the 10-dish limit)
@@ -47,8 +51,22 @@ public class PublishDishUseCaseImpl implements PublishDishUseCase {
             // Update the dish in the food menu (this checks the invariant)
             foodMenu.addDish(dish);
 
+            dish.addDomainEvent(new DishPublishedToMenuEvent(
+                    dish.getDishId().id(),
+                    foodMenu.getRestaurantId().id(),
+                    dish.getPublishedVersion().orElseThrow().name(),
+                    dish.getPublishedVersion().orElseThrow().description(),
+                    dish.getPublishedVersion().orElseThrow().price().amount(),
+                    dish.getPublishedVersion().orElseThrow().pictureUrl(),
+                    dish.getPublishedVersion().orElseThrow().tags(),
+                    dish.getPublishedVersion().orElseThrow().dishType().toString(),
+                    dish.getState().toString()
+                    )
+            );
+
             // Persist the changes
             updateFoodMenuPort.updateFoodMenu(foodMenu);
+            publishDishEventPort.updateDish(dish);
 
             logger.info("Successfully published dish: {} for restaurant: {}",
                     command.dishId(), command.restaurantId());

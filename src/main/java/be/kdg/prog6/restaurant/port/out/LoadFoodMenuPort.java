@@ -8,6 +8,6 @@ import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 import java.util.Optional;
 
 public interface LoadFoodMenuPort {
-    Optional<FoodMenu> LoadBy(RestaurantId restaurantId);
+    Optional<FoodMenu> loadBy(RestaurantId restaurantId);
 
 }

@@ -8,5 +8,5 @@ import java.util.UUID;
 public interface UpdateFoodMenuPort {
     void addFoodMenu(FoodMenu menu);
     void updateFoodMenu(FoodMenu menu);
-    void addDishToMenu(Dish dish, UUID restaurantId);  // Moved from UpdateDishPort
+    void addDishToMenu(Dish dish, FoodMenu menu);
 }

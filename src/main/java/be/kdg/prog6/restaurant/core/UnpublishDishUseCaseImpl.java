@@ -1,11 +1,13 @@
 package be.kdg.prog6.restaurant.core;
 
+import be.kdg.prog6.common.events.DishUnpublishedToMenuEvent;
 import be.kdg.prog6.restaurant.domain.Dish;
 import be.kdg.prog6.restaurant.domain.FoodMenu;
 import be.kdg.prog6.restaurant.port.in.PublishingDishCommand;
 import be.kdg.prog6.restaurant.port.in.UnpublishDishUseCase;
 import be.kdg.prog6.restaurant.port.out.LoadDishPort;
 import be.kdg.prog6.restaurant.port.out.LoadFoodMenuPort;
+import be.kdg.prog6.restaurant.port.out.PublishDishEventPort;
 import be.kdg.prog6.restaurant.port.out.UpdateFoodMenuPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +21,13 @@ public class UnpublishDishUseCaseImpl implements UnpublishDishUseCase {
     private final LoadDishPort loadDishPort;
     private final LoadFoodMenuPort loadFoodMenuPort;
     private final UpdateFoodMenuPort updateFoodMenuPort;
+    private final PublishDishEventPort publishDishEventPort;
 
-    public UnpublishDishUseCaseImpl(LoadDishPort loadDishPort, LoadFoodMenuPort loadFoodMenuPort, UpdateFoodMenuPort updateFoodMenuPort) {
+    public UnpublishDishUseCaseImpl(LoadDishPort loadDishPort, LoadFoodMenuPort loadFoodMenuPort, UpdateFoodMenuPort updateFoodMenuPort, PublishDishEventPort publishDishEventPort) {
         this.loadDishPort = loadDishPort;
         this.loadFoodMenuPort = loadFoodMenuPort;
         this.updateFoodMenuPort = updateFoodMenuPort;
+        this.publishDishEventPort = publishDishEventPort;
     }
 
     @Override
@@ -34,14 +38,20 @@ public class UnpublishDishUseCaseImpl implements UnpublishDishUseCase {
                 .orElseThrow(() -> new IllegalArgumentException("Dish not found with id: " + command.dishId()));
 
         // Load the food menu to check invariants
-        FoodMenu foodMenu = loadFoodMenuPort.LoadBy(command.restaurantId())
+        FoodMenu foodMenu = loadFoodMenuPort.loadBy(command.restaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("FoodMenu not found for restaurant: " + command.restaurantId()));
 
         dish.unpublish();
 
         foodMenu.updateDish(dish);
 
+        dish.addDomainEvent(new DishUnpublishedToMenuEvent(
+                dish.getDishId().id()
+        ) );
+
         updateFoodMenuPort.updateFoodMenu(foodMenu);
+        publishDishEventPort.updateDish(dish);
+
 
         foodMenu.removeDish(dish);
 

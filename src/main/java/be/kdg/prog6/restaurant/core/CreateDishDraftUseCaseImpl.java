@@ -1,11 +1,13 @@
 package be.kdg.prog6.restaurant.core;
 
 import be.kdg.prog6.restaurant.domain.Dish;
+import be.kdg.prog6.restaurant.domain.FoodMenu;
 import be.kdg.prog6.restaurant.domain.Restaurant;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishVersion;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 import be.kdg.prog6.restaurant.port.in.CreateDishDraftCommand;
 import be.kdg.prog6.restaurant.port.in.CreateDishDraftUseCase;
+import be.kdg.prog6.restaurant.port.out.LoadFoodMenuPort;
 import be.kdg.prog6.restaurant.port.out.LoadRestaurantPort;
 import be.kdg.prog6.restaurant.port.out.UpdateFoodMenuPort;
 import org.slf4j.Logger;
@@ -19,19 +21,20 @@ public class CreateDishDraftUseCaseImpl implements CreateDishDraftUseCase {
     private final Logger logger = LoggerFactory.getLogger(CreateDishDraftUseCaseImpl.class.getName());
 
     private final UpdateFoodMenuPort updateFoodMenuPort;
-    private final LoadRestaurantPort loadRestaurantPort;
+    private final LoadFoodMenuPort loadFoodMenuPort;
 
-    public CreateDishDraftUseCaseImpl(UpdateFoodMenuPort updateFoodMenuPort, LoadRestaurantPort loadRestaurantPort) {
+    public CreateDishDraftUseCaseImpl(UpdateFoodMenuPort updateFoodMenuPort, LoadFoodMenuPort loadFoodMenuPort) {
         this.updateFoodMenuPort = updateFoodMenuPort;
-        this.loadRestaurantPort = loadRestaurantPort;
+         this.loadFoodMenuPort = loadFoodMenuPort;
     }
 
     @Override
     @Transactional
     public Dish createDishDraftForFoodMenu(CreateDishDraftCommand command) {
         RestaurantId restaurantId = command.restaurantId();
-        if (loadRestaurantPort.findById(restaurantId).isEmpty()) {
-            logger.info("restaurant does not exist");
+        var foodMenu = loadFoodMenuPort.loadBy(restaurantId);
+        if (foodMenu.isEmpty()) {
+            logger.info("Menu does not exist");
             return null;
         }
 
@@ -46,7 +49,7 @@ public class CreateDishDraftUseCaseImpl implements CreateDishDraftUseCase {
                 )
         );
 
-        this.updateFoodMenuPort.addDishToMenu(dish,restaurantId.id());
+        this.updateFoodMenuPort.addDishToMenu(dish,foodMenu.get());
         return dish;
     }
 }

@@ -1,6 +1,7 @@
 package be.kdg.prog6.ordering.adaptor.in;
 
-import be.kdg.prog6.common.events.DishCreatedEvent;
+import be.kdg.prog6.common.events.DishPublishedToMenuEvent;
+import be.kdg.prog6.common.events.DishUnpublishedToMenuEvent;
 import be.kdg.prog6.ordering.port.in.DishesChangedProjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +17,15 @@ public class DishesChangedListener {
         this.projector = projector;
     }
 
-    @EventListener(DishCreatedEvent.class)
-    public void onDishCreated(DishCreatedEvent event) {
+    @EventListener(DishPublishedToMenuEvent.class)
+    public void onDishPublished(DishPublishedToMenuEvent event) {
         logger.info("DishCreatedEvent received");
+        projector.project(event);
+    }
+
+    @EventListener(DishUnpublishedToMenuEvent.class)
+    public void onDishUnpublished(DishUnpublishedToMenuEvent event) {
+        logger.info("Dish Unpublished received");
         projector.project(event);
     }
 }

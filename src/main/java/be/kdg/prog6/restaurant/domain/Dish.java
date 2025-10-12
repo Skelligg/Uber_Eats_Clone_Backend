@@ -120,7 +120,7 @@ public class Dish {
         domainEvents.clear();
     }
 
-    protected void addDomainEvent(DomainEvent event) {
+    public void addDomainEvent(DomainEvent event) {
         domainEvents.add(event);
     }
 

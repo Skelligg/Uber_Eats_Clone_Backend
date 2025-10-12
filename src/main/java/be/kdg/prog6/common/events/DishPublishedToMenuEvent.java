@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record DishCreatedEvent(
+public record DishPublishedToMenuEvent(
         LocalDateTime eventPit,
         UUID dishId,
         UUID foodMenuId,
@@ -13,12 +13,13 @@ public record DishCreatedEvent(
         BigDecimal price,
         String pictureUrl,
         String tags,
-        String dishType
+        String dishType,
+        String dishState
 ) implements DomainEvent {
 
-    public DishCreatedEvent(UUID dishId, UUID foodMenuId, String name, String description,
-                            BigDecimal price, String pictureUrl, String tags, String dishType) {
-        this(LocalDateTime.now(), dishId, foodMenuId, name, description, price, pictureUrl, tags, dishType);
+    public DishPublishedToMenuEvent(UUID dishId, UUID foodMenuId, String name, String description,
+                                    BigDecimal price, String pictureUrl, String tags, String dishType, String dishState) {
+        this(LocalDateTime.now(), dishId, foodMenuId, name, description, price, pictureUrl, tags, dishType,dishState);
     }
 
     @Override
