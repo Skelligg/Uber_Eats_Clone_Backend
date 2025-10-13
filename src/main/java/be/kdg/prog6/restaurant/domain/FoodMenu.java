@@ -1,9 +1,9 @@
 package be.kdg.prog6.restaurant.domain;
 
+import be.kdg.prog6.common.events.DishPublishedToMenuEvent;
 import be.kdg.prog6.common.events.DomainEvent;
 import be.kdg.prog6.restaurant.domain.vo.Price;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
-import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.domain.vo.dish.DISH_STATE;
 
 import java.util.*;
@@ -73,6 +73,32 @@ public class FoodMenu {
         return dishes.stream()
                 .filter(this::isPublished)
                 .collect(Collectors.toList());
+    }
+
+    public List<Dish> applyPendingDrafts() {
+        List<Dish> appliedDishes = new ArrayList<>();
+        for (Dish dish : dishes) {
+            if (dish.getDraftVersion().isPresent()) {
+                dish.setPublishedVersion(dish.getDraftVersion().get());
+                dish.setDraftVersion(null);
+                dish.setState(DISH_STATE.PUBLISHED);
+                dish.addDomainEvent(new DishPublishedToMenuEvent(
+                                dish.getDishId().id(),
+                                restaurantId.id(),
+                                dish.getPublishedVersion().orElseThrow().name(),
+                                dish.getPublishedVersion().orElseThrow().description(),
+                                dish.getPublishedVersion().orElseThrow().price().amount(),
+                                dish.getPublishedVersion().orElseThrow().pictureUrl(),
+                                dish.getPublishedVersion().orElseThrow().tags(),
+                                dish.getPublishedVersion().orElseThrow().dishType().toString(),
+                                dish.getState().toString()
+                        )
+                );
+                appliedDishes.add(dish);
+            }
+        }
+        recalculateAveragePrice();
+        return appliedDishes;
     }
 
     /**

@@ -73,14 +73,6 @@ public class Dish {
         this.scheduledPublishTime = null;
     }
 
-    public void markOutOfStock() {
-        this.state = DISH_STATE.OUT_OF_STOCK;
-    }
-
-    public void markAvailable() {
-        this.state = DISH_STATE.PUBLISHED;
-    }
-
     // --- Accessors ---
     public DishId getDishId() {
         return dishId;
@@ -100,6 +92,22 @@ public class Dish {
 
     public Optional<LocalDateTime> getScheduledPublishTime() {
         return Optional.ofNullable(scheduledPublishTime);
+    }
+
+    public void setPublishedVersion(DishVersion publishedVersion) {
+        this.publishedVersion = publishedVersion;
+    }
+
+    public void setDraftVersion(DishVersion draftVersion) {
+        this.draftVersion = draftVersion;
+    }
+
+    public void setState(DISH_STATE state) {
+        this.state = state;
+    }
+
+    public void setScheduledPublishTime(LocalDateTime scheduledPublishTime) {
+        this.scheduledPublishTime = scheduledPublishTime;
     }
 
     public List<DomainEvent> getDomainEvents() {

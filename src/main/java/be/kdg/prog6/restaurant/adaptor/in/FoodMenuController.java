@@ -5,6 +5,7 @@ import be.kdg.prog6.restaurant.adaptor.in.request.EditDishRequest;
 import be.kdg.prog6.restaurant.adaptor.in.response.DishDto;
 import be.kdg.prog6.restaurant.adaptor.in.response.DishVersionDto;
 import be.kdg.prog6.restaurant.domain.Dish;
+import be.kdg.prog6.restaurant.domain.FoodMenu;
 import be.kdg.prog6.restaurant.domain.vo.Price;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
@@ -12,6 +13,7 @@ import be.kdg.prog6.restaurant.port.in.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -23,14 +25,16 @@ public class FoodMenuController {
     private final EditDishUseCase editDishUseCase;
     private final MarkDishOutOfStockUseCase markDishOutOfStockUseCase;
     private final MarkDishAvailableUseCase markDishAvailableUseCase;
+    private final ApplyPendingChangesUseCase applyPendingChangesUseCase;
 
-    public FoodMenuController(CreateDishDraftUseCase createDishDraftUseCase, PublishDishUseCase publishDishUseCase, UnpublishDishUseCase unpublishDishUseCase, EditDishUseCase editDishUseCase, MarkDishOutOfStockUseCase markDishOutOfStockUseCase, MarkDishAvailableUseCase markDishAvailableUseCase) {
+    public FoodMenuController(CreateDishDraftUseCase createDishDraftUseCase, PublishDishUseCase publishDishUseCase, UnpublishDishUseCase unpublishDishUseCase, EditDishUseCase editDishUseCase, MarkDishOutOfStockUseCase markDishOutOfStockUseCase, MarkDishAvailableUseCase markDishAvailableUseCase, ApplyPendingChangesUseCase applyPendingChangesUseCase) {
         this.createDishDraftUseCase = createDishDraftUseCase;
         this.publishDishUseCase = publishDishUseCase;
         this.unpublishDishUseCase = unpublishDishUseCase;
         this.editDishUseCase = editDishUseCase;
         this.markDishOutOfStockUseCase = markDishOutOfStockUseCase;
         this.markDishAvailableUseCase = markDishAvailableUseCase;
+        this.applyPendingChangesUseCase = applyPendingChangesUseCase;
     }
 
     @PostMapping("/dishes")
@@ -258,5 +262,37 @@ public class FoodMenuController {
                 draftDto,
                 editedDish.getState().name()
         ));
+    }
+
+    // what should be returned here
+    @PostMapping("/{restaurantId}/dishes/apply-pending")
+    public ResponseEntity<List<DishDto>> applyPendingDishChanges(
+            @PathVariable String restaurantId) {
+
+        // do I need to make a command here or can I just use restaurantId since that's the only attribute
+        FoodMenu foodMenu = applyPendingChangesUseCase.applyPendingChanges(RestaurantId.of(UUID.fromString(restaurantId)));
+
+        List<DishDto> publishedDishes = new java.util.ArrayList<>();
+        for (Dish dish : foodMenu.getAllDishes()){
+            DishVersionDto publishedDto = dish.getPublishedVersion()
+                    .map(v -> new DishVersionDto(
+                            v.name(),
+                            v.description(),
+                            v.price().asDouble(),
+                            v.pictureUrl(),
+                            v.tags(),
+                            v.dishType().toString()
+                    ))
+                    .orElse(null);
+
+            publishedDishes.add(new DishDto(
+                    dish.getDishId().id(),
+                    publishedDto,
+                    null,
+                    dish.getState().name()
+                )
+            );
+        }
+        return ResponseEntity.ok(publishedDishes);
     }
 }

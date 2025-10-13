@@ -1,9 +1,6 @@
 package be.kdg.prog6.ordering.adaptor.in;
 
-import be.kdg.prog6.common.events.DishMarkedAvailableEvent;
-import be.kdg.prog6.common.events.DishMarkedOutOfStockEvent;
-import be.kdg.prog6.common.events.DishPublishedToMenuEvent;
-import be.kdg.prog6.common.events.DishUnpublishedToMenuEvent;
+import be.kdg.prog6.common.events.*;
 import be.kdg.prog6.ordering.port.in.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

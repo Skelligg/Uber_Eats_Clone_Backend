@@ -4,6 +4,7 @@ import be.kdg.prog6.common.events.DishMarkedAvailableEvent;
 import be.kdg.prog6.common.events.DishMarkedOutOfStockEvent;
 import be.kdg.prog6.restaurant.domain.Dish;
 import be.kdg.prog6.restaurant.domain.FoodMenu;
+import be.kdg.prog6.restaurant.domain.vo.dish.DISH_STATE;
 import be.kdg.prog6.restaurant.port.in.DishStateChangeCommand;
 import be.kdg.prog6.restaurant.port.in.MarkDishAvailableUseCase;
 import be.kdg.prog6.restaurant.port.out.LoadDishPort;
@@ -35,7 +36,7 @@ public class MarkDishAvailableUseCaseImpl implements MarkDishAvailableUseCase {
         FoodMenu foodMenu = loadFoodMenuPort.loadBy(command.restaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("FoodMenu not found for restaurant: " + command.restaurantId()));
 
-        dish.markAvailable();
+        dish.setState(DISH_STATE.PUBLISHED);
 
         foodMenu.updateDish(dish);
 

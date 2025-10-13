@@ -4,5 +4,5 @@ public interface DishesChangedProjector {
     void project(DishPublishedCommand command);
     void project(DishUnpublishedCommand command);
     void project(DishMarkedOutOfStockCommand command);
-    void project(DishMarkedAvailableCommand event);
+    void project(DishMarkedAvailableCommand command);
 }
