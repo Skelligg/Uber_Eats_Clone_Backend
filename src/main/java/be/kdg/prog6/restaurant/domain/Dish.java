@@ -73,6 +73,10 @@ public class Dish {
         this.scheduledPublishTime = null;
     }
 
+    public void markOutOfStock() {
+        this.state = DISH_STATE.OUT_OF_STOCK;
+    }
+
     // --- Accessors ---
     public DishId getDishId() {
         return dishId;

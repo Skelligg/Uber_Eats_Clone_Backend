@@ -134,6 +134,7 @@ CREATE TABLE ordering.dish_projection (
                                           picture_url VARCHAR(2048),
                                           tags TEXT,
                                           dish_type VARCHAR(50),
+                                          dish_state VARCHAR(50) NOT NULL,
 
                                           CONSTRAINT fk_dish_projection_food_menu
                                               FOREIGN KEY (food_menu_id)

@@ -3,7 +3,7 @@ package be.kdg.prog6.restaurant.core;
 import be.kdg.prog6.common.events.DishPublishedToMenuEvent;
 import be.kdg.prog6.restaurant.domain.Dish;
 import be.kdg.prog6.restaurant.domain.FoodMenu;
-import be.kdg.prog6.restaurant.port.in.PublishingDishCommand;
+import be.kdg.prog6.restaurant.port.in.DishStateChangeCommand;
 import be.kdg.prog6.restaurant.port.in.PublishDishUseCase;
 import be.kdg.prog6.restaurant.port.out.LoadDishPort;
 import be.kdg.prog6.restaurant.port.out.LoadFoodMenuPort;
@@ -33,7 +33,7 @@ public class PublishDishUseCaseImpl implements PublishDishUseCase {
 
     @Override
     @Transactional
-    public Dish publishDish(PublishingDishCommand command) {
+    public Dish publishDish(DishStateChangeCommand command) {
         Dish dish = loadDishPort.loadDish(command.dishId())
                 .orElseThrow(() -> new IllegalArgumentException("Dish not found with id: " + command.dishId()));
 

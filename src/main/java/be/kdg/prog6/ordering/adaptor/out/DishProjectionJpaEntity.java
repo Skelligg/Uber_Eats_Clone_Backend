@@ -1,5 +1,6 @@
 package be.kdg.prog6.ordering.adaptor.out;
 
+import be.kdg.prog6.ordering.domain.projection.DISH_AVAILABILITY;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -19,9 +20,11 @@ public class DishProjectionJpaEntity {
     private String pictureUrl;
     private String tags;
     private String dishType;
+    @Enumerated(EnumType.STRING)
+    private DISH_AVAILABILITY dishState;
 
     public DishProjectionJpaEntity(UUID dishId, UUID foodMenuId, String name, String description,
-                                   BigDecimal price, String pictureUrl, String tags, String dishType) {
+                                   BigDecimal price, String pictureUrl, String tags, String dishType, DISH_AVAILABILITY dishState) {
         this.dishId = dishId;
         this.foodMenuId = foodMenuId;
         this.name = name;
@@ -30,6 +33,7 @@ public class DishProjectionJpaEntity {
         this.pictureUrl = pictureUrl;
         this.tags = tags;
         this.dishType = dishType;
+        this.dishState = dishState;
     }
 
     public DishProjectionJpaEntity() {
@@ -97,5 +101,13 @@ public class DishProjectionJpaEntity {
 
     public void setDishType(String dishType) {
         this.dishType = dishType;
+    }
+
+    public DISH_AVAILABILITY getDishState() {
+        return dishState;
+    }
+
+    public void setDishState(DISH_AVAILABILITY dishState) {
+        this.dishState = dishState;
     }
 }

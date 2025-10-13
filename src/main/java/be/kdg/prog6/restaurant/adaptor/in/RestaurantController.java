@@ -27,18 +27,20 @@ public class RestaurantController {
     private final PublishDishUseCase publishDishUseCase;
     private final UnpublishDishUseCase unpublishDishUseCase;
     private final EditDishUseCase editDishUseCase;
+    private final DishOutOfStockUseCase dishOutOfStockUseCase;
 
     public RestaurantController(
             DefaultCreateRestaurantUseCase createRestaurantUseCase,
             CreateDishDraftUseCase createDishDraftUseCase,
             PublishDishUseCase publishDishUseCase,
             UnpublishDishUseCase unpublishDishUseCase,
-            EditDishUseCase editDishUseCase) {
+            EditDishUseCase editDishUseCase, DishOutOfStockUseCase dishOutOfStockUseCase) {
         this.createRestaurantUseCase = createRestaurantUseCase;
         this.createDishDraftUseCase = createDishDraftUseCase;
         this.publishDishUseCase = publishDishUseCase;
         this.unpublishDishUseCase = unpublishDishUseCase;
         this.editDishUseCase = editDishUseCase;
+        this.dishOutOfStockUseCase = dishOutOfStockUseCase;
     }
 
     @PostMapping
@@ -107,7 +109,7 @@ public class RestaurantController {
             @PathVariable String restaurantId,
             @PathVariable String dishId) {
 
-        PublishingDishCommand command = new PublishingDishCommand(
+        DishStateChangeCommand command = new DishStateChangeCommand(
                 RestaurantId.of(UUID.fromString(restaurantId)),
                 DishId.of(UUID.fromString(dishId))
         );
@@ -138,7 +140,7 @@ public class RestaurantController {
             @PathVariable String restaurantId,
             @PathVariable String dishId) {
 
-        PublishingDishCommand command = new PublishingDishCommand(
+        DishStateChangeCommand command = new DishStateChangeCommand(
                 RestaurantId.of(UUID.fromString(restaurantId)),
                 DishId.of(UUID.fromString(dishId))
         );
@@ -164,7 +166,39 @@ public class RestaurantController {
         ));
     }
 
-    @PatchMapping("/{restaurantId}/dishes/{dishId}")
+    @PatchMapping("/{restaurantId}/dishes/{dishId}/out-of-stock")
+    public ResponseEntity<DishDto> markDishOutOfStock(
+            @PathVariable String restaurantId,
+            @PathVariable String dishId) {
+
+        DishStateChangeCommand command = new DishStateChangeCommand(
+                RestaurantId.of(UUID.fromString(restaurantId)),
+                DishId.of(UUID.fromString(dishId))
+        );
+
+        Dish outOfStockDish = dishOutOfStockUseCase.markDishOutOfStock(command);
+        DishVersionDto publishedDto = outOfStockDish.getPublishedVersion()
+                .map(v -> new DishVersionDto(
+                        v.name(),
+                        v.description(),
+                        v.price().asDouble(),
+                        v.pictureUrl(),
+                        v.tags(),
+                        v.dishType().toString()
+                ))
+                .orElse(null);
+
+        return ResponseEntity.ok(new DishDto(
+                outOfStockDish.getDishId().id(),
+                publishedDto,
+                null,
+                outOfStockDish.getState().name()
+        ));
+    }
+    // ask about restful api naming, am I allowed to have actions at the end of apis, more DDD to do so than
+    // following restful principles
+
+        @PatchMapping("/{restaurantId}/dishes/{dishId}")
     public ResponseEntity<DishDto> editDish(
             @PathVariable String restaurantId,
             @PathVariable String dishId,

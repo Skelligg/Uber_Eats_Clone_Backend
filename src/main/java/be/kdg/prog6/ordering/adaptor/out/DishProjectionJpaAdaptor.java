@@ -19,20 +19,21 @@ public class DishProjectionJpaAdaptor implements UpdateDishesPort, LoadDishesPor
     @Override
     public void updateDishes(DishProjection projection) {
         var entity = new DishProjectionJpaEntity();
-        entity.setDishId(projection.dishId());
-        entity.setRestaurantId(projection.foodMenuId());
-        entity.setName(projection.name());
-        entity.setDescription(projection.description());
-        entity.setPrice(projection.price());
-        entity.setPictureUrl(projection.pictureUrl());
-        entity.setTags(projection.tags());
-        entity.setDishType(projection.dishType());
+        entity.setDishId(projection.getDishId());
+        entity.setRestaurantId(projection.getFoodMenuId());
+        entity.setName(projection.getName());
+        entity.setDescription(projection.getDescription());
+        entity.setPrice(projection.getPrice());
+        entity.setPictureUrl(projection.getPictureUrl());
+        entity.setTags(projection.getTags());
+        entity.setDishType(projection.getDishType());
+        entity.setDishState(projection.getDishState());
         repository.save(entity);
     }
 
     @Override
     public void removeDish(DishProjection projection) {
-        repository.deleteById(projection.dishId());
+        repository.deleteById(projection.getDishId());
     }
 
     @Override
@@ -50,7 +51,8 @@ public class DishProjectionJpaAdaptor implements UpdateDishesPort, LoadDishesPor
                 entity.getPrice(),
                 entity.getPictureUrl(),
                 entity.getTags(),
-                entity.getDishType()
+                entity.getDishType(),
+                entity.getDishState()
         );
     }
 
