@@ -1,10 +1,11 @@
 package be.kdg.prog6.restaurant.core;
 
+import be.kdg.prog6.common.events.DishMarkedAvailableEvent;
 import be.kdg.prog6.common.events.DishMarkedOutOfStockEvent;
 import be.kdg.prog6.restaurant.domain.Dish;
 import be.kdg.prog6.restaurant.domain.FoodMenu;
-import be.kdg.prog6.restaurant.port.in.DishOutOfStockUseCase;
 import be.kdg.prog6.restaurant.port.in.DishStateChangeCommand;
+import be.kdg.prog6.restaurant.port.in.MarkDishAvailableUseCase;
 import be.kdg.prog6.restaurant.port.out.LoadDishPort;
 import be.kdg.prog6.restaurant.port.out.LoadFoodMenuPort;
 import be.kdg.prog6.restaurant.port.out.PublishDishEventPort;
@@ -12,14 +13,14 @@ import be.kdg.prog6.restaurant.port.out.UpdateFoodMenuPort;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DishOutOfStockUseCaseImpl implements DishOutOfStockUseCase {
+public class MarkDishAvailableUseCaseImpl implements MarkDishAvailableUseCase {
 
     private final LoadDishPort loadDishPort;
     private final LoadFoodMenuPort loadFoodMenuPort;
     private final UpdateFoodMenuPort updateFoodMenuPort;
     private final PublishDishEventPort publishDishEventPort;
 
-    public DishOutOfStockUseCaseImpl(LoadDishPort loadDishPort, LoadFoodMenuPort loadFoodMenuPort, UpdateFoodMenuPort updateFoodMenuPort, PublishDishEventPort publishDishEventPort) {
+    public MarkDishAvailableUseCaseImpl(LoadDishPort loadDishPort, LoadFoodMenuPort loadFoodMenuPort, UpdateFoodMenuPort updateFoodMenuPort, PublishDishEventPort publishDishEventPort) {
         this.loadDishPort = loadDishPort;
         this.loadFoodMenuPort = loadFoodMenuPort;
         this.updateFoodMenuPort = updateFoodMenuPort;
@@ -27,18 +28,18 @@ public class DishOutOfStockUseCaseImpl implements DishOutOfStockUseCase {
     }
 
     @Override
-    public Dish markDishOutOfStock(DishStateChangeCommand command) {
+    public Dish markDishAvailable(DishStateChangeCommand command) {
         Dish dish = loadDishPort.loadDish(command.dishId())
                 .orElseThrow(() -> new IllegalArgumentException("Dish not found with id: " + command.dishId()));
 
         FoodMenu foodMenu = loadFoodMenuPort.loadBy(command.restaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("FoodMenu not found for restaurant: " + command.restaurantId()));
 
-        dish.markOutOfStock();
+        dish.markAvailable();
 
         foodMenu.updateDish(dish);
 
-        dish.addDomainEvent(new DishMarkedOutOfStockEvent(
+        dish.addDomainEvent(new DishMarkedAvailableEvent(
                 dish.getDishId().id()
         ));
 

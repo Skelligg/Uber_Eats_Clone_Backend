@@ -36,11 +36,11 @@ GET http://localhost:8080/customer/restaurants
 
 ###
 
-POST http://localhost:8080/api/restaurants/dishes
+POST http://localhost:8080/api/foodmenus/dishes
 Content-Type: application/json
 
 {
-  "restaurantId": "56f1e6de-f532-49a3-8d52-4ea411afb3d3",
+  "restaurantId": "709aa2b6-7440-4ebd-8893-aa3895f79c61",
   "name": "Pizza",
   "description": "yummy cheese and tomato sauce",
   "price": 14.99,
@@ -51,11 +51,11 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:8080/api/restaurants/56f1e6de-f532-49a3-8d52-4ea411afb3d3/dishes/647df748-72cc-4300-a0ae-c8c1311256ff/publish
+PATCH http://localhost:8080/api/foodmenus/709aa2b6-7440-4ebd-8893-aa3895f79c61/dishes/3d5ece18-74bd-46a7-8797-d0e72707d550/publish
 
 ###
 
-PATCH http://localhost:8080/api/restaurants/56f1e6de-f532-49a3-8d52-4ea411afb3d3/dishes/647df748-72cc-4300-a0ae-c8c1311256ff
+PATCH http://localhost:8080/api/foodmenus/709aa2b6-7440-4ebd-8893-aa3895f79c61/dishes/3d5ece18-74bd-46a7-8797-d0e72707d550
 Content-Type: application/json
 
 {
@@ -68,8 +68,12 @@ Content-Type: application/json
 }
 ###
 
-PATCH http://localhost:8080/api/restaurants/56f1e6de-f532-49a3-8d52-4ea411afb3d3/dishes/647df748-72cc-4300-a0ae-c8c1311256ff/unpublish
+PATCH http://localhost:8080/api/foodmenus/709aa2b6-7440-4ebd-8893-aa3895f79c61/dishes/3d5ece18-74bd-46a7-8797-d0e72707d550/unpublish
 
 ###
 
-PATCH http://localhost:8080/api/restaurants/56f1e6de-f532-49a3-8d52-4ea411afb3d3/dishes/647df748-72cc-4300-a0ae-c8c1311256ff/out-of-stock
+PATCH http://localhost:8080/api/foodmenus/709aa2b6-7440-4ebd-8893-aa3895f79c61/dishes/3d5ece18-74bd-46a7-8797-d0e72707d550/out-of-stock
+
+###
+
+PATCH http://localhost:8080/api/foodmenus/709aa2b6-7440-4ebd-8893-aa3895f79c61/dishes/3d5ece18-74bd-46a7-8797-d0e72707d550/available

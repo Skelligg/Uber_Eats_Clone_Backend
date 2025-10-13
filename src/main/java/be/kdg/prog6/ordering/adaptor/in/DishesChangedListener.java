@@ -1,12 +1,10 @@
 package be.kdg.prog6.ordering.adaptor.in;
 
+import be.kdg.prog6.common.events.DishMarkedAvailableEvent;
 import be.kdg.prog6.common.events.DishMarkedOutOfStockEvent;
 import be.kdg.prog6.common.events.DishPublishedToMenuEvent;
 import be.kdg.prog6.common.events.DishUnpublishedToMenuEvent;
-import be.kdg.prog6.ordering.port.in.DishMarkedOutOfStockCommand;
-import be.kdg.prog6.ordering.port.in.DishPublishedCommand;
-import be.kdg.prog6.ordering.port.in.DishUnpublishedCommand;
-import be.kdg.prog6.ordering.port.in.DishesChangedProjector;
+import be.kdg.prog6.ordering.port.in.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -38,13 +36,16 @@ public class DishesChangedListener {
 
     @EventListener(DishUnpublishedToMenuEvent.class)
     public void onDishUnpublished(DishUnpublishedToMenuEvent event) {
-        logger.info("Dish Unpublished received");
         projector.project(new DishUnpublishedCommand(event.dishId()));
     }
 
     @EventListener(DishMarkedOutOfStockEvent.class)
     public void onDishMarkedOutOfStock(DishMarkedOutOfStockEvent event) {
-        logger.info("Dish Unpublished received");
         projector.project(new DishMarkedOutOfStockCommand(event.dishId()));
+    }
+
+    @EventListener(DishMarkedAvailableEvent.class)
+    public void onDishMarkedAvailable(DishMarkedAvailableEvent event) {
+        projector.project(new DishMarkedAvailableCommand(event.dishId()));
     }
 }

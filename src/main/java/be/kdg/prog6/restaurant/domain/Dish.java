@@ -77,6 +77,10 @@ public class Dish {
         this.state = DISH_STATE.OUT_OF_STOCK;
     }
 
+    public void markAvailable() {
+        this.state = DISH_STATE.PUBLISHED;
+    }
+
     // --- Accessors ---
     public DishId getDishId() {
         return dishId;
