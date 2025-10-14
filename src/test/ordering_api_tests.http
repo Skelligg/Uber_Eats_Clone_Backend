@@ -1,0 +1,7 @@
+GET http://localhost:8080/api/customers/restaurants
+
+###
+
+GET http://localhost:8080/api/customers/restaurants/b52bd8cb-4f06-49df-948b-a5424ba0e964/dishes
+
+###

@@ -5,6 +5,7 @@ import be.kdg.prog6.ordering.port.out.LoadDishesPort;
 import be.kdg.prog6.ordering.port.out.UpdateDishesPort;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,6 +41,14 @@ public class DishProjectionJpaAdaptor implements UpdateDishesPort, LoadDishesPor
     public Optional<DishProjection> loadDish(UUID dishId) {
         return repository.findById(dishId)
                 .map(this::mapToProjection);
+    }
+
+    @Override
+    public List<DishProjection> loadAllByRestaurantId(UUID restaurantId) {
+        return repository.findAllByFoodMenuId(restaurantId)
+                .stream()
+                .map(this::mapToProjection)
+                .toList();
     }
 
     private DishProjection mapToProjection(DishProjectionJpaEntity entity) {

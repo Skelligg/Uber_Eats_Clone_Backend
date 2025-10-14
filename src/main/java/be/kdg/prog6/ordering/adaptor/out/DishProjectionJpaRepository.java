@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface DishProjectionJpaRepository extends JpaRepository<DishProjectionJpaEntity, UUID> {
     List<DishProjectionJpaEntity> findByFoodMenuId(UUID foodMenuId);
+    List<DishProjectionJpaEntity> findAllByFoodMenuId(UUID foodMenuId);
 }

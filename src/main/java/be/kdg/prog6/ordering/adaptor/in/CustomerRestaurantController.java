@@ -1,35 +1,37 @@
 package be.kdg.prog6.ordering.adaptor.in;
 
-import be.kdg.prog6.ordering.adaptor.in.response.RestaurantProjectionDto;
+import be.kdg.prog6.ordering.adaptor.in.response.RestaurantDto;
+import be.kdg.prog6.ordering.port.in.GetDishesUseCase;
 import be.kdg.prog6.ordering.port.in.GetRestaurantsUseCase;
-import be.kdg.prog6.ordering.port.in.RestaurantsChangedProjector;
+import be.kdg.prog6.ordering.adaptor.in.response.DishDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
+@RequestMapping("/api/customers/restaurants")
 public class CustomerRestaurantController {
     private final GetRestaurantsUseCase getRestaurantsUseCase;
+    private final GetDishesUseCase getDishesUseCase;
 
-    public CustomerRestaurantController(GetRestaurantsUseCase getRestaurantsUseCase) {
+    public CustomerRestaurantController(GetRestaurantsUseCase getRestaurantsUseCase, GetDishesUseCase getDishesUseCase) {
         this.getRestaurantsUseCase = getRestaurantsUseCase;
+        this.getDishesUseCase = getDishesUseCase;
     }
 
-    @GetMapping("/customer/restaurants")
-    public ResponseEntity<List<RestaurantProjectionDto>> getRestaurants(
+    @GetMapping
+    public ResponseEntity<List<RestaurantDto>> getRestaurants(
             @RequestParam(required = false) String cuisineType,
             @RequestParam(required = false) boolean onlyOpen) {
 
-        List<RestaurantProjectionDto> dtos = getRestaurantsUseCase.getRestaurants(
+        List<RestaurantDto> dtos = getRestaurantsUseCase.getRestaurants(
                         Optional.ofNullable(cuisineType),
                         Optional.of(onlyOpen)
                 ).stream()
-                .map(r -> new RestaurantProjectionDto(
+                .map(r -> new RestaurantDto(
                         r.getRestaurantId(),
                         r.getOwnerId(),
                         r.getOwnerName(),
@@ -51,6 +53,27 @@ public class CustomerRestaurantController {
                 .toList();
 
         return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/{restaurantId}/dishes")
+    public ResponseEntity<List<DishDto>> getDishes (
+            @PathVariable String restaurantId
+    ) {
+        List<DishDto> dishes = getDishesUseCase.getDishes(UUID.fromString(restaurantId)).stream()
+                .map(d -> new DishDto(
+                        d.getDishId(),
+                        d.getFoodMenuId(),
+                        d.getName(),
+                        d.getDescription(),
+                        d.getPrice(),
+                        d.getPictureUrl(),
+                        d.getTags(),
+                        d.getDishType(),
+                        d.getDishState()
+                        ))
+                .toList();
+
+        return ResponseEntity.ok(dishes);
     }
 }
 

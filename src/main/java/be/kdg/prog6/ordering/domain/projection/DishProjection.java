@@ -14,10 +14,6 @@ public class DishProjection {
     private String dishType;
     private DISH_AVAILABILITY dishState;
 
-    // No-args constructor (useful for frameworks like JPA or Jackson)
-    public DishProjection() {
-    }
-
     // All-args constructor
     public DishProjection(UUID dishId, UUID foodMenuId, String name, String description,
                           BigDecimal price, String pictureUrl, String tags,

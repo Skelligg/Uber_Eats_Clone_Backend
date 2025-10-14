@@ -4,7 +4,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
-public record RestaurantProjectionDto (
+public record RestaurantDto(
     UUID restaurantId,
     UUID ownerId,
     String ownerName,
