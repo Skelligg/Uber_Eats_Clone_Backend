@@ -43,7 +43,7 @@ public class PublishDishUseCaseImpl implements PublishDishUseCase {
         try {
             dish.publish();
 
-            foodMenu.addDish(dish);
+            foodMenu.updateDish(dish);
 
             dish.addDomainEvent(new DishPublishedToMenuEvent(
                     dish.getDishId().id(),

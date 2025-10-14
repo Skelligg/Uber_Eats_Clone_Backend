@@ -49,6 +49,8 @@ public class CreateDishDraftUseCaseImpl implements CreateDishDraftUseCase {
                 )
         );
 
+        foodMenu.get().addDish(dish);
+
         this.updateFoodMenuPort.addDishToMenu(dish,foodMenu.get());
         return dish;
     }

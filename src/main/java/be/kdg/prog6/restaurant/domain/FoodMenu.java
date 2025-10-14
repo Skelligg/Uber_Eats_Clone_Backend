@@ -29,27 +29,15 @@ public class FoodMenu {
         this.averageMenuPrice = Price.of(0.0);
     }
 
-    /**
-     * Add a new dish to the menu.
-     * Enforces the invariant: no more than 10 published dishes.
-     */
-    public void addDish(Dish dish) {
-        if (countPublishedDishes() >= MAX_PUBLISHED_DISHES) {
-            throw new IllegalStateException("Cannot publish more than " + MAX_PUBLISHED_DISHES + " dishes at a time");
-        }
 
+    public void addDish(Dish dish) {
         dishes.add(dish);
-        recalculateAveragePrice();
     }
 
     public void removeDish(Dish dish) {
         dishes.remove(dish);
-        recalculateAveragePrice();
     }
 
-    /**
-     * Update a dish (e.g. after publishing or editing a draft).
-     */
     public void updateDish(Dish updatedDish) {
         for (int i = 0; i < dishes.size(); i++) {
             if (dishes.get(i).getDishId().equals(updatedDish.getDishId())) {
@@ -61,16 +49,10 @@ public class FoodMenu {
         throw new NoSuchElementException("Dish not found in menu");
     }
 
-    /**
-     * Returns all dishes (drafts + published + unpublished).
-     */
     public List<Dish> getAllDishes() {
         return Collections.unmodifiableList(dishes);
     }
 
-    /**
-     * Returns only published dishes.
-     */
     public List<Dish> getPublishedDishes() {
         return dishes.stream()
                 .filter(this::isPublished)
@@ -106,9 +88,7 @@ public class FoodMenu {
         return appliedDishes;
     }
 
-    /**
-     * Average price of published dishes.
-     */
+
     public Price getAverageMenuPrice() {
         return averageMenuPrice;
     }
@@ -117,7 +97,6 @@ public class FoodMenu {
         return restaurantId;
     }
 
-    // --- Internal helpers ---
     private int countPublishedDishes() {
         return (int) dishes.stream()
                 .filter(this::isPublished)
@@ -141,6 +120,10 @@ public class FoodMenu {
         return d.getState() == DISH_STATE.PUBLISHED || d.getState() == DISH_STATE.OUT_OF_STOCK;
     }
 
+    private boolean isNotPublished(Dish d) {
+        return d.getState() == DISH_STATE.UNPUBLISHED;
+    }
+
     public void addDomainEvent(DomainEvent event) {
         domainEvents.add(event);
     }
@@ -149,13 +132,16 @@ public class FoodMenu {
         return domainEvents;
     }
 
-    public List<Dish> scheduleDishes(List<DishId> dishIds, LocalDateTime publicationTime) {
+    public List<Dish> scheduleDishes(List<DishId> dishIds, LocalDateTime publicationTime, DISH_STATE stateToBecome) {
         List<Dish> scheduled = new ArrayList<>();
         for (Dish dish : dishes) {
             if (dishIds.contains(dish.getDishId())) {
-                dish.schedulePublication(publicationTime);
+                dish.schedule(publicationTime, stateToBecome);
                 scheduled.add(dish);
             }
+        }
+        if (stateToBecome == DISH_STATE.PUBLISHED && (getPublishedDishes().size() + scheduled.size()) > MAX_PUBLISHED_DISHES){
+            throw new IllegalStateException("Cannot schedule more than " + MAX_PUBLISHED_DISHES + " dishes at a time");
         }
         return scheduled;
     }

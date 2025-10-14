@@ -66,6 +66,7 @@ CREATE TABLE restaurant.dish (
                                  dish_type VARCHAR(50),
                                  state VARCHAR(50) NOT NULL,
                                  scheduled_publish_time TIMESTAMP,
+                                 scheduled_to_become_state VARCHAR(50),
                                  CONSTRAINT fk_dish_food_menu
                                      FOREIGN KEY (food_menu_id)
                                          REFERENCES restaurant.food_menu(restaurant_id)

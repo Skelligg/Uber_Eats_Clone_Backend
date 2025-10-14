@@ -28,7 +28,7 @@ public class SchedulePendingChangesUseCaseImpl implements SchedulePendingChanges
         FoodMenu foodMenu = loadFoodMenuPort.loadBy(command.restaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("FoodMenu not found for restaurant: " + command.restaurantId()));
 
-        foodMenu.scheduleDishes(command.dishIds(),command.publicationTime());
+        foodMenu.scheduleDishes(command.dishIds(),command.publicationTime(),command.stateToBecome());
 
         updateFoodMenuPort.updateFoodMenu(foodMenu);
 

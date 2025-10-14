@@ -52,13 +52,6 @@ public class UnpublishDishUseCaseImpl implements UnpublishDishUseCase {
         updateFoodMenuPort.updateFoodMenu(foodMenu);
         publishDishEventPort.updateDish(dish);
 
-
-        foodMenu.removeDish(dish);
-
-
-        logger.info("Successfully unpublished dish: {} for restaurant: {}",
-                command.dishId(), command.restaurantId());
-
         return dish;
     }
 }

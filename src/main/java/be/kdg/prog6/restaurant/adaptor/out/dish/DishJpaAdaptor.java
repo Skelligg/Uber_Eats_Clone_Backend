@@ -56,6 +56,7 @@ public class DishJpaAdaptor implements LoadDishPort {
                 publishedVersion,
                 draftVersion,
                 entity.getState(),
+                null,
                 null
         );
     }

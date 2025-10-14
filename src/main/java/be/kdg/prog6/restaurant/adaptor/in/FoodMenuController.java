@@ -311,7 +311,8 @@ public class FoodMenuController {
         ScheduleChangesCommand command = new ScheduleChangesCommand(
                 RestaurantId.of(UUID.fromString(request.restaurantId())),
                 dishIds,
-                request.publicationTime()
+                request.publicationTime(),
+                request.stateToBecome()
         );
 
         FoodMenu foodMenu = schedulePendingChangesUseCase.scheduleChanges(command);

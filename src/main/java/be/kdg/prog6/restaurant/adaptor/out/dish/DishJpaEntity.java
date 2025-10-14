@@ -37,6 +37,7 @@ public class DishJpaEntity {
     private String draftTags;
     private String draftDishType;
     private LocalDateTime scheduledPublishTime;
+    private DISH_STATE scheduledToBecomeState;
 
     protected DishJpaEntity() {}
 
@@ -192,5 +193,13 @@ public class DishJpaEntity {
 
     public void setScheduledPublishTime(LocalDateTime scheduledPublishTime) {
         this.scheduledPublishTime = scheduledPublishTime;
+    }
+
+    public DISH_STATE getScheduledToBecomeState() {
+        return scheduledToBecomeState;
+    }
+
+    public void setScheduledToBecomeState(DISH_STATE scheduledToBecomeState) {
+        this.scheduledToBecomeState = scheduledToBecomeState;
     }
 }

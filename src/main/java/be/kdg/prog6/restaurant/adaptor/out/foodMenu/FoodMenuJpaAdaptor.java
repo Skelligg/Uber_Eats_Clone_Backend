@@ -51,6 +51,7 @@ public class FoodMenuJpaAdaptor implements UpdateFoodMenuPort, LoadFoodMenuPort 
 
         dishEntity.setState(domainDish.getState());
         dishEntity.setScheduledPublishTime(domainDish.getScheduledPublishTime().orElse(null));
+        dishEntity.setScheduledToBecomeState(domainDish.getScheduledToBecomeState());
 
         // Update published version
         if (domainDish.getPublishedVersion().isPresent()) {
@@ -156,7 +157,8 @@ public class FoodMenuJpaAdaptor implements UpdateFoodMenuPort, LoadFoodMenuPort 
                 publishedVersion,
                 draftVersion,
                 entity.getState(),
-                entity.getScheduledPublishTime()
+                entity.getScheduledPublishTime(),
+                entity.getScheduledToBecomeState()
         );
     }
 }

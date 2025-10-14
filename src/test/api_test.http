@@ -40,7 +40,7 @@ POST http://localhost:8080/api/foodmenus/dishes
 Content-Type: application/json
 
 {
-  "restaurantId": "b795b581-ffd8-48d5-bd63-0fd12177122c",
+  "restaurantId": "2f2416a6-3149-4441-a96d-5ead2d3162b3",
   "name": "Pizza",
   "description": "yummy cheese and tomato sauce",
   "price": 14.99,
@@ -51,11 +51,11 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:8080/api/foodmenus/b795b581-ffd8-48d5-bd63-0fd12177122c/dishes/36c5f249-3db9-433b-aa91-4c74613c50ef/publish
+PATCH http://localhost:8080/api/foodmenus/2f2416a6-3149-4441-a96d-5ead2d3162b3/dishes/a94345ca-49d0-4867-be11-fdef4e0d0cb7/publish
 
 ###
 
-PATCH http://localhost:8080/api/foodmenus/b795b581-ffd8-48d5-bd63-0fd12177122c/dishes/fd300dfe-5d27-4381-a6d7-56fb3499990c
+PATCH http://localhost:8080/api/foodmenus/2f2416a6-3149-4441-a96d-5ead2d3162b3/dishes/a94345ca-49d0-4867-be11-fdef4e0d0cb7
 Content-Type: application/json
 
 {
@@ -68,15 +68,15 @@ Content-Type: application/json
 }
 ###
 
-PATCH http://localhost:8080/api/foodmenus/27a66c5f-2c7e-4e89-a453-14b07b7a4af9/dishes/1ce53f8c-8628-4684-92cf-f0ccf6fe5e13/unpublish
+PATCH http://localhost:8080/api/foodmenus/2f2416a6-3149-4441-a96d-5ead2d3162b3/dishes/a94345ca-49d0-4867-be11-fdef4e0d0cb7/unpublish
 
 ###
 
-PATCH http://localhost:8080/api/foodmenus/27a66c5f-2c7e-4e89-a453-14b07b7a4af9/dishes/1ce53f8c-8628-4684-92cf-f0ccf6fe5e13/out-of-stock
+PATCH http://localhost:8080/api/foodmenus/2f2416a6-3149-4441-a96d-5ead2d3162b3/dishes/61f7c6b0-ef03-43e3-9e46-b8c8dc15fc04/out-of-stock
 
 ###
 
-PATCH http://localhost:8080/api/foodmenus/27a66c5f-2c7e-4e89-a453-14b07b7a4af9/dishes/1ce53f8c-8628-4684-92cf-f0ccf6fe5e13/available
+PATCH http://localhost:8080/api/foodmenus/2f2416a6-3149-4441-a96d-5ead2d3162b3/dishes/61f7c6b0-ef03-43e3-9e46-b8c8dc15fc04/available
 
 ###
 
@@ -84,7 +84,7 @@ POST http://localhost:8080/api/foodmenus/dishes
 Content-Type: application/json
 
 {
-  "restaurantId": "b795b581-ffd8-48d5-bd63-0fd12177122c",
+  "restaurantId": "2f2416a6-3149-4441-a96d-5ead2d3162b3",
   "name": "Scrambled Eggs",
   "description": "delicious egg scramble",
   "price": 3.99,
@@ -95,7 +95,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:8080/api/foodmenus/b795b581-ffd8-48d5-bd63-0fd12177122c/dishes/36c5f249-3db9-433b-aa91-4c74613c50ef
+PATCH http://localhost:8080/api/foodmenus/2f2416a6-3149-4441-a96d-5ead2d3162b3/dishes/b15263ac-267c-449f-8ab9-7867a960c088
 Content-Type: application/json
 
 {
@@ -118,10 +118,11 @@ PATCH http://localhost:8080/api/foodmenus/dishes/schedule
 Content-Type: application/json
 
 {
-  "restaurantId": "b795b581-ffd8-48d5-bd63-0fd12177122c",
+  "restaurantId": "2f2416a6-3149-4441-a96d-5ead2d3162b3",
   "dishIds": [
-    "fd300dfe-5d27-4381-a6d7-56fb3499990c",
-    "36c5f249-3db9-433b-aa91-4c74613c50ef"
+    "a94345ca-49d0-4867-be11-fdef4e0d0cb7",
+    "ca16d725-970f-4385-a6a4-575e9a360688"
   ],
-  "publicationTime": "2025-10-14T19:14:00"
+  "publicationTime": "2025-10-14T21:24:00",
+  "stateToBecome": "PUBLISHED"
 }
