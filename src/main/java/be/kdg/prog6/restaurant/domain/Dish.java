@@ -48,7 +48,7 @@ public class Dish {
     }
 
     // --- Publish the draft immediately ---
-    public void publishNow() {
+    public void publish() {
         if (draftVersion == null)
             throw new IllegalStateException("No draft to publish");
 
@@ -58,7 +58,11 @@ public class Dish {
         this.scheduledPublishTime = null;
     }
 
-    // --- Schedule publication ---
+    public void markAvailable() { this.state = DISH_STATE.PUBLISHED;}
+
+    public void markOutOfStock() { this.state = DISH_STATE.OUT_OF_STOCK;}
+
+
     public void schedulePublication(LocalDateTime time) {
         if (draftVersion == null)
             throw new IllegalStateException("No draft to schedule");

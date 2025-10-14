@@ -3,9 +3,11 @@ package be.kdg.prog6.restaurant.domain;
 import be.kdg.prog6.common.events.DishPublishedToMenuEvent;
 import be.kdg.prog6.common.events.DomainEvent;
 import be.kdg.prog6.restaurant.domain.vo.Price;
+import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 import be.kdg.prog6.restaurant.domain.vo.dish.DISH_STATE;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -79,22 +81,25 @@ public class FoodMenu {
         List<Dish> appliedDishes = new ArrayList<>();
         for (Dish dish : dishes) {
             if (dish.getDraftVersion().isPresent()) {
-                dish.setPublishedVersion(dish.getDraftVersion().get());
-                dish.setDraftVersion(null);
-                dish.setState(DISH_STATE.PUBLISHED);
-                dish.addDomainEvent(new DishPublishedToMenuEvent(
-                                dish.getDishId().id(),
-                                restaurantId.id(),
-                                dish.getPublishedVersion().orElseThrow().name(),
-                                dish.getPublishedVersion().orElseThrow().description(),
-                                dish.getPublishedVersion().orElseThrow().price().amount(),
-                                dish.getPublishedVersion().orElseThrow().pictureUrl(),
-                                dish.getPublishedVersion().orElseThrow().tags(),
-                                dish.getPublishedVersion().orElseThrow().dishType().toString(),
-                                dish.getState().toString()
-                        )
-                );
-                appliedDishes.add(dish);
+                if(countPublishedDishes() == MAX_PUBLISHED_DISHES){
+                    throw new IllegalStateException("Cannot publish more than " + MAX_PUBLISHED_DISHES + " dishes at a time");
+                }
+                else {
+                    dish.publish();
+                    dish.addDomainEvent(new DishPublishedToMenuEvent(
+                                    dish.getDishId().id(),
+                                    restaurantId.id(),
+                                    dish.getPublishedVersion().orElseThrow().name(),
+                                    dish.getPublishedVersion().orElseThrow().description(),
+                                    dish.getPublishedVersion().orElseThrow().price().amount(),
+                                    dish.getPublishedVersion().orElseThrow().pictureUrl(),
+                                    dish.getPublishedVersion().orElseThrow().tags(),
+                                    dish.getPublishedVersion().orElseThrow().dishType().toString(),
+                                    dish.getState().toString()
+                            )
+                    );
+                    appliedDishes.add(dish);
+                }
             }
         }
         recalculateAveragePrice();
@@ -143,4 +148,16 @@ public class FoodMenu {
     public List<DomainEvent> getDomainEvents() {
         return domainEvents;
     }
+
+    public List<Dish> scheduleDishes(List<DishId> dishIds, LocalDateTime publicationTime) {
+        List<Dish> scheduled = new ArrayList<>();
+        for (Dish dish : dishes) {
+            if (dishIds.contains(dish.getDishId())) {
+                dish.schedulePublication(publicationTime);
+                scheduled.add(dish);
+            }
+        }
+        return scheduled;
+    }
+
 }

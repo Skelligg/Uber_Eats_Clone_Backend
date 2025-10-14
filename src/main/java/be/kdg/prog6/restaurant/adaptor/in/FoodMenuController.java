@@ -2,6 +2,7 @@ package be.kdg.prog6.restaurant.adaptor.in;
 
 import be.kdg.prog6.restaurant.adaptor.in.request.CreateDishDraftRequest;
 import be.kdg.prog6.restaurant.adaptor.in.request.EditDishRequest;
+import be.kdg.prog6.restaurant.adaptor.in.request.SchedulePublicationRequest;
 import be.kdg.prog6.restaurant.adaptor.in.response.DishDto;
 import be.kdg.prog6.restaurant.adaptor.in.response.DishVersionDto;
 import be.kdg.prog6.restaurant.domain.Dish;
@@ -26,8 +27,9 @@ public class FoodMenuController {
     private final MarkDishOutOfStockUseCase markDishOutOfStockUseCase;
     private final MarkDishAvailableUseCase markDishAvailableUseCase;
     private final ApplyPendingChangesUseCase applyPendingChangesUseCase;
+    private final SchedulePendingChangesUseCase schedulePendingChangesUseCase;
 
-    public FoodMenuController(CreateDishDraftUseCase createDishDraftUseCase, PublishDishUseCase publishDishUseCase, UnpublishDishUseCase unpublishDishUseCase, EditDishUseCase editDishUseCase, MarkDishOutOfStockUseCase markDishOutOfStockUseCase, MarkDishAvailableUseCase markDishAvailableUseCase, ApplyPendingChangesUseCase applyPendingChangesUseCase) {
+    public FoodMenuController(CreateDishDraftUseCase createDishDraftUseCase, PublishDishUseCase publishDishUseCase, UnpublishDishUseCase unpublishDishUseCase, EditDishUseCase editDishUseCase, MarkDishOutOfStockUseCase markDishOutOfStockUseCase, MarkDishAvailableUseCase markDishAvailableUseCase, ApplyPendingChangesUseCase applyPendingChangesUseCase, SchedulePendingChangesUseCase schedulePendingChangesUseCase) {
         this.createDishDraftUseCase = createDishDraftUseCase;
         this.publishDishUseCase = publishDishUseCase;
         this.unpublishDishUseCase = unpublishDishUseCase;
@@ -35,6 +37,7 @@ public class FoodMenuController {
         this.markDishOutOfStockUseCase = markDishOutOfStockUseCase;
         this.markDishAvailableUseCase = markDishAvailableUseCase;
         this.applyPendingChangesUseCase = applyPendingChangesUseCase;
+        this.schedulePendingChangesUseCase = schedulePendingChangesUseCase;
     }
 
     @PostMapping("/dishes")
@@ -294,5 +297,25 @@ public class FoodMenuController {
             );
         }
         return ResponseEntity.ok(publishedDishes);
+    }
+
+    @PatchMapping("/dishes/schedule")
+    public ResponseEntity<List<DishDto>> schedulePublications(
+            @RequestBody SchedulePublicationRequest request
+    ){
+
+        List<DishId> dishIds = request.dishIds().stream()
+                .map(UUID::fromString)
+                .map(DishId::of)
+                .toList();
+        ScheduleChangesCommand command = new ScheduleChangesCommand(
+                RestaurantId.of(UUID.fromString(request.restaurantId())),
+                dishIds,
+                request.publicationTime()
+        );
+
+        FoodMenu foodMenu = schedulePendingChangesUseCase.scheduleChanges(command);
+
+        return ResponseEntity.ok().build();
     }
 }

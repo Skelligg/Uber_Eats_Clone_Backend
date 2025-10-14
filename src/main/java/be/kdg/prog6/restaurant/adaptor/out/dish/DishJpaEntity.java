@@ -7,6 +7,7 @@ import be.kdg.prog6.restaurant.domain.vo.dish.DishVersion;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -35,6 +36,7 @@ public class DishJpaEntity {
     private String draftPictureUrl;
     private String draftTags;
     private String draftDishType;
+    private LocalDateTime scheduledPublishTime;
 
     protected DishJpaEntity() {}
 
@@ -182,5 +184,13 @@ public class DishJpaEntity {
 
     public void setDraftDishType(String draftDishType) {
         this.draftDishType = draftDishType;
+    }
+
+    public LocalDateTime getScheduledPublishTime() {
+        return scheduledPublishTime;
+    }
+
+    public void setScheduledPublishTime(LocalDateTime scheduledPublishTime) {
+        this.scheduledPublishTime = scheduledPublishTime;
     }
 }

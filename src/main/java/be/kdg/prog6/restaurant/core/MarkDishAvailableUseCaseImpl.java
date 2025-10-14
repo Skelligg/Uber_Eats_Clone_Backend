@@ -36,7 +36,7 @@ public class MarkDishAvailableUseCaseImpl implements MarkDishAvailableUseCase {
         FoodMenu foodMenu = loadFoodMenuPort.loadBy(command.restaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("FoodMenu not found for restaurant: " + command.restaurantId()));
 
-        dish.setState(DISH_STATE.PUBLISHED);
+        dish.markAvailable();
 
         foodMenu.updateDish(dish);
 

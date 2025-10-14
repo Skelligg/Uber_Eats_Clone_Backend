@@ -35,7 +35,7 @@ public class MarkDishOutOfStockUseCaseImpl implements MarkDishOutOfStockUseCase 
         FoodMenu foodMenu = loadFoodMenuPort.loadBy(command.restaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("FoodMenu not found for restaurant: " + command.restaurantId()));
 
-        dish.setState(DISH_STATE.OUT_OF_STOCK);
+        dish.markOutOfStock();
 
         foodMenu.updateDish(dish);
 

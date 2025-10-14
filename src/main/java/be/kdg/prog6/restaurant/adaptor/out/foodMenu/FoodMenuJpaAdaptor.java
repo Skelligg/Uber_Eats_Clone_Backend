@@ -12,6 +12,7 @@ import be.kdg.prog6.restaurant.port.out.LoadFoodMenuPort;
 import be.kdg.prog6.restaurant.port.out.UpdateFoodMenuPort;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -49,6 +50,7 @@ public class FoodMenuJpaAdaptor implements UpdateFoodMenuPort, LoadFoodMenuPort 
                 .orElseThrow(() -> new IllegalArgumentException("Dish not found in menu: " + domainDish.getDishId()));
 
         dishEntity.setState(domainDish.getState());
+        dishEntity.setScheduledPublishTime(domainDish.getScheduledPublishTime().orElse(null));
 
         // Update published version
         if (domainDish.getPublishedVersion().isPresent()) {
@@ -104,6 +106,13 @@ public class FoodMenuJpaAdaptor implements UpdateFoodMenuPort, LoadFoodMenuPort 
                 .map(this::toDomain);
     }
 
+    @Override
+    public List<FoodMenu> loadAll() {
+        return repository.findAll().stream()
+                .map(this::toDomain)
+                .toList();
+    }
+
     private FoodMenu toDomain(FoodMenuJpaEntity entity) {
         FoodMenu foodMenu = new FoodMenu(new RestaurantId(entity.getRestaurantId()));
 
@@ -147,7 +156,7 @@ public class FoodMenuJpaAdaptor implements UpdateFoodMenuPort, LoadFoodMenuPort 
                 publishedVersion,
                 draftVersion,
                 entity.getState(),
-                null
+                entity.getScheduledPublishTime()
         );
     }
 }
