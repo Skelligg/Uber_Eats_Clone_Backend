@@ -37,7 +37,7 @@ public class RestaurantJpaEntity {
 
     // Pictures (simplified to strings, could later use separate entity)
     @ElementCollection
-    @CollectionTable(name = "restaurant_pictures", joinColumns = @JoinColumn(name = "restaurant_id"))
+    @CollectionTable(name = "restaurant_pictures", joinColumns = @JoinColumn(name = "restaurant_id"), schema = "restaurant")
     @Column(name = "url")
     private List<String> pictures;
 

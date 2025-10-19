@@ -14,9 +14,7 @@ Content-Type: application/json
   },
   "emailAddress": "contact@trattoriaroma.it",
   "pictures": [
-    "https://example.com/images/front.jpg",
-    "https://example.com/images/menu.jpg"
-  ],
+    "https://orders.co/static/99a59eec0735fca313bf2b93349bd5d6/5715c/Italian-Restaurant-Design-Creating-an-Inviting-Ambiance.webp"],
   "cuisineType": "ITALIAN",
   "minPrepTime": 15,
   "maxPrepTime": 25,

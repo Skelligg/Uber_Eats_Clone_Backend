@@ -36,6 +36,7 @@ public class RestaurantJpaAdaptor implements UpdateRestaurantPort, LoadRestauran
 
     @Override
     public Restaurant addRestaurant(Restaurant restaurant) {
+        logger.info("Pictures before saving: {}", restaurant.getPictureList().stream().map(Picture::url).toList());
         restaurants.save(toJpaEntity(restaurant));
         return restaurant;
     }

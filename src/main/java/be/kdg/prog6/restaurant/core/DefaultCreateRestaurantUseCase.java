@@ -44,6 +44,7 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
                 command.name(),
                 command.address(),
                 command.emailAddress(),
+                command.pictureList(),
                 command.CUISINETYPE(),
                 command.defaultPrepTime(),
                 command.openingHours());

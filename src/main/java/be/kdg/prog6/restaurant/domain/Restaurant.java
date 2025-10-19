@@ -20,13 +20,13 @@ public class Restaurant {
 
     private final List<DomainEvent> domainEvents = new ArrayList<>();
 
-    public Restaurant(OwnerId ownerId, String name, Address address, EmailAddress emailAddress, CUISINE_TYPE cuisineType, PrepTime defaultPrepTime, OpeningHours openingHours) {
+    public Restaurant(OwnerId ownerId, String name, Address address, EmailAddress emailAddress, List<Picture> pictureList, CUISINE_TYPE cuisineType, PrepTime defaultPrepTime, OpeningHours openingHours) {
         this.restaurantId = RestaurantId.newId();
         this.ownerId = ownerId;
         this.name = name;
         this.address = address;
         this.emailAddress = emailAddress;
-        this.pictureList = new ArrayList<>();
+        this.pictureList = pictureList != null ? pictureList : new ArrayList<>();
         this.cuisineType = cuisineType;
         this.defaultPrepTime = defaultPrepTime;
         this.openingHours = openingHours;

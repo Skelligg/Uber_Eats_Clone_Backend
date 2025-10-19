@@ -26,7 +26,7 @@ public class RestaurantProjectionJpaEntity {
     private String emailAddress;
 
     @ElementCollection
-    @CollectionTable(name = "restaurant_projection_pictures", joinColumns = @JoinColumn(name = "restaurant_projection_id"))
+    @CollectionTable(name = "restaurant_projection_pictures", joinColumns = @JoinColumn(name = "restaurant_projection_id"), schema = "ordering")
     @Column(name = "url")
     private List<String> pictures;
 
