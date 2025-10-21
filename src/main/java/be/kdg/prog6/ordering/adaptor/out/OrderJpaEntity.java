@@ -1,6 +1,6 @@
 package be.kdg.prog6.ordering.adaptor.out;
 
-import be.kdg.prog6.ordering.domain.vo.ORDER_STATUS;
+import be.kdg.prog6.common.vo.ORDER_STATUS;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

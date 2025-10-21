@@ -1,9 +1,10 @@
 package be.kdg.prog6.restaurant.adaptor.out.restaurant;
 
+import be.kdg.prog6.common.vo.Address;
 import be.kdg.prog6.restaurant.domain.Restaurant;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.*;
-import be.kdg.prog6.restaurant.port.out.LoadRestaurantPort;
-import be.kdg.prog6.restaurant.port.out.UpdateRestaurantPort;
+import be.kdg.prog6.restaurant.port.out.restaurant.LoadRestaurantPort;
+import be.kdg.prog6.restaurant.port.out.restaurant.UpdateRestaurantPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;

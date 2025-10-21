@@ -3,7 +3,7 @@ package be.kdg.prog6.ordering.core;
 
 import be.kdg.prog6.common.events.FoodMenuCreatedEvent;
 import be.kdg.prog6.ordering.domain.projection.FoodMenuProjection;
-import be.kdg.prog6.ordering.port.in.FoodMenusChangedProjector;
+import be.kdg.prog6.ordering.port.in.foodmenu.FoodMenusChangedProjector;
 import be.kdg.prog6.ordering.port.out.UpdateFoodMenusPort;
 import org.springframework.stereotype.Service;
 

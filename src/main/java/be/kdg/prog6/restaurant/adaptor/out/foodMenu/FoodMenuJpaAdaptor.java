@@ -8,13 +8,12 @@ import be.kdg.prog6.restaurant.domain.vo.dish.DISH_TYPE;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishVersion;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
-import be.kdg.prog6.restaurant.port.out.LoadFoodMenuPort;
-import be.kdg.prog6.restaurant.port.out.UpdateFoodMenuPort;
+import be.kdg.prog6.restaurant.port.out.foodmenu.LoadFoodMenuPort;
+import be.kdg.prog6.restaurant.port.out.foodmenu.UpdateFoodMenuPort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 public class FoodMenuJpaAdaptor implements UpdateFoodMenuPort, LoadFoodMenuPort {

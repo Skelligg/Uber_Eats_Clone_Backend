@@ -10,7 +10,7 @@ import be.kdg.prog6.restaurant.domain.FoodMenu;
 import be.kdg.prog6.restaurant.domain.vo.Price;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
-import be.kdg.prog6.restaurant.port.in.*;
+import be.kdg.prog6.restaurant.port.in.dish.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

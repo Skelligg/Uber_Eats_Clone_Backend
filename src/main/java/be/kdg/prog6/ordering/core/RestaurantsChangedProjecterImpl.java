@@ -1,8 +1,8 @@
 package be.kdg.prog6.ordering.core;
 
 import be.kdg.prog6.ordering.domain.projection.RestaurantProjection;
-import be.kdg.prog6.ordering.port.in.RestaurantAddedProjectionCommand;
-import be.kdg.prog6.ordering.port.in.RestaurantsChangedProjector;
+import be.kdg.prog6.ordering.port.in.restaurant.RestaurantAddedProjectionCommand;
+import be.kdg.prog6.ordering.port.in.restaurant.RestaurantsChangedProjector;
 import be.kdg.prog6.ordering.port.out.LoadRestaurantsPort;
 import be.kdg.prog6.ordering.port.out.UpdateRestaurantsPort;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class RestaurantsChangedProjecterImpl implements RestaurantsChangedProjec
     @Override
     @Transactional
     public void project(RestaurantAddedProjectionCommand projectionCommand) {
-        RestaurantProjection restaurantProjection = new RestaurantProjection(
+         updateRestaurantsPort.update( new RestaurantProjection(
                 projectionCommand.restaurantId(),
                 projectionCommand.ownerId(),
                 projectionCommand.ownerName(),
@@ -40,9 +40,7 @@ public class RestaurantsChangedProjecterImpl implements RestaurantsChangedProjec
                 projectionCommand.openingTime(),
                 projectionCommand.closingTime(),
                 projectionCommand.openDays()
-        );
-
-        updateRestaurantsPort.update(restaurantProjection);
+        ));
     }
 
 }

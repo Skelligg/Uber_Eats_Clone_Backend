@@ -73,6 +73,47 @@ CREATE TABLE restaurant.dish (
                                          ON DELETE CASCADE
 );
 
+CREATE TABLE restaurant.order_projections (
+                                              order_id UUID PRIMARY KEY,
+                                              restaurant_id UUID NOT NULL,
+    -- Flattened delivery address
+                                              street VARCHAR(255),
+                                              number VARCHAR(50),
+                                              postal_code VARCHAR(50),
+                                              city VARCHAR(100),
+                                              country VARCHAR(100),
+
+                                              total_price NUMERIC(10,2) NOT NULL,
+
+                                              placed_at TIMESTAMP,
+                                              status VARCHAR(50),
+                                              rejection_reason TEXT,
+
+                                              accepted_at TIMESTAMP,
+                                              ready_at TIMESTAMP,
+                                              rejected_at TIMESTAMP,
+                                              picked_up_at TIMESTAMP,
+                                              delivered_at TIMESTAMP,
+
+                                              CONSTRAINT fk_order_projection_restaurant
+                                                  FOREIGN KEY (restaurant_id)
+                                                      REFERENCES restaurant.restaurant(id)
+                                                      ON DELETE CASCADE
+);
+
+CREATE TABLE restaurant.order_projection_lines (
+                                                   order_id UUID NOT NULL,
+                                                   dish_id UUID NOT NULL,
+                                                   dish_name VARCHAR(255) NOT NULL,
+                                                   quantity INTEGER NOT NULL,
+                                                   unit_price NUMERIC(10,2) NOT NULL,
+                                                   line_price NUMERIC(10,2) NOT NULL,
+
+                                                   CONSTRAINT fk_order_projection_lines_order
+                                                       FOREIGN KEY (order_id)
+                                                           REFERENCES restaurant.order_projections(order_id)
+                                                           ON DELETE CASCADE
+);
 
 
 

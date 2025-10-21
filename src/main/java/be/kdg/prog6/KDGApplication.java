@@ -21,6 +21,6 @@ public class KDGApplication {
     @EventListener(ApplicationStartedEvent.class)
     void onApplicationStarted() {
         ApplicationModules modules = ApplicationModules.of(KDGApplication.class);
-        modules.forEach(module -> log.info("\n{}", module));
+        modules.forEach(module -> log.info("MODULE: \n{}", module));
     }
 }

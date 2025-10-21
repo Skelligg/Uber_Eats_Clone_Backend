@@ -3,8 +3,8 @@ package be.kdg.prog6.restaurant.adaptor.out.restaurant;
 import be.kdg.prog6.restaurant.domain.Restaurant;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.OwnerId;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
-import be.kdg.prog6.restaurant.port.out.LoadRestaurantPort;
-import be.kdg.prog6.restaurant.port.out.UpdateRestaurantPort;
+import be.kdg.prog6.restaurant.port.out.restaurant.LoadRestaurantPort;
+import be.kdg.prog6.restaurant.port.out.restaurant.UpdateRestaurantPort;
 
 import java.util.ArrayList;
 import java.util.List;

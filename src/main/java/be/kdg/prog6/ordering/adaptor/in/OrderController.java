@@ -1,13 +1,14 @@
 package be.kdg.prog6.ordering.adaptor.in;
 
+import be.kdg.prog6.common.vo.Address;
 import be.kdg.prog6.ordering.adaptor.in.request.CreateOrderRequest;
 import be.kdg.prog6.ordering.adaptor.in.response.AddressDto;
 import be.kdg.prog6.ordering.adaptor.in.response.OrderDto;
 import be.kdg.prog6.ordering.adaptor.in.response.OrderLineDto;
 import be.kdg.prog6.ordering.domain.Order;
 import be.kdg.prog6.ordering.domain.vo.*;
-import be.kdg.prog6.ordering.port.in.CreateOrderCommand;
-import be.kdg.prog6.ordering.port.in.CreateOrderUseCase;
+import be.kdg.prog6.ordering.port.in.order.CreateOrderCommand;
+import be.kdg.prog6.ordering.port.in.order.CreateOrderUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

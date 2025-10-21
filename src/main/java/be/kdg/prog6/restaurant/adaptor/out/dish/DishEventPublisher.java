@@ -1,7 +1,7 @@
 package be.kdg.prog6.restaurant.adaptor.out.dish;
 
 import be.kdg.prog6.restaurant.domain.Dish;
-import be.kdg.prog6.restaurant.port.out.PublishDishEventPort;
+import be.kdg.prog6.restaurant.port.out.dish.PublishDishEventPort;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 

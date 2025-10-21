@@ -1,6 +1,8 @@
 package be.kdg.prog6.ordering.domain;
 
 import be.kdg.prog6.common.events.DomainEvent;
+import be.kdg.prog6.common.vo.Address;
+import be.kdg.prog6.common.vo.ORDER_STATUS;
 import be.kdg.prog6.ordering.domain.vo.*;
 
 import java.time.Duration;
@@ -155,6 +157,7 @@ public class Order {
      * Add a domain event to the internal list.
      */
     public void addDomainEvent(DomainEvent event) {
+        domainEvents.add(event);
     }
 
     /**

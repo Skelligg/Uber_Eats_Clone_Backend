@@ -4,15 +4,15 @@ Content-Type: application/json
 
 {
   "ownerId": "Michael",
-  "name": "Trattoria Roma",
+  "name": "Pizza Roma",
   "address": {
-    "street": "Via Milano",
-    "number": "12",
-    "postalCode": "20100",
-    "city": "Milan",
-    "country": "Italy"
+    "street": "Jezusstraat",
+    "number": "32",
+    "postalCode": "2000",
+    "city": "Antwerp",
+    "country": "Belgium"
   },
-  "emailAddress": "contact@trattoriaroma.it",
+  "emailAddress": "contact@pizzaroma.be",
   "pictures": [
     "https://orders.co/static/99a59eec0735fca313bf2b93349bd5d6/5715c/Italian-Restaurant-Design-Creating-an-Inviting-Ambiance.webp"],
   "cuisineType": "ITALIAN",
@@ -34,7 +34,7 @@ POST http://localhost:8080/api/foodmenus/dishes
 Content-Type: application/json
 
 {
-  "restaurantId": "a06da943-6787-4fab-86bc-fd2b3fd74f69",
+  "restaurantId": "e0528938-1f04-4067-988c-c5daaf51b556",
   "name": "Pizza",
   "description": "yummy cheese and tomato sauce",
   "price": 14.99,
@@ -45,7 +45,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:8080/api/foodmenus/a06da943-6787-4fab-86bc-fd2b3fd74f69/dishes/7b99a95e-05e8-4a1d-95fc-866389cabf0d/publish
+PATCH http://localhost:8080/api/foodmenus/e0528938-1f04-4067-988c-c5daaf51b556/dishes/96144920-af2b-4663-8c8d-dadb8cba410a/publish
 
 ###
 

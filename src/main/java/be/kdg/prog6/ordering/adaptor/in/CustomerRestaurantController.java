@@ -1,8 +1,8 @@
 package be.kdg.prog6.ordering.adaptor.in;
 
 import be.kdg.prog6.ordering.adaptor.in.response.RestaurantDto;
-import be.kdg.prog6.ordering.port.in.GetDishesUseCase;
-import be.kdg.prog6.ordering.port.in.GetRestaurantsUseCase;
+import be.kdg.prog6.ordering.port.in.dish.GetDishesUseCase;
+import be.kdg.prog6.ordering.port.in.restaurant.GetRestaurantsUseCase;
 import be.kdg.prog6.ordering.adaptor.in.response.DishDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

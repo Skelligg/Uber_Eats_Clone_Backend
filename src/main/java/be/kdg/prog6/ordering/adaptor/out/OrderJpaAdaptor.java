@@ -1,19 +1,21 @@
 package be.kdg.prog6.ordering.adaptor.out;
 
+import be.kdg.prog6.common.vo.Address;
 import be.kdg.prog6.ordering.domain.Order;
 import be.kdg.prog6.ordering.domain.vo.*;
 import be.kdg.prog6.ordering.port.out.LoadOrderPort;
 import be.kdg.prog6.ordering.port.out.UpdateOrderPort;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
 public class OrderJpaAdaptor implements LoadOrderPort, UpdateOrderPort {
 
+    private static final Logger log = LoggerFactory.getLogger(OrderJpaAdaptor.class);
     private final OrderJpaRepository orders;
 
     public OrderJpaAdaptor(OrderJpaRepository orders) {
@@ -27,7 +29,8 @@ public class OrderJpaAdaptor implements LoadOrderPort, UpdateOrderPort {
     }
 
     @Override
-    public Order addOrder(Order order) {
+    public Order update(Order order) {
+        log.info("Updating order {}", order.getOrderId());
         orders.save(toJpaEntity(order));
         return order;
     }

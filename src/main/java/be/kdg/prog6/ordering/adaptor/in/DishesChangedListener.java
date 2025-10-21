@@ -1,7 +1,7 @@
 package be.kdg.prog6.ordering.adaptor.in;
 
 import be.kdg.prog6.common.events.*;
-import be.kdg.prog6.ordering.port.in.*;
+import be.kdg.prog6.ordering.port.in.dish.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;

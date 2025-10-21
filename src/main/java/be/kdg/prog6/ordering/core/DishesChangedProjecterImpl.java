@@ -1,9 +1,8 @@
 package be.kdg.prog6.ordering.core;
 
-import be.kdg.prog6.common.events.DishMarkedAvailableEvent;
 import be.kdg.prog6.ordering.domain.projection.DISH_AVAILABILITY;
 import be.kdg.prog6.ordering.domain.projection.DishProjection;
-import be.kdg.prog6.ordering.port.in.*;
+import be.kdg.prog6.ordering.port.in.dish.*;
 import be.kdg.prog6.ordering.port.out.LoadDishesPort;
 import be.kdg.prog6.ordering.port.out.UpdateDishesPort;
 import org.springframework.stereotype.Service;

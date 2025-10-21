@@ -5,7 +5,7 @@ import be.kdg.prog6.restaurant.domain.vo.Price;
 import be.kdg.prog6.restaurant.domain.vo.dish.DISH_TYPE;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishVersion;
-import be.kdg.prog6.restaurant.port.out.LoadDishPort;
+import be.kdg.prog6.restaurant.port.out.dish.LoadDishPort;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

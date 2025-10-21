@@ -10,10 +10,10 @@ POST http://localhost:8080/api/orders
 Content-Type: application/json
 
 {
-  "restaurantId": "a06da943-6787-4fab-86bc-fd2b3fd74f69",
+  "restaurantId": "e0528938-1f04-4067-988c-c5daaf51b556",
   "lines": [
     {
-      "dishId": "7b99a95e-05e8-4a1d-95fc-866389cabf0d",
+      "dishId": "96144920-af2b-4663-8c8d-dadb8cba410a",
       "dishName": "Pizza",
       "quantity": 2,
       "unitPrice": 14.99,
@@ -24,10 +24,10 @@ Content-Type: application/json
   "customerName": "Alice Johnson",
   "customerEmail": "alice.johnson@example.com",
   "deliveryAddress": {
-    "street": "Main Street",
-    "number": "42B",
-    "postalCode": "1000",
-    "city": "Brussels",
+    "street": "Gijselsstraat",
+    "number": "31",
+    "postalCode": "2140",
+    "city": "Antwerp",
     "country": "Belgium"
   },
   "placedAt": "2025-10-21T14:35:00"
