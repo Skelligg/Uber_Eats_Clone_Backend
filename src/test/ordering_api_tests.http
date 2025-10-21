@@ -5,3 +5,30 @@ GET http://localhost:8080/api/customers/restaurants
 GET http://localhost:8080/api/customers/restaurants/b52bd8cb-4f06-49df-948b-a5424ba0e964/dishes
 
 ###
+
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{
+  "restaurantId": "a06da943-6787-4fab-86bc-fd2b3fd74f69",
+  "lines": [
+    {
+      "dishId": "7b99a95e-05e8-4a1d-95fc-866389cabf0d",
+      "dishName": "Pizza",
+      "quantity": 2,
+      "unitPrice": 14.99,
+      "linePrice": 29.98
+    }
+  ],
+  "totalPrice": 29.98,
+  "customerName": "Alice Johnson",
+  "customerEmail": "alice.johnson@example.com",
+  "deliveryAddress": {
+    "street": "Main Street",
+    "number": "42B",
+    "postalCode": "1000",
+    "city": "Brussels",
+    "country": "Belgium"
+  },
+  "placedAt": "2025-10-21T14:35:00"
+}

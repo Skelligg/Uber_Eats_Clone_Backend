@@ -143,3 +143,59 @@ CREATE TABLE ordering.dish_projection (
                                                   ON DELETE CASCADE
 );
 
+-- Orders
+CREATE TABLE ordering.orders (
+                                 id UUID PRIMARY KEY,
+                                 restaurant_id UUID NOT NULL,
+                                 customer_name VARCHAR(255) NOT NULL,
+                                 customer_email VARCHAR(255) NOT NULL,
+
+    -- Delivery address (flattened)
+                                 street VARCHAR(255),
+                                 number VARCHAR(50),
+                                 postal_code VARCHAR(50),
+                                 city VARCHAR(100),
+                                 country VARCHAR(100),
+
+                                 total_price NUMERIC(10,2) NOT NULL,
+                                 status VARCHAR(50),
+                                 rejection_reason TEXT,
+
+                                 placed_at TIMESTAMP,
+                                 accepted_at TIMESTAMP,
+                                 rejected_at TIMESTAMP,
+                                 ready_at TIMESTAMP,
+                                 picked_up_at TIMESTAMP,
+                                 delivered_at TIMESTAMP,
+
+                                 estimated_delivery_minutes INTEGER
+);
+
+-- Order lines (ElementCollection)
+CREATE TABLE ordering.order_lines (
+                                      order_id UUID NOT NULL,
+                                      dish_id UUID NOT NULL,
+                                      dish_name VARCHAR(255) NOT NULL,
+                                      quantity INTEGER NOT NULL,
+                                      unit_price NUMERIC(10,2) NOT NULL,
+                                      line_price NUMERIC(10,2) NOT NULL,
+
+                                      CONSTRAINT fk_order_lines_order
+                                          FOREIGN KEY (order_id)
+                                              REFERENCES ordering.orders(id)
+                                              ON DELETE CASCADE
+);
+
+-- Courier locations (ElementCollection)
+CREATE TABLE ordering.courier_locations (
+                                            order_id UUID NOT NULL,
+                                            timestamp TIMESTAMP,
+                                            latitude DOUBLE PRECISION,
+                                            longitude DOUBLE PRECISION,
+
+                                            CONSTRAINT fk_courier_locations_order
+                                                FOREIGN KEY (order_id)
+                                                    REFERENCES ordering.orders(id)
+                                                    ON DELETE CASCADE
+);
+

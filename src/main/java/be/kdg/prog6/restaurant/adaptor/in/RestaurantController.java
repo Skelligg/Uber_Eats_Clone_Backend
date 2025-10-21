@@ -42,10 +42,10 @@ public class RestaurantController {
                 new OpeningHours(request.openingTime(), request.closingTime(), request.openDays())
         );
 
-        Restaurant created = createRestaurantUseCase.createRestaurant(command);
+        Restaurant restaurantCreated = createRestaurantUseCase.createRestaurant(command);
         return ResponseEntity.ok(new RestaurantDto(
-                created.getRestaurantId().id().toString(),
-                created.getName()
+                restaurantCreated.getRestaurantId().id().toString(),
+                restaurantCreated.getName()
         ));
     }
 
