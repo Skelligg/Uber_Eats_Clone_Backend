@@ -1,6 +1,6 @@
 package be.kdg.prog6.restaurant.core.restaurant;
 
-import be.kdg.prog6.common.events.RestaurantCreatedEvent;
+import be.kdg.prog6.common.events.restaurant.RestaurantCreatedEvent;
 import be.kdg.prog6.restaurant.domain.Restaurant;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.OwnerId;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.Picture;

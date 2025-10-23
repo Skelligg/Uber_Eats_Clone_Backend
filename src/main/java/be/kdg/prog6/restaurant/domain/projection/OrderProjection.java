@@ -35,6 +35,26 @@ public class OrderProjection {
     public OrderProjection() {
     }
 
+    public OrderProjection(UUID orderId, UUID restaurantId, String street, String number, String postalCode, String city, String country, double totalPrice, LocalDateTime placedAt, ORDER_STATUS status, String rejectionReason, LocalDateTime acceptedAt, LocalDateTime readyAt, LocalDateTime rejectedAt, LocalDateTime pickedUpAt, LocalDateTime deliveredAt, List<OrderLineProjection> lines) {
+        this.orderId = orderId;
+        this.restaurantId = restaurantId;
+        this.street = street;
+        this.number = number;
+        this.postalCode = postalCode;
+        this.city = city;
+        this.country = country;
+        this.totalPrice = totalPrice;
+        this.placedAt = placedAt;
+        this.status = status;
+        this.rejectionReason = rejectionReason;
+        this.acceptedAt = acceptedAt;
+        this.readyAt = readyAt;
+        this.rejectedAt = rejectedAt;
+        this.pickedUpAt = pickedUpAt;
+        this.deliveredAt = deliveredAt;
+        this.lines = lines;
+    }
+
     public OrderProjection(UUID orderId, UUID restaurantId,
                            String street, String number, String postalCode, String city, String country,
                            double totalPrice, LocalDateTime placedAt, ORDER_STATUS status,

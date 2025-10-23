@@ -1,4 +1,6 @@
-package be.kdg.prog6.common.events;
+package be.kdg.prog6.common.events.restaurant;
+
+import be.kdg.prog6.common.events.DomainEvent;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;

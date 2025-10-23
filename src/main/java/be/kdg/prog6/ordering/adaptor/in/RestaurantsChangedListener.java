@@ -1,6 +1,6 @@
 package be.kdg.prog6.ordering.adaptor.in;
 
-import be.kdg.prog6.common.events.RestaurantCreatedEvent;
+import be.kdg.prog6.common.events.restaurant.RestaurantCreatedEvent;
 import be.kdg.prog6.ordering.port.in.restaurant.RestaurantAddedProjectionCommand;
 import be.kdg.prog6.ordering.port.in.restaurant.RestaurantsChangedProjector;
 import org.slf4j.Logger;

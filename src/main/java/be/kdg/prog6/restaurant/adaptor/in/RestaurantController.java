@@ -2,24 +2,31 @@ package be.kdg.prog6.restaurant.adaptor.in;
 
 import be.kdg.prog6.common.vo.Address;
 import be.kdg.prog6.restaurant.adaptor.in.request.CreateRestaurantRequest;
+import be.kdg.prog6.restaurant.adaptor.in.response.OrderDto;
+import be.kdg.prog6.restaurant.adaptor.in.response.OrderlineDto;
 import be.kdg.prog6.restaurant.adaptor.in.response.RestaurantDto;
 import be.kdg.prog6.restaurant.core.restaurant.DefaultCreateRestaurantUseCase;
 import be.kdg.prog6.restaurant.domain.Restaurant;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.*;
+import be.kdg.prog6.restaurant.port.in.order.GetOrdersUseCase;
 import be.kdg.prog6.restaurant.port.in.restaurant.CreateRestaurantCommand;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/restaurants")
 public class RestaurantController {
     private final DefaultCreateRestaurantUseCase createRestaurantUseCase;
+    private final GetOrdersUseCase getOrdersUseCase;
 
     public RestaurantController(
-            DefaultCreateRestaurantUseCase createRestaurantUseCase) {
+            DefaultCreateRestaurantUseCase createRestaurantUseCase, GetOrdersUseCase getOrdersUseCase) {
         this.createRestaurantUseCase = createRestaurantUseCase;
+        this.getOrdersUseCase = getOrdersUseCase;
     }
 
     @PostMapping
@@ -48,6 +55,44 @@ public class RestaurantController {
                 restaurantCreated.getRestaurantId().id().toString(),
                 restaurantCreated.getName()
         ));
+    }
+
+    @GetMapping("/{restaurantId}/orders")
+    public ResponseEntity<List<OrderDto>> getOrders(@PathVariable String restaurantId) {
+
+        List<OrderDto> orders = getOrdersUseCase.getOrders(
+                        RestaurantId.of(UUID.fromString(restaurantId))
+                ).stream()
+                .map(o -> new OrderDto(
+                        o.getOrderId(),
+                        o.getStreet(),
+                        o.getNumber(),
+                        o.getPostalCode(),
+                        o.getCity(),
+                        o.getCountry(),
+                        o.getTotalPrice(),
+                        o.getPlacedAt(),
+                        o.getStatus(),
+                        o.getRejectionReason(),
+                        o.getAcceptedAt() != null ? o.getAcceptedAt(): null,
+                        o.getReadyAt() != null ? o.getReadyAt(): null,
+                        o.getRejectedAt() != null ? o.getRejectedAt(): null,
+                        o.getPickedUpAt() != null ? o.getPickedUpAt(): null,
+                        o.getDeliveredAt() != null ? o.getDeliveredAt(): null,
+                        o.getLines().stream()
+                                .map(l -> new OrderlineDto(
+                                        l.dishId().id(), // UUID
+                                        l.dishName(),
+                                        l.quantity(),
+                                        l.unitPrice(),
+                                        l.linePrice()
+                                ))
+                                .toList()
+                ))
+                .toList();
+
+
+        return ResponseEntity.ok(orders);
     }
 
 }

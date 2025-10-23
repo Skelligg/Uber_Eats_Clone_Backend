@@ -1,5 +1,7 @@
 package be.kdg.prog6.ordering.port.in.restaurant;
 
+import be.kdg.prog6.common.events.restaurant.RestaurantCreatedEvent;
+
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +26,7 @@ public record RestaurantAddedProjectionCommand(
         List<String> openDays
 ) {
     // Optionally, you can add a static 'fromEvent' method for convenience
-    public static RestaurantAddedProjectionCommand fromEvent(be.kdg.prog6.common.events.RestaurantCreatedEvent event) {
+    public static RestaurantAddedProjectionCommand fromEvent(RestaurantCreatedEvent event) {
         return new RestaurantAddedProjectionCommand(
                 UUID.fromString(event.restaurantId()),
                 UUID.fromString(event.ownerId()),

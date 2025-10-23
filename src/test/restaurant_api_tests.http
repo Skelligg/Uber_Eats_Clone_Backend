@@ -34,7 +34,7 @@ POST http://localhost:8080/api/foodmenus/dishes
 Content-Type: application/json
 
 {
-  "restaurantId": "e0528938-1f04-4067-988c-c5daaf51b556",
+  "restaurantId": "375686e5-2edb-40b2-805e-15da931ca25d",
   "name": "Pizza",
   "description": "yummy cheese and tomato sauce",
   "price": 14.99,
@@ -45,7 +45,11 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:8080/api/foodmenus/e0528938-1f04-4067-988c-c5daaf51b556/dishes/96144920-af2b-4663-8c8d-dadb8cba410a/publish
+PATCH http://localhost:8080/api/foodmenus/375686e5-2edb-40b2-805e-15da931ca25d/dishes/92da893a-6513-4904-b00b-e65c6a27500d/publish
+
+###
+
+GET http://localhost:8080/api/restaurants/375686e5-2edb-40b2-805e-15da931ca25d/orders
 
 ###
 

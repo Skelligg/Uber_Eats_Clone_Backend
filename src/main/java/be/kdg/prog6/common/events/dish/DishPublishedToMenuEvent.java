@@ -1,4 +1,6 @@
-package be.kdg.prog6.common.events;
+package be.kdg.prog6.common.events.dish;
+
+import be.kdg.prog6.common.events.DomainEvent;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

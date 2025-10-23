@@ -1,6 +1,6 @@
 package be.kdg.prog6.restaurant.core.foodmenu;
 
-import be.kdg.prog6.common.events.FoodMenuCreatedEvent;
+import be.kdg.prog6.common.events.foodmenu.FoodMenuCreatedEvent;
 import be.kdg.prog6.restaurant.domain.FoodMenu;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 import be.kdg.prog6.restaurant.port.in.foodmenu.CreateFoodMenuUseCase;

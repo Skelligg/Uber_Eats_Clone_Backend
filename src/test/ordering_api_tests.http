@@ -10,10 +10,10 @@ POST http://localhost:8080/api/orders
 Content-Type: application/json
 
 {
-  "restaurantId": "e0528938-1f04-4067-988c-c5daaf51b556",
+  "restaurantId": "375686e5-2edb-40b2-805e-15da931ca25d",
   "lines": [
     {
-      "dishId": "96144920-af2b-4663-8c8d-dadb8cba410a",
+      "dishId": "92da893a-6513-4904-b00b-e65c6a27500d",
       "dishName": "Pizza",
       "quantity": 2,
       "unitPrice": 14.99,

@@ -1,6 +1,6 @@
 package be.kdg.prog6.restaurant.domain;
 
-import be.kdg.prog6.common.events.DishPublishedToMenuEvent;
+import be.kdg.prog6.common.events.dish.DishPublishedToMenuEvent;
 import be.kdg.prog6.common.events.DomainEvent;
 import be.kdg.prog6.restaurant.domain.vo.Price;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishId;

@@ -1,7 +1,7 @@
 // ordering/adaptor/in/FoodMenusChangedListener.java
 package be.kdg.prog6.ordering.adaptor.in;
 
-import be.kdg.prog6.common.events.FoodMenuCreatedEvent;
+import be.kdg.prog6.common.events.foodmenu.FoodMenuCreatedEvent;
 import be.kdg.prog6.ordering.port.in.foodmenu.FoodMenusChangedProjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

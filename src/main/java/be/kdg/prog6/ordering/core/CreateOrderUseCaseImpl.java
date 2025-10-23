@@ -1,6 +1,6 @@
 package be.kdg.prog6.ordering.core;
 
-import be.kdg.prog6.common.events.OrderCreatedEvent;
+import be.kdg.prog6.common.events.order.OrderCreatedEvent;
 import be.kdg.prog6.common.vo.OrderLineEventInfo;
 import be.kdg.prog6.ordering.domain.Order;
 import be.kdg.prog6.ordering.domain.vo.OrderId;

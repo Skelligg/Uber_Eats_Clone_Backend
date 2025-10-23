@@ -1,6 +1,6 @@
 package be.kdg.prog6.restaurant.core.dish;
 
-import be.kdg.prog6.common.events.DishUnpublishedToMenuEvent;
+import be.kdg.prog6.common.events.dish.DishUnpublishedToMenuEvent;
 import be.kdg.prog6.restaurant.domain.Dish;
 import be.kdg.prog6.restaurant.domain.FoodMenu;
 import be.kdg.prog6.restaurant.port.in.dish.DishStateChangeCommand;
