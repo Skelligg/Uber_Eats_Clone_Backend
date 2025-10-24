@@ -1,4 +1,21 @@
-GET http://localhost:8080/api/foodmenus/11111111-1111-1111-1111-111111111111/dishes
+### Get access token with admin user
+
+POST http://localhost:8180/realms/keepdishesgoing/protocol/openid-connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+client_id=backend-client&client_secret=IfOsqR0GHoUYmj0GlxJ6nUcx6Hm8SxxE&username=owner&password=owner&grant_type=password
+
+//saving the access token
+> {%
+    client.global.set("access_token", response.body.access_token);
+%}
+
+###
+
+GET http://localhost:8080/api/foodmenus/11111111-1111-1111-1111-111111111111/dishes HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
 
 ### Create restaurant (owner must be authenticated)
 POST http://localhost:8080/api/restaurants

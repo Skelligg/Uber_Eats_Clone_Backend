@@ -11,12 +11,15 @@ import be.kdg.prog6.restaurant.domain.vo.restaurant.*;
 import be.kdg.prog6.restaurant.port.in.order.GetOrdersUseCase;
 import be.kdg.prog6.restaurant.port.in.restaurant.CreateRestaurantCommand;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+// have to secure these controllers now.. do preauthorize('owner'), then have to
+// either find restaurant/foodmenu with owner id first or check owner id with restaurants ownerid.
 @RestController
 @RequestMapping("/api/restaurants")
 public class RestaurantController {
@@ -30,6 +33,7 @@ public class RestaurantController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<RestaurantDto> createRestaurant(@RequestBody CreateRestaurantRequest request) {
         CreateRestaurantCommand command = new CreateRestaurantCommand(
                 OwnerId.of(request.ownerId()),
