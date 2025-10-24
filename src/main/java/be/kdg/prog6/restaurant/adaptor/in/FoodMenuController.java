@@ -11,6 +11,7 @@ import be.kdg.prog6.restaurant.domain.vo.Price;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 import be.kdg.prog6.restaurant.port.in.dish.*;
+import be.kdg.prog6.restaurant.port.in.foodmenu.GetFoodMenuUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +29,9 @@ public class FoodMenuController {
     private final MarkDishAvailableUseCase markDishAvailableUseCase;
     private final ApplyPendingChangesUseCase applyPendingChangesUseCase;
     private final SchedulePendingChangesUseCase schedulePendingChangesUseCase;
+    private final GetFoodMenuUseCase getFoodMenuUseCase;
 
-    public FoodMenuController(CreateDishDraftUseCase createDishDraftUseCase, PublishDishUseCase publishDishUseCase, UnpublishDishUseCase unpublishDishUseCase, EditDishUseCase editDishUseCase, MarkDishOutOfStockUseCase markDishOutOfStockUseCase, MarkDishAvailableUseCase markDishAvailableUseCase, ApplyPendingChangesUseCase applyPendingChangesUseCase, SchedulePendingChangesUseCase schedulePendingChangesUseCase) {
+    public FoodMenuController(CreateDishDraftUseCase createDishDraftUseCase, PublishDishUseCase publishDishUseCase, UnpublishDishUseCase unpublishDishUseCase, EditDishUseCase editDishUseCase, MarkDishOutOfStockUseCase markDishOutOfStockUseCase, MarkDishAvailableUseCase markDishAvailableUseCase, ApplyPendingChangesUseCase applyPendingChangesUseCase, SchedulePendingChangesUseCase schedulePendingChangesUseCase, GetFoodMenuUseCase getFoodMenuUseCase) {
         this.createDishDraftUseCase = createDishDraftUseCase;
         this.publishDishUseCase = publishDishUseCase;
         this.unpublishDishUseCase = unpublishDishUseCase;
@@ -38,6 +40,49 @@ public class FoodMenuController {
         this.markDishAvailableUseCase = markDishAvailableUseCase;
         this.applyPendingChangesUseCase = applyPendingChangesUseCase;
         this.schedulePendingChangesUseCase = schedulePendingChangesUseCase;
+        this.getFoodMenuUseCase = getFoodMenuUseCase;
+    }
+
+    @GetMapping("/{restaurantId}/dishes")
+    public ResponseEntity<List<DishDto>> getDishes(@PathVariable String restaurantId) {
+        FoodMenu foodMenu = getFoodMenuUseCase.getFoodMenu(UUID.fromString(restaurantId));
+
+        List<DishDto> dishes = new java.util.ArrayList<>();
+        for (Dish dish : foodMenu.getAllDishes()){
+            DishVersionDto publishedDto = dish.getPublishedVersion()
+                    .map(v -> new DishVersionDto(
+                            v.name(),
+                            v.description(),
+                            v.price().asDouble(),
+                            v.pictureUrl(),
+                            v.tags(),
+                            v.dishType().toString()
+                    ))
+                    .orElse(null);
+
+            DishVersionDto draftDto = dish.getDraftVersion()
+                    .map(v -> new DishVersionDto(
+                            v.name(),
+                            v.description(),
+                            v.price().asDouble(),
+                            v.pictureUrl(),
+                            v.tags(),
+                            v.dishType().toString()
+                    ))
+                    .orElse(null);
+
+            dishes.add(new DishDto(
+                            dish.getDishId().id(),
+                            publishedDto,
+                            draftDto,
+                            dish.getState().name(),
+                            dish.getScheduledPublishTime().orElse(null),
+                            dish.getScheduledToBecomeState()
+                    )
+            );
+        }
+
+        return ResponseEntity.ok(dishes);
     }
 
     @PostMapping("/dishes")
@@ -69,7 +114,9 @@ public class FoodMenuController {
                 created.getDishId().id(),
                 null,          // no published version yet
                 draftDto,
-                created.getState().name()
+                created.getState().name(),
+                created.getScheduledPublishTime().orElse(null),
+                created.getScheduledToBecomeState()
         ));
     }
 
@@ -100,7 +147,9 @@ public class FoodMenuController {
                 published.getDishId().id(),
                 publishedDto,
                 null,
-                published.getState().name()
+                published.getState().name(),
+                published.getScheduledPublishTime().orElse(null),
+                published.getScheduledToBecomeState()
         ));
     }
 
@@ -131,7 +180,9 @@ public class FoodMenuController {
                 unpublished.getDishId().id(),
                 null,
                 draftDto,
-                unpublished.getState().name()
+                unpublished.getState().name(),
+                unpublished.getScheduledPublishTime().orElse(null),
+                unpublished.getScheduledToBecomeState()
         ));
     }
 
@@ -172,7 +223,9 @@ public class FoodMenuController {
                 outOfStockDish.getDishId().id(),
                 publishedDto,
                 draftDto,
-                outOfStockDish.getState().name()
+                outOfStockDish.getState().name(),
+                outOfStockDish.getScheduledPublishTime().orElse(null),
+                outOfStockDish.getScheduledToBecomeState()
         ));
     }
 
@@ -213,7 +266,9 @@ public class FoodMenuController {
                 availableDish.getDishId().id(),
                 publishedDto,
                 draftDto,
-                availableDish.getState().name()
+                availableDish.getState().name(),
+                availableDish.getScheduledPublishTime().orElse(null),
+                availableDish.getScheduledToBecomeState()
         ));
     }
     // ask about restful api conventions, am I allowed to have actions at the end of apis, more DDD to do so than
@@ -263,7 +318,9 @@ public class FoodMenuController {
                 editedDish.getDishId().id(),
                 publishedDto,
                 draftDto,
-                editedDish.getState().name()
+                editedDish.getState().name(),
+                editedDish.getScheduledPublishTime().orElse(null),
+                editedDish.getScheduledToBecomeState()
         ));
     }
 
@@ -292,7 +349,9 @@ public class FoodMenuController {
                     dish.getDishId().id(),
                     publishedDto,
                     null,
-                    dish.getState().name()
+                    dish.getState().name(),
+                    dish.getScheduledPublishTime().orElse(null),
+                    dish.getScheduledToBecomeState()
                 )
             );
         }

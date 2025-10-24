@@ -15,9 +15,8 @@ public class RestaurantJpaEntity {
     @Id
     private UUID id;
 
-    // Domain: OwnerId
     @Column(nullable = false)
-    private String ownerId;
+    private UUID ownerId;
 
     @Column(nullable = false)
     private String ownerName;
@@ -65,7 +64,7 @@ public class RestaurantJpaEntity {
 
     public RestaurantJpaEntity(
             UUID id,
-            String ownerId,
+            UUID ownerId,
             String ownerName,
             String name,
             String street,
@@ -106,7 +105,7 @@ public class RestaurantJpaEntity {
         return id;
     }
 
-    public String getOwnerId() {
+    public UUID getOwnerId() {
         return ownerId;
     }
 

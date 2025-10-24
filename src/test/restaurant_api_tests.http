@@ -1,3 +1,5 @@
+GET http://localhost:8080/api/foodmenus/11111111-1111-1111-1111-111111111111/dishes
+
 ### Create restaurant (owner must be authenticated)
 POST http://localhost:8080/api/restaurants
 Content-Type: application/json

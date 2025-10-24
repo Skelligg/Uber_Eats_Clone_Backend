@@ -1,7 +1,7 @@
 package be.kdg.prog6.restaurant.domain.vo.dish;
 
 public enum DISH_STATE {
-    UNPUBLISHED,
+    DRAFT,
     PUBLISHED,
     OUT_OF_STOCK
 }

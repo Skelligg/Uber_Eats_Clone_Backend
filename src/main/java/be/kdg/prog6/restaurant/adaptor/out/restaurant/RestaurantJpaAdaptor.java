@@ -25,7 +25,7 @@ public class RestaurantJpaAdaptor implements UpdateRestaurantPort, LoadRestauran
 
     @Override
     public Optional<Restaurant> findByOwnerId(OwnerId ownerId) {
-        return restaurants.findByOwnerId(ownerId.id().toString())
+        return restaurants.findByOwnerId(ownerId.id())
                 .map(this::toDomain);
     }
 
@@ -50,7 +50,7 @@ public class RestaurantJpaAdaptor implements UpdateRestaurantPort, LoadRestauran
     private Restaurant toDomain(RestaurantJpaEntity entity) {
         return new Restaurant(
                 new RestaurantId(entity.getId()),
-                new OwnerId(UUID.fromString(entity.getOwnerId()), entity.getOwnerName()),
+                new OwnerId(entity.getOwnerId(), entity.getOwnerName()),
                 entity.getName(),
                 new Address(
                         entity.getStreet(),
@@ -72,7 +72,7 @@ public class RestaurantJpaAdaptor implements UpdateRestaurantPort, LoadRestauran
     private RestaurantJpaEntity toJpaEntity(Restaurant restaurant) {
         return new RestaurantJpaEntity(
                 restaurant.getRestaurantId().id(),                     // UUID
-                restaurant.getOwnerId().id().toString(),               // ownerId as String
+                restaurant.getOwnerId().id(),               // ownerId as String
                 restaurant.getOwnerId().name(),                        // ownerName
                 restaurant.getName(),
                 restaurant.getAddress().street(),

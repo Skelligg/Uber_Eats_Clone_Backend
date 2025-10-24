@@ -29,7 +29,7 @@ public class Dish {
     public Dish(DishVersion initialVersion) {
         this.dishId = DishId.newId();
         this.draftVersion = initialVersion;
-        this.state = DISH_STATE.UNPUBLISHED;
+        this.state = DISH_STATE.DRAFT;
     }
 
     public Dish(DishId dishId, DishVersion publishedVersion, DishVersion draftVersion, DISH_STATE state, LocalDateTime scheduledPublishTime, DISH_STATE scheduledToBecomeState) {
@@ -75,7 +75,7 @@ public class Dish {
 
     // --- Unpublish a dish entirely ---
     public void unpublish() {
-        this.state = DISH_STATE.UNPUBLISHED;
+        this.state = DISH_STATE.DRAFT;
         this.draftVersion = publishedVersion;
         this.publishedVersion = null;
         this.scheduledPublishTime = null;

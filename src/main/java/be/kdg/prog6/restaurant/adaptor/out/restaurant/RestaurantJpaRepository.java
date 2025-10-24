@@ -10,5 +10,5 @@ public interface RestaurantJpaRepository extends JpaRepository<RestaurantJpaEnti
     @Override
     Optional<RestaurantJpaEntity> findById(UUID uuid);
 
-    Optional<RestaurantJpaEntity> findByOwnerId(String ownerId);
+    Optional<RestaurantJpaEntity> findByOwnerId(UUID ownerId);
 }

@@ -121,7 +121,7 @@ public class FoodMenu {
     }
 
     private boolean isNotPublished(Dish d) {
-        return d.getState() == DISH_STATE.UNPUBLISHED;
+        return d.getState() == DISH_STATE.DRAFT;
     }
 
     public void addDomainEvent(DomainEvent event) {

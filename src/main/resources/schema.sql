@@ -11,7 +11,7 @@ CREATE SCHEMA ordering;
 -- ==============================
 CREATE TABLE restaurant.restaurant (
                                        id UUID PRIMARY KEY,
-                                       owner_id VARCHAR(255) NOT NULL,
+                                       owner_id UUID NOT NULL,
                                        owner_name VARCHAR(255) NOT NULL,
                                        name VARCHAR(255) NOT NULL,
                                        street VARCHAR(255),
@@ -58,20 +58,36 @@ CREATE TABLE restaurant.food_menu (
 CREATE TABLE restaurant.dish (
                                  id UUID PRIMARY KEY,
                                  food_menu_id UUID NOT NULL,
-                                 name VARCHAR(255) NOT NULL,
-                                 description TEXT,
-                                 price NUMERIC(10, 2) NOT NULL,
-                                 picture_url VARCHAR(2048),
-                                 tags TEXT,
-                                 dish_type VARCHAR(50),
+
+    -- State of the dish
                                  state VARCHAR(50) NOT NULL,
+
+
+                                 published_name VARCHAR(255),
+                                 published_description TEXT,
+                                 published_price NUMERIC(10,2),
+                                 published_picture_url VARCHAR(2048),
+                                 published_tags TEXT,
+                                 published_dish_type VARCHAR(50),
+
+
+                                 draft_name VARCHAR(255),
+                                 draft_description TEXT,
+                                 draft_price NUMERIC(10,2),
+                                 draft_picture_url VARCHAR(2048),
+                                 draft_tags TEXT,
+                                 draft_dish_type VARCHAR(50),
+
+
                                  scheduled_publish_time TIMESTAMP,
                                  scheduled_to_become_state VARCHAR(50),
+
                                  CONSTRAINT fk_dish_food_menu
                                      FOREIGN KEY (food_menu_id)
                                          REFERENCES restaurant.food_menu(restaurant_id)
                                          ON DELETE CASCADE
 );
+
 
 CREATE TABLE restaurant.order_projections (
                                               order_id UUID PRIMARY KEY,
