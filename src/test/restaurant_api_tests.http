@@ -143,3 +143,8 @@ Content-Type: application/json
   "publicationTime": "2025-10-14T22:02:00",
   "stateToBecome": "PUBLISHED"
 }
+
+###
+
+PATCH http://localhost:8080/api/restaurants/orders/c205e502-291f-46af-ad54-1e046103f45e/accept
+Authorization: Bearer {{access_token}}

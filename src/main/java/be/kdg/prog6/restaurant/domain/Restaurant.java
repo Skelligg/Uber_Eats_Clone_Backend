@@ -91,4 +91,8 @@ public class Restaurant {
     public List<DomainEvent> getDomainEvents() {
         return domainEvents;
     }
+
+    public void clearDomainEvents() {
+        domainEvents.clear();
+    }
 }

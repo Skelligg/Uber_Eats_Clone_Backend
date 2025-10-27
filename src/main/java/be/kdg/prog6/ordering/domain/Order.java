@@ -102,7 +102,9 @@ public class Order {
      * - set acceptedAt and status = ACCEPTED
      * - publish OrderAcceptedEvent (routing key restaurant.{id}.order.accepted.v1)
      */
-    public void accept(String acceptedBy, LocalDateTime when) {
+    public void accepted() {
+        if(ORDER_STATUS.PLACED == status) {status = ORDER_STATUS.ACCEPTED;}
+        acceptedAt = LocalDateTime.now();
     }
 
     /**

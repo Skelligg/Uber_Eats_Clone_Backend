@@ -30,9 +30,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.postgresql:postgresql'
 
+    implementation("org.springframework.modulith:spring-modulith-events-api:1.4.1")
+    implementation("org.springframework.modulith:spring-modulith-events-amqp:1.4.1")
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation "org.springframework.modulith:spring-modulith-starter-test:${springModulithVersion}"
+
+    testImplementation("org.springframework.amqp:spring-rabbit-test")
+
 }
 
 // Optional: Spring Boot plugin configuration

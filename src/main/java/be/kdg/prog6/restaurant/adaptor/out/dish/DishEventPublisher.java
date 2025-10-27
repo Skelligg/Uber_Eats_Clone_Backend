@@ -16,6 +16,8 @@ public class DishEventPublisher implements PublishDishEventPort {
 
     @Override
     public void updateDish(Dish dish) {
+
         dish.getDomainEvents().forEach(applicationEventPublisher::publishEvent);
+        dish.clearDomainEvents();
     }
 }

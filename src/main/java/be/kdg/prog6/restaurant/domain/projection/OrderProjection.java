@@ -1,8 +1,11 @@
 package be.kdg.prog6.restaurant.domain.projection;
 
+import be.kdg.prog6.common.events.DomainEvent;
+import be.kdg.prog6.common.vo.Address;
 import be.kdg.prog6.common.vo.ORDER_STATUS;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,11 +14,7 @@ public class OrderProjection {
     private UUID orderId;
     private UUID restaurantId;
 
-    private String street;
-    private String number;
-    private String postalCode;
-    private String city;
-    private String country;
+    private Address address;
 
     private double totalPrice;
     private LocalDateTime placedAt;
@@ -32,17 +31,15 @@ public class OrderProjection {
 
     private List<OrderLineProjection> lines;
 
+    private final List<DomainEvent> domainEvents= new ArrayList<>();
+
     public OrderProjection() {
     }
 
-    public OrderProjection(UUID orderId, UUID restaurantId, String street, String number, String postalCode, String city, String country, double totalPrice, LocalDateTime placedAt, ORDER_STATUS status, String rejectionReason, LocalDateTime acceptedAt, LocalDateTime readyAt, LocalDateTime rejectedAt, LocalDateTime pickedUpAt, LocalDateTime deliveredAt, List<OrderLineProjection> lines) {
+    public OrderProjection(UUID orderId, UUID restaurantId, Address address, double totalPrice, LocalDateTime placedAt, ORDER_STATUS status, String rejectionReason, LocalDateTime acceptedAt, LocalDateTime readyAt, LocalDateTime rejectedAt, LocalDateTime pickedUpAt, LocalDateTime deliveredAt, List<OrderLineProjection> lines) {
         this.orderId = orderId;
         this.restaurantId = restaurantId;
-        this.street = street;
-        this.number = number;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.country = country;
+        this.address = address;
         this.totalPrice = totalPrice;
         this.placedAt = placedAt;
         this.status = status;
@@ -56,20 +53,21 @@ public class OrderProjection {
     }
 
     public OrderProjection(UUID orderId, UUID restaurantId,
-                           String street, String number, String postalCode, String city, String country,
+                           Address address,
                            double totalPrice, LocalDateTime placedAt, ORDER_STATUS status,
                            List<OrderLineProjection> lines) {
         this.orderId = orderId;
         this.restaurantId = restaurantId;
-        this.street = street;
-        this.number = number;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.country = country;
+        this.address = address;
         this.totalPrice = totalPrice;
         this.placedAt = placedAt;
         this.status = status;
         this.lines = lines;
+    }
+
+    public void accept(){
+        status = ORDER_STATUS.ACCEPTED;
+        acceptedAt = LocalDateTime.now();
     }
 
     public UUID getOrderId() {
@@ -78,26 +76,6 @@ public class OrderProjection {
 
     public UUID getRestaurantId() {
         return restaurantId;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getCountry() {
-        return country;
     }
 
     public double getTotalPrice() {
@@ -138,5 +116,21 @@ public class OrderProjection {
 
     public List<OrderLineProjection> getLines() {
         return lines;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public List<DomainEvent> getDomainEvents() {
+        return domainEvents;
+    }
+
+    public void clearDomainEvents() {
+        domainEvents.clear();
+    }
+
+    public void addDomainEvent(DomainEvent event) {
+        domainEvents.add(event);
     }
 }

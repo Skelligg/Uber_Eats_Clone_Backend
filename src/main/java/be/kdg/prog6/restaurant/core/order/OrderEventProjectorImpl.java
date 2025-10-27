@@ -1,5 +1,6 @@
 package be.kdg.prog6.restaurant.core.order;
 
+import be.kdg.prog6.common.vo.Address;
 import be.kdg.prog6.common.vo.ORDER_STATUS;
 import be.kdg.prog6.restaurant.domain.projection.OrderLineProjection;
 import be.kdg.prog6.restaurant.domain.projection.OrderProjection;
@@ -12,28 +13,30 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class OrderEventProjectorImpl implements OrderEventProjector {
 
     private static final Logger log = LoggerFactory.getLogger(OrderEventProjectorImpl.class);
-    private final UpdateOrdersPort updateOrdersPort;
+    private final List<UpdateOrdersPort> updateOrdersPorts;
 
-    public OrderEventProjectorImpl(UpdateOrdersPort updateOrdersPort) {
-        this.updateOrdersPort = updateOrdersPort;
+    public OrderEventProjectorImpl(List<UpdateOrdersPort> updateOrdersPorts) {
+        this.updateOrdersPorts = updateOrdersPorts;
     }
 
     @Override
     @Transactional
     public void project(OrderPlacedCommand command) {
         log.info("Projecting OrderPlacedEvent for order {}", command.orderId());
-        updateOrdersPort.update(new OrderProjection(
+        this.updateOrdersPorts.forEach(port -> port.update(new OrderProjection(
                 command.orderId(),
                 command.restaurantId(),
-                command.deliveryAddress().street(),
+                Address.of(command.deliveryAddress().street(),
                 command.deliveryAddress().number(),
                 command.deliveryAddress().postalCode(),
                 command.deliveryAddress().city(),
-                command.deliveryAddress().country(),
+                command.deliveryAddress().country()),
                 command.totalPrice(),
                 command.placedAt(),
                 ORDER_STATUS.valueOf(command.orderStatus().toUpperCase()),
@@ -45,6 +48,6 @@ public class OrderEventProjectorImpl implements OrderEventProjector {
                                 l.unitPrice(),
                                 l.linePrice()
                         )).toList()
-        ));
+        )));
     }
 }

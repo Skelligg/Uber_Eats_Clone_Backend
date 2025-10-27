@@ -1,5 +1,6 @@
 package be.kdg.prog6.restaurant.adaptor.out.projection.order;
 
+import be.kdg.prog6.common.vo.Address;
 import be.kdg.prog6.restaurant.domain.projection.OrderLineProjection;
 import be.kdg.prog6.restaurant.domain.projection.OrderProjection;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
@@ -41,11 +42,11 @@ public class OrderProjectionJpaAdaptor implements LoadOrdersPort, UpdateOrdersPo
         OrderProjectionJpaEntity entity = new OrderProjectionJpaEntity(
                 projection.getOrderId(),
                 projection.getRestaurantId(),
-                projection.getStreet(),
-                projection.getNumber(),
-                projection.getPostalCode(),
-                projection.getCity(),
-                projection.getCountry(),
+                projection.getAddress().street(),
+                projection.getAddress().number(),
+                projection.getAddress().postalCode(),
+                projection.getAddress().city(),
+                projection.getAddress().country(),
                 projection.getTotalPrice(),
                 projection.getPlacedAt(),
                 projection.getStatus(),
@@ -68,6 +69,11 @@ public class OrderProjectionJpaAdaptor implements LoadOrdersPort, UpdateOrdersPo
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public OrderProjection loadOrderById(UUID orderId) {
+        return repository.findById(orderId).map(this::toDomain).orElse(null);
+    }
+
     public OrderProjection toDomain(OrderProjectionJpaEntity entity) {
         List<OrderLineProjection> lines = entity.getLines().stream()
                 .map(l -> new OrderLineProjection(
@@ -82,11 +88,12 @@ public class OrderProjectionJpaAdaptor implements LoadOrdersPort, UpdateOrdersPo
         return new OrderProjection(
                 entity.getOrderId(),
                 entity.getRestaurantId(),
+                Address.of(
                 entity.getStreet(),
                 entity.getNumber(),
                 entity.getPostalCode(),
                 entity.getCity(),
-                entity.getCountry(),
+                entity.getCountry()),
                 entity.getTotalPrice(),
                 entity.getPlacedAt(),
                 entity.getStatus(),

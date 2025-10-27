@@ -1,31 +1,31 @@
 package be.kdg.prog6.common.events.order;
 
 import be.kdg.prog6.common.events.DomainEvent;
-import be.kdg.prog6.common.vo.Address;
 import be.kdg.prog6.common.vo.Coordinates;
-//import org.springframework.modulith.events.Externalized;
+import be.kdg.prog6.common.vo.RabbitMQAddress;
+import org.springframework.modulith.events.Externalized;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 
-//@Externalized("kdg.events::#{'restaurant.' + #this.restaurantId() + '.order.accepted.v1'}")
+@Externalized("kdg.events::#{'restaurant.' + #this.restaurantId() + '.order.accepted.v1'}")
 public record OrderAcceptedEvent(
         UUID eventId,
         LocalDateTime occurredAt,
         UUID restaurantId,
         UUID orderId,
-        Address pickUpAddress,
+        RabbitMQAddress pickUpAddress,
         Coordinates pickupCoordinates,
-        Address dropoffAddress,
+        RabbitMQAddress dropoffAddress,
         Coordinates dropoffCoordinates
 ) implements DomainEvent {
 
     public OrderAcceptedEvent( UUID restaurantId,
                                UUID orderId,
-                               Address pickupAddress,
+                               RabbitMQAddress pickupAddress,
                                Coordinates pickupCoordinates,
-                               Address dropoffAddress,
+                               RabbitMQAddress dropoffAddress,
                                Coordinates dropoffCoordinates
     ){
         this(UUID.randomUUID(), LocalDateTime.now(), restaurantId, orderId, pickupAddress,

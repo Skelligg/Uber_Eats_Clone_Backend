@@ -7,11 +7,15 @@ import be.kdg.prog6.restaurant.adaptor.in.response.OrderlineDto;
 import be.kdg.prog6.restaurant.adaptor.in.response.RestaurantDto;
 import be.kdg.prog6.restaurant.core.restaurant.DefaultCreateRestaurantUseCase;
 import be.kdg.prog6.restaurant.domain.Restaurant;
+import be.kdg.prog6.restaurant.domain.projection.OrderProjection;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.*;
+import be.kdg.prog6.restaurant.port.in.order.AcceptOrderUseCase;
 import be.kdg.prog6.restaurant.port.in.order.GetOrdersUseCase;
 import be.kdg.prog6.restaurant.port.in.restaurant.CreateRestaurantCommand;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,11 +29,13 @@ import java.util.stream.Collectors;
 public class RestaurantController {
     private final DefaultCreateRestaurantUseCase createRestaurantUseCase;
     private final GetOrdersUseCase getOrdersUseCase;
+    private final AcceptOrderUseCase acceptOrderUseCase;
 
     public RestaurantController(
-            DefaultCreateRestaurantUseCase createRestaurantUseCase, GetOrdersUseCase getOrdersUseCase) {
+            DefaultCreateRestaurantUseCase createRestaurantUseCase, GetOrdersUseCase getOrdersUseCase, AcceptOrderUseCase acceptOrderUseCase) {
         this.createRestaurantUseCase = createRestaurantUseCase;
         this.getOrdersUseCase = getOrdersUseCase;
+        this.acceptOrderUseCase = acceptOrderUseCase;
     }
 
     @PostMapping
@@ -62,18 +68,18 @@ public class RestaurantController {
     }
 
     @GetMapping("/{restaurantId}/orders")
-    public ResponseEntity<List<OrderDto>> getOrders(@PathVariable String restaurantId) {
+    public ResponseEntity<List<OrderDto>> getOrders(@PathVariable String restaurantId, @AuthenticationPrincipal Jwt jwt) {
 
         List<OrderDto> orders = getOrdersUseCase.getOrders(
                         RestaurantId.of(UUID.fromString(restaurantId))
                 ).stream()
                 .map(o -> new OrderDto(
                         o.getOrderId(),
-                        o.getStreet(),
-                        o.getNumber(),
-                        o.getPostalCode(),
-                        o.getCity(),
-                        o.getCountry(),
+                        o.getAddress().street(),
+                        o.getAddress().number(),
+                        o.getAddress().postalCode(),
+                        o.getAddress().city(),
+                        o.getAddress().country(),
                         o.getTotalPrice(),
                         o.getPlacedAt(),
                         o.getStatus(),
@@ -97,6 +103,42 @@ public class RestaurantController {
 
 
         return ResponseEntity.ok(orders);
+    }
+
+    @PatchMapping("/orders/{orderId}/accept")
+    @PreAuthorize("hasAuthority('owner')")
+    public ResponseEntity<OrderDto> acceptOrder(@PathVariable String orderId, @AuthenticationPrincipal Jwt jwt) {
+        String subject = jwt.getClaimAsString("sub");
+        UUID ownerId = UUID.fromString(subject);
+
+        OrderProjection order = acceptOrderUseCase.acceptOrder(UUID.fromString(orderId),ownerId);
+
+        return ResponseEntity.ok(new OrderDto(
+                order.getOrderId(),
+                order.getAddress().street(),
+                order.getAddress().number(),
+                order.getAddress().postalCode(),
+                order.getAddress().city(),
+                order.getAddress().country(),
+                order.getTotalPrice(),
+                order.getPlacedAt(),
+                order.getStatus(),
+                order.getRejectionReason(),
+                order.getAcceptedAt() != null ? order.getAcceptedAt(): null,
+                order.getReadyAt() != null ? order.getReadyAt(): null,
+                order.getRejectedAt() != null ? order.getRejectedAt(): null,
+                order.getPickedUpAt() != null ? order.getPickedUpAt(): null,
+                order.getDeliveredAt() != null ? order.getDeliveredAt(): null,
+                order.getLines().stream()
+                        .map(l -> new OrderlineDto(
+                                l.dishId().id(),
+                                l.dishName(),
+                                l.quantity(),
+                                l.unitPrice(),
+                                l.linePrice()
+                        ))
+                        .toList()
+        ));
     }
 
 }

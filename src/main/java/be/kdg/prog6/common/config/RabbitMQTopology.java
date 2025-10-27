@@ -9,26 +9,28 @@ public class RabbitMQTopology {
 
     public static final String EXCHANGE_NAME = "kdg.events";
 
+    public static final String ORDER_ACCEPTED_QUEUE = "restaurant.order.accepted";
+
     @Bean
-    public TopicExchange kdgExchange() {
+    public TopicExchange deliveryExchange() {
         return ExchangeBuilder
                 .topicExchange(EXCHANGE_NAME)
                 .durable(true)
                 .build();
     }
 
-    // Example queue for listening to dish changes (ordering context)
+    // Queues
     @Bean
-    public Queue dishChangedQueue() {
-        return new Queue("ordering.dishes.changed.queue", true);
+    Queue orderAcceptedQueue() {
+        return QueueBuilder.durable(ORDER_ACCEPTED_QUEUE).build();
     }
 
-    // Example binding: this context listens for dish events from restaurant context
+    // Bindings (Publishing to delivery service)
     @Bean
-    public Binding bindDishEvents(Queue dishChangedQueue, TopicExchange kdgExchange) {
+    Binding bindOrderAcceptedToExchange() {
         return BindingBuilder
-                .bind(dishChangedQueue)
-                .to(kdgExchange)
-                .with("restaurant.*.dish.*.v1");
+                .bind(orderAcceptedQueue())
+                .to(deliveryExchange())
+                .with("restaurant.*.order.accepted.v1");
     }
 }

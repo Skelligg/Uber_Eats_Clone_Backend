@@ -128,6 +128,10 @@ public class FoodMenu {
         domainEvents.add(event);
     }
 
+    public void clearDomainEvents() {
+        domainEvents.clear();
+    }
+
     public List<DomainEvent> getDomainEvents() {
         return domainEvents;
     }

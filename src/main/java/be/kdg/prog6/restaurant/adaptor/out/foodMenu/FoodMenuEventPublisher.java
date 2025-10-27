@@ -18,5 +18,6 @@ public class FoodMenuEventPublisher implements PublishFoodMenuEventPort {
     @Override
     public void publishFoodMenuCreated(FoodMenu foodMenu) {
         foodMenu.getDomainEvents().forEach(applicationEventPublisher::publishEvent);
+        foodMenu.clearDomainEvents();
     }
 }

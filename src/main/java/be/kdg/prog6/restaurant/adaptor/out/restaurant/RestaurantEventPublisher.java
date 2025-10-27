@@ -18,6 +18,7 @@ public class RestaurantEventPublisher implements PublishRestaurantEventPort {
     @Override
     public void publishRestaurantCreated(Restaurant restaurant) {
         restaurant.getDomainEvents().forEach(applicationEventPublisher::publishEvent);
+        restaurant.clearDomainEvents();
     }
 
 

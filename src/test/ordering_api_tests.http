@@ -2,7 +2,7 @@ GET http://localhost:8080/api/customers/restaurants
 
 ###
 
-GET http://localhost:8080/api/customers/restaurants/b52bd8cb-4f06-49df-948b-a5424ba0e964/dishes
+GET http://localhost:8080/api/customers/restaurants/11111111-1111-1111-1111-111111111111/dishes
 
 ###
 
@@ -10,10 +10,10 @@ POST http://localhost:8080/api/orders
 Content-Type: application/json
 
 {
-  "restaurantId": "375686e5-2edb-40b2-805e-15da931ca25d",
+  "restaurantId": "11111111-1111-1111-1111-111111111111",
   "lines": [
     {
-      "dishId": "92da893a-6513-4904-b00b-e65c6a27500d",
+      "dishId": "aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
       "dishName": "Pizza",
       "quantity": 2,
       "unitPrice": 14.99,
