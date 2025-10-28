@@ -1,5 +1,7 @@
 package be.kdg.prog6.ordering.domain.projection;
 
+import be.kdg.prog6.common.vo.DISH_TYPE;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -11,13 +13,13 @@ public class DishProjection {
     private BigDecimal price;
     private String pictureUrl;
     private String tags;
-    private String dishType;
+    private DISH_TYPE dishType;
     private DISH_AVAILABILITY dishState;
 
     // All-args constructor
     public DishProjection(UUID dishId, UUID foodMenuId, String name, String description,
                           BigDecimal price, String pictureUrl, String tags,
-                          String dishType, DISH_AVAILABILITY dishState) {
+                          DISH_TYPE dishType, DISH_AVAILABILITY dishState) {
         this.dishId = dishId;
         this.foodMenuId = foodMenuId;
         this.name = name;
@@ -58,7 +60,7 @@ public class DishProjection {
         return tags;
     }
 
-    public String getDishType() {
+    public DISH_TYPE getDishType() {
         return dishType;
     }
 
@@ -95,7 +97,7 @@ public class DishProjection {
         this.tags = tags;
     }
 
-    public void setDishType(String dishType) {
+    public void setDishType(DISH_TYPE dishType) {
         this.dishType = dishType;
     }
 

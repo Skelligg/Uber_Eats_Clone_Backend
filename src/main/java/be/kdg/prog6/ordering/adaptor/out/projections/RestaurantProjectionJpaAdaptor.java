@@ -1,5 +1,7 @@
 package be.kdg.prog6.ordering.adaptor.out.projections;
 
+import be.kdg.prog6.common.vo.CUISINE_TYPE;
+import be.kdg.prog6.common.vo.DAY;
 import be.kdg.prog6.ordering.domain.projection.RestaurantProjection;
 import be.kdg.prog6.ordering.port.out.restaurant.LoadRestaurantsPort;
 import be.kdg.prog6.ordering.port.out.restaurant.UpdateRestaurantsPort;
@@ -25,8 +27,6 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
         return restaurantProjections.stream()
                 .map(entity -> new RestaurantProjection(
                         entity.getId(),
-                        entity.getOwnerId(),
-                        entity.getOwnerName(),
                         entity.getName(),
                         entity.getStreet(),
                         entity.getNumber(),
@@ -35,12 +35,12 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
                         entity.getCountry(),
                         entity.getEmailAddress(),
                         entity.getPictures(),
-                        entity.getCuisineType(),
+                        CUISINE_TYPE.valueOf(entity.getCuisineType()),
                         entity.getMinPrepTime(),
                         entity.getMaxPrepTime(),
                         entity.getOpeningTime(),
                         entity.getClosingTime(),
-                        entity.getOpenDays()
+                        entity.getOpenDays().stream().map(DAY::valueOf).collect(Collectors.toList())
                 ))
                 .toList();
     }
@@ -54,8 +54,6 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
     private RestaurantProjection toDomain(RestaurantProjectionJpaEntity entity) {
         return new RestaurantProjection(
                 entity.getId(),
-                entity.getOwnerId(),
-                entity.getOwnerName(),
                 entity.getName(),
                 entity.getStreet(),
                 entity.getNumber(),
@@ -66,12 +64,12 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
                 entity.getPictures().stream()
                         .map(String::new)
                         .collect(Collectors.toList()),
-                entity.getCuisineType(),
+                CUISINE_TYPE.valueOf(entity.getCuisineType()),
                 entity.getMinPrepTime(),
                 entity.getMaxPrepTime(),
                 entity.getOpeningTime(),
                 entity.getClosingTime(),
-                entity.getOpenDays()
+                entity.getOpenDays().stream().map(DAY::valueOf).collect(Collectors.toList())
         );
     }
 
@@ -79,8 +77,6 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
     public RestaurantProjection update(RestaurantProjection restaurantProjection) {
         RestaurantProjectionJpaEntity entity = new RestaurantProjectionJpaEntity(
                 restaurantProjection.getRestaurantId(),
-                restaurantProjection.getOwnerId(),
-                restaurantProjection.getOwnerName(),
                 restaurantProjection.getName(),
                 restaurantProjection.getStreet(),
                 restaurantProjection.getNumber(),
@@ -89,20 +85,18 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
                 restaurantProjection.getCountry(),
                 restaurantProjection.getEmailAddress(),
                 restaurantProjection.getPictures(),
-                restaurantProjection.getCuisineType(),
+                restaurantProjection.getCuisineType().toString(),
                 restaurantProjection.getMinPrepTime(),
                 restaurantProjection.getMaxPrepTime(),
                 restaurantProjection.getOpeningTime(),
                 restaurantProjection.getClosingTime(),
-                restaurantProjection.getOpenDays()
+                restaurantProjection.getOpenDays().stream().map(Enum::name).toList()
         );
 
         RestaurantProjectionJpaEntity saved = restaurantProjectionJpaRepository.save(entity);
 
         return new RestaurantProjection(
                 saved.getId(),
-                saved.getOwnerId(),
-                saved.getOwnerName(),
                 saved.getName(),
                 saved.getStreet(),
                 saved.getNumber(),
@@ -111,12 +105,12 @@ public class RestaurantProjectionJpaAdaptor implements LoadRestaurantsPort, Upda
                 saved.getCountry(),
                 saved.getEmailAddress(),
                 saved.getPictures(),
-                saved.getCuisineType(),
+                CUISINE_TYPE.valueOf(saved.getCuisineType()),
                 saved.getMinPrepTime(),
                 saved.getMaxPrepTime(),
                 saved.getOpeningTime(),
                 saved.getClosingTime(),
-                saved.getOpenDays()
+                saved.getOpenDays().stream().map(DAY::valueOf).collect(Collectors.toList())
         );
     }
 

@@ -1,11 +1,9 @@
 package be.kdg.prog6.restaurant.domain;
 
 import be.kdg.prog6.common.events.DomainEvent;
-import be.kdg.prog6.restaurant.domain.vo.Price;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishVersion;
 import be.kdg.prog6.restaurant.domain.vo.dish.DISH_STATE;
-import be.kdg.prog6.restaurant.domain.vo.dish.DISH_TYPE;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

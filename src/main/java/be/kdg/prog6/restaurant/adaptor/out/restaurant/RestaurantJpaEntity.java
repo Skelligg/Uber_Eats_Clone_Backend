@@ -1,7 +1,7 @@
 package be.kdg.prog6.restaurant.adaptor.out.restaurant;
 
-import be.kdg.prog6.restaurant.domain.vo.restaurant.CUISINE_TYPE;
-import be.kdg.prog6.restaurant.domain.vo.restaurant.DAY;
+import be.kdg.prog6.common.vo.CUISINE_TYPE;
+import be.kdg.prog6.common.vo.DAY;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;

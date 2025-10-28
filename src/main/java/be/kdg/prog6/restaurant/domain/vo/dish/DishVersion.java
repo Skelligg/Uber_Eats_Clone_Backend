@@ -1,5 +1,6 @@
 package be.kdg.prog6.restaurant.domain.vo.dish;
 
+import be.kdg.prog6.common.vo.DISH_TYPE;
 import be.kdg.prog6.restaurant.domain.vo.Price;
 
 import java.util.Objects;

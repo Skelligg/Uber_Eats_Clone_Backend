@@ -1,6 +1,6 @@
 package be.kdg.prog6.restaurant.adaptor.in.request;
 
-import be.kdg.prog6.restaurant.domain.vo.dish.DISH_TYPE;
+import be.kdg.prog6.common.vo.DISH_TYPE;
 
 public record EditDishRequest(
         String name,

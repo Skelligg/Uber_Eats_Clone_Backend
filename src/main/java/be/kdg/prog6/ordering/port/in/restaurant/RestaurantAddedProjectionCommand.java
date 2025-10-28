@@ -8,8 +8,6 @@ import java.util.UUID;
 
 public record RestaurantAddedProjectionCommand(
         UUID restaurantId,
-        UUID ownerId,
-        String ownerName,
         String name,
         String street,
         String number,
@@ -29,8 +27,6 @@ public record RestaurantAddedProjectionCommand(
     public static RestaurantAddedProjectionCommand fromEvent(RestaurantCreatedEvent event) {
         return new RestaurantAddedProjectionCommand(
                 UUID.fromString(event.restaurantId()),
-                UUID.fromString(event.ownerId()),
-                event.ownerName(),
                 event.name(),
                 event.street(),
                 event.number(),

@@ -4,7 +4,7 @@ import be.kdg.prog6.restaurant.adaptor.out.dish.DishJpaEntity;
 import be.kdg.prog6.restaurant.domain.Dish;
 import be.kdg.prog6.restaurant.domain.FoodMenu;
 import be.kdg.prog6.restaurant.domain.vo.Price;
-import be.kdg.prog6.restaurant.domain.vo.dish.DISH_TYPE;
+import be.kdg.prog6.common.vo.DISH_TYPE;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishVersion;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;

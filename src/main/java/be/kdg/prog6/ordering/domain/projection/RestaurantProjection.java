@@ -1,5 +1,9 @@
 package be.kdg.prog6.ordering.domain.projection;
 
+import be.kdg.prog6.common.vo.CUISINE_TYPE;
+import be.kdg.prog6.common.vo.DAY;
+import be.kdg.prog6.ordering.domain.vo.PRICE_RANGE;
+
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
@@ -8,8 +12,6 @@ public class RestaurantProjection {
 
     private UUID restaurantId;
 
-    private UUID ownerId;
-    private String ownerName;
     private String name;
 
     private String street;
@@ -22,7 +24,7 @@ public class RestaurantProjection {
 
     private List<String> pictures;
 
-    private String cuisineType;
+    private CUISINE_TYPE cuisineType;
 
     private int minPrepTime;
     private int maxPrepTime;
@@ -30,15 +32,13 @@ public class RestaurantProjection {
     private LocalTime openingTime;
     private LocalTime closingTime;
 
-    private List<String> openDays;
+    private List<DAY> openDays;
 
     protected RestaurantProjection() {
         // JPA only
     }
 
     public RestaurantProjection(UUID restaurantId,
-                                UUID ownerId,
-                                String ownerName,
                                 String name,
                                 String street,
                                 String number,
@@ -47,15 +47,13 @@ public class RestaurantProjection {
                                 String country,
                                 String emailAddress,
                                 List<String> pictures,
-                                String cuisineType,
+                                CUISINE_TYPE cuisineType,
                                 int minPrepTime,
                                 int maxPrepTime,
                                 LocalTime openingTime,
                                 LocalTime closingTime,
-                                List<String> openDays) {
+                                List<DAY> openDays) {
         this.restaurantId = restaurantId;
-        this.ownerId = ownerId;
-        this.ownerName = ownerName;
         this.name = name;
         this.street = street;
         this.number = number;
@@ -72,14 +70,11 @@ public class RestaurantProjection {
         this.openDays = openDays;
     }
 
+
     // Getters (you might not need setters if projection is append-only)
 
     public UUID getRestaurantId() {
         return restaurantId;
-    }
-
-    public UUID getOwnerId() {
-        return ownerId;
     }
 
     public String getName() {
@@ -114,7 +109,7 @@ public class RestaurantProjection {
         return pictures;
     }
 
-    public String getCuisineType() {
+    public CUISINE_TYPE getCuisineType() {
         return cuisineType;
     }
 
@@ -134,16 +129,12 @@ public class RestaurantProjection {
         return closingTime;
     }
 
-    public String getOwnerName() {
-        return ownerName;
-    }
-
     public boolean isOpenNow() {
         LocalTime now = LocalTime.now();
         return !now.isBefore(openingTime) && !now.isAfter(closingTime);
     }
 
-    public List<String> getOpenDays() {
+    public List<DAY> getOpenDays() {
         return openDays;
     }
 }

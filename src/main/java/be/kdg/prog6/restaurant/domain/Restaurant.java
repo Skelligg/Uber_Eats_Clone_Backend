@@ -2,6 +2,7 @@ package be.kdg.prog6.restaurant.domain;
 
 import be.kdg.prog6.common.events.DomainEvent;
 import be.kdg.prog6.common.vo.Address;
+import be.kdg.prog6.common.vo.CUISINE_TYPE;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.*;
 
 import java.util.ArrayList;

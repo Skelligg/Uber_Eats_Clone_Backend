@@ -1,6 +1,7 @@
 package be.kdg.prog6.restaurant.adaptor.in.controller;
 
 import be.kdg.prog6.common.vo.Address;
+import be.kdg.prog6.common.vo.CUISINE_TYPE;
 import be.kdg.prog6.restaurant.adaptor.in.request.CreateRestaurantRequest;
 import be.kdg.prog6.restaurant.adaptor.in.request.OrderRejectedRequest;
 import be.kdg.prog6.restaurant.adaptor.in.response.OrderDto;
@@ -11,7 +12,7 @@ import be.kdg.prog6.restaurant.domain.Restaurant;
 import be.kdg.prog6.restaurant.domain.projection.OrderProjection;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.*;
 import be.kdg.prog6.restaurant.port.in.order.HandleOrderUseCase;
-import be.kdg.prog6.restaurant.port.in.order.GetOrdersUseCase;
+import be.kdg.prog6.restaurant.port.in.order.GetOrderProjectionsUseCase;
 import be.kdg.prog6.restaurant.port.in.order.MarkOrderReadyForPickUpUseCase;
 import be.kdg.prog6.restaurant.port.in.restaurant.CreateRestaurantCommand;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +31,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/restaurants")
 public class RestaurantController {
     private final DefaultCreateRestaurantUseCase createRestaurantUseCase;
-    private final GetOrdersUseCase getOrdersUseCase;
+    private final GetOrderProjectionsUseCase getOrderProjectionsUseCase;
     private final HandleOrderUseCase handleOrderUseCase;
     private final MarkOrderReadyForPickUpUseCase markOrderReadyForPickUp ;
 
     public RestaurantController(
-            DefaultCreateRestaurantUseCase createRestaurantUseCase, GetOrdersUseCase getOrdersUseCase, HandleOrderUseCase handleOrderUseCase, MarkOrderReadyForPickUpUseCase markOrderReadyForPickUp) {
+            DefaultCreateRestaurantUseCase createRestaurantUseCase, GetOrderProjectionsUseCase getOrderProjectionsUseCase, HandleOrderUseCase handleOrderUseCase, MarkOrderReadyForPickUpUseCase markOrderReadyForPickUp) {
         this.createRestaurantUseCase = createRestaurantUseCase;
-        this.getOrdersUseCase = getOrdersUseCase;
+        this.getOrderProjectionsUseCase = getOrderProjectionsUseCase;
         this.handleOrderUseCase = handleOrderUseCase;
         this.markOrderReadyForPickUp = markOrderReadyForPickUp;
     }
@@ -74,7 +75,7 @@ public class RestaurantController {
     @GetMapping("/{restaurantId}/orders")
     public ResponseEntity<List<OrderDto>> getOrders(@PathVariable String restaurantId, @AuthenticationPrincipal Jwt jwt) {
 
-        List<OrderDto> orders = getOrdersUseCase.getOrders(
+        List<OrderDto> orders = getOrderProjectionsUseCase.getOrders(
                         RestaurantId.of(UUID.fromString(restaurantId))
                 ).stream()
                 .map(o -> new OrderDto(

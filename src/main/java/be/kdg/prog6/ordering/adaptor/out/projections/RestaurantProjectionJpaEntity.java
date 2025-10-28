@@ -13,8 +13,6 @@ public class RestaurantProjectionJpaEntity {
     @Id
     private UUID id;
 
-    private UUID ownerId;
-    private String ownerName;
     private String name;
 
     private String street;
@@ -49,8 +47,6 @@ public class RestaurantProjectionJpaEntity {
     }
 
     public RestaurantProjectionJpaEntity(UUID id,
-                                         UUID ownerId,
-                                         String ownerName,
                                          String name,
                                          String street,
                                          String number,
@@ -66,8 +62,6 @@ public class RestaurantProjectionJpaEntity {
                                          LocalTime closingTime,
                                          List<String> openDays) {
         this.id = id;
-        this.ownerId = ownerId;
-        this.ownerName = ownerName;
         this.name = name;
         this.street = street;
         this.number = number;
@@ -88,10 +82,6 @@ public class RestaurantProjectionJpaEntity {
 
     public UUID getId() {
         return id;
-    }
-
-    public UUID getOwnerId() {
-        return ownerId;
     }
 
     public String getName() {
@@ -150,7 +140,4 @@ public class RestaurantProjectionJpaEntity {
         return openDays;
     }
 
-    public String getOwnerName() {
-        return ownerName;
-    }
 }

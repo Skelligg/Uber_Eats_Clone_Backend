@@ -1,5 +1,6 @@
 package be.kdg.prog6.ordering.adaptor.out.projections;
 
+import be.kdg.prog6.common.vo.DISH_TYPE;
 import be.kdg.prog6.ordering.domain.projection.DishProjection;
 import be.kdg.prog6.ordering.port.out.dish.LoadDishesPort;
 import be.kdg.prog6.ordering.port.out.dish.UpdateDishesPort;
@@ -27,7 +28,7 @@ public class DishProjectionJpaAdaptor implements UpdateDishesPort, LoadDishesPor
         entity.setPrice(projection.getPrice());
         entity.setPictureUrl(projection.getPictureUrl());
         entity.setTags(projection.getTags());
-        entity.setDishType(projection.getDishType());
+        entity.setDishType(projection.getDishType().toString());
         entity.setDishState(projection.getDishState());
         repository.save(entity);
     }
@@ -60,7 +61,7 @@ public class DishProjectionJpaAdaptor implements UpdateDishesPort, LoadDishesPor
                 entity.getPrice(),
                 entity.getPictureUrl(),
                 entity.getTags(),
-                entity.getDishType(),
+                DISH_TYPE.valueOf(entity.getDishType()),
                 entity.getDishState()
         );
     }

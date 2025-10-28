@@ -9,11 +9,9 @@ import be.kdg.prog6.ordering.domain.Order;
 import be.kdg.prog6.ordering.domain.vo.*;
 import be.kdg.prog6.ordering.port.in.order.CreateOrderCommand;
 import be.kdg.prog6.ordering.port.in.order.CreateOrderUseCase;
+import be.kdg.prog6.ordering.port.in.order.GetOrdersUseCase;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -21,9 +19,11 @@ import java.util.UUID;
 @RequestMapping("/api/orders")
 public class OrderController {
     private final CreateOrderUseCase createOrderUseCase;
+    private final GetOrdersUseCase getOrdersUseCase;
 
-    public OrderController(CreateOrderUseCase createOrderUseCase) {
+    public OrderController(CreateOrderUseCase createOrderUseCase, GetOrdersUseCase getOrdersUseCase) {
         this.createOrderUseCase = createOrderUseCase;
+        this.getOrdersUseCase = getOrdersUseCase;
     }
 
     @PostMapping
@@ -52,7 +52,7 @@ public class OrderController {
 
         Order orderCreated = createOrderUseCase.createOrder(command);
 
-        OrderDto dto = new OrderDto(
+        return ResponseEntity.ok(new OrderDto(
                 orderCreated.getRestaurantId().id().toString(),
                 orderCreated.getLines().stream()
                         .map(l -> new OrderLineDto(
@@ -75,8 +75,36 @@ public class OrderController {
                 ),
                 orderCreated.getPlacedAt(),
                 orderCreated.getStatus().toString()
-        );
+        ));
+    }
 
-        return ResponseEntity.ok(dto);
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDto> getOrder(@PathVariable UUID orderId) {
+        Order order = getOrdersUseCase.getOrder(orderId);
+
+        return ResponseEntity.ok(new OrderDto(
+                order.getRestaurantId().id().toString(),
+                order.getLines().stream()
+                        .map(l -> new OrderLineDto(
+                                l.dishId().id().toString(),
+                                l.dishName(),
+                                l.quantity(),
+                                l.unitPrice().price().doubleValue(),
+                                l.linePrice().price().doubleValue()
+                        ))
+                        .toList(),
+                order.getTotalPrice().price().doubleValue(),
+                order.getCustomer().name(),
+                order.getCustomer().email(),
+                new AddressDto(
+                        order.getDeliveryAddress().street(),
+                        order.getDeliveryAddress().number(),
+                        order.getDeliveryAddress().postalCode(),
+                        order.getDeliveryAddress().city(),
+                        order.getDeliveryAddress().country()
+                ),
+                order.getPlacedAt(),
+                order.getStatus().toString()
+        ));
     }
 }

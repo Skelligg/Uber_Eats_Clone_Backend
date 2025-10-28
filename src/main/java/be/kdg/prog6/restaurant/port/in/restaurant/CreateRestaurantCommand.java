@@ -1,6 +1,7 @@
 package be.kdg.prog6.restaurant.port.in.restaurant;
 
 import be.kdg.prog6.common.vo.Address;
+import be.kdg.prog6.common.vo.CUISINE_TYPE;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.*;
 
 import java.util.List;

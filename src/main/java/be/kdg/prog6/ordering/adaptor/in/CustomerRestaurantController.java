@@ -1,5 +1,7 @@
 package be.kdg.prog6.ordering.adaptor.in;
 
+import be.kdg.prog6.ordering.adaptor.in.request.FilterDishesRequest;
+import be.kdg.prog6.ordering.adaptor.in.request.FilterRestaurantsRequest;
 import be.kdg.prog6.ordering.adaptor.in.response.RestaurantDto;
 import be.kdg.prog6.ordering.port.in.dish.GetDishesUseCase;
 import be.kdg.prog6.ordering.port.in.restaurant.GetRestaurantsUseCase;
@@ -23,18 +25,17 @@ public class CustomerRestaurantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RestaurantDto>> getRestaurants(
-            @RequestParam(required = false) String cuisineType,
-            @RequestParam(required = false) boolean onlyOpen) {
+    public ResponseEntity<List<RestaurantDto>> getRestaurants(@RequestParam(required = false) String cuisineType,
+                                                              @RequestParam(required = false) String priceRange)
+    {
+        FilterRestaurantsRequest request = new FilterRestaurantsRequest(
+                cuisineType != null ? cuisineType : "",
+                priceRange != null ? priceRange : ""
+        );
 
-        List<RestaurantDto> dtos = getRestaurantsUseCase.getRestaurants(
-                        Optional.ofNullable(cuisineType),
-                        Optional.of(onlyOpen)
-                ).stream()
+        List<RestaurantDto> dtos = getRestaurantsUseCase.getRestaurants(request).stream()
                 .map(r -> new RestaurantDto(
                         r.getRestaurantId(),
-                        r.getOwnerId(),
-                        r.getOwnerName(),
                         r.getName(),
                         r.getStreet(),
                         r.getNumber(),
@@ -43,12 +44,16 @@ public class CustomerRestaurantController {
                         r.getCountry(),
                         r.getEmailAddress(),
                         r.getPictures(),
-                        r.getCuisineType(),
+                        r.getCuisineType().toString().toLowerCase(),
                         r.getMinPrepTime(),
                         r.getMaxPrepTime(),
                         r.getOpeningTime(),
                         r.getClosingTime(),
-                        r.getOpenDays()
+                        r.getOpenDays().stream()
+                                .map(Enum::name)
+                                .map(String::toLowerCase)
+                                .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1))
+                                .toList()
                 ))
                 .toList();
 
@@ -57,9 +62,17 @@ public class CustomerRestaurantController {
 
     @GetMapping("/{restaurantId}/dishes")
     public ResponseEntity<List<DishDto>> getDishes (
-            @PathVariable String restaurantId
+            @PathVariable UUID restaurantId,
+            @RequestParam(required = false) String dishType,
+            @RequestParam(required = false) String tags
     ) {
-        List<DishDto> dishes = getDishesUseCase.getDishes(UUID.fromString(restaurantId)).stream()
+        FilterDishesRequest request = new FilterDishesRequest(
+                restaurantId,
+                dishType != null ? dishType : "",
+                tags != null ? tags : ""
+        );
+
+        List<DishDto> dishes = getDishesUseCase.getDishes(request).stream()
                 .map(d -> new DishDto(
                         d.getDishId(),
                         d.getFoodMenuId(),
@@ -68,7 +81,7 @@ public class CustomerRestaurantController {
                         d.getPrice(),
                         d.getPictureUrl(),
                         d.getTags(),
-                        d.getDishType(),
+                        d.getDishType().toString().substring(0, 1).toUpperCase() + d.getDishType().toString().substring(1).toLowerCase(),
                         d.getDishState()
                         ))
                 .toList();

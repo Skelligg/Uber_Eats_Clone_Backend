@@ -2,7 +2,16 @@ GET http://localhost:8080/api/customers/restaurants
 
 ###
 
+GET http://localhost:8080/api/customers/restaurants?cuisineType=ITALIAN&priceRange=REGULAR
+
+###
+
 GET http://localhost:8080/api/customers/restaurants/11111111-1111-1111-1111-111111111111/dishes
+
+###
+
+GET http://localhost:8080/api/customers/restaurants/11111111-1111-1111-1111-111111111111/dishes?dishType=STARTER&tags=gluten,vegan
+
 
 ###
 

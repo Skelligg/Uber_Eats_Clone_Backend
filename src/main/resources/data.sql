@@ -38,6 +38,14 @@ INSERT INTO restaurant.dish (
           'aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa1',
           '11111111-1111-1111-1111-111111111111',
           'PUBLISHED',
+          'Margherita Pizza', 'Classic Italian Pizza with tomato sauce and cheese', 14.50, 'https://www.tasteofhome.com/wp-content/uploads/2024/03/Margherita-Pizza-_EXPS_TOHVP24_275515_MF_02_28_1.jpg', 'gluten', 'MAIN',
+          NULL, NULL, NULL, NULL, NULL, NULL,
+          NULL, NULL
+      ),
+      (
+          'aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa2',
+          '11111111-1111-1111-1111-111111111111',
+          'PUBLISHED',
           'Spaghetti Carbonara', 'Classic Italian pasta with bacon and cheese', 12.50, 'https://www.twopeasandtheirpod.com/wp-content/uploads/2023/01/Spaghetti-Carbonara168787.jpg', 'gluten', 'MAIN',
           'Spaghetti Carbonara REVISED', 'Classic Italian pasta with bacon and cheese', 15.00, 'https://www.twopeasandtheirpod.com/wp-content/uploads/2023/01/Spaghetti-Carbonara168787.jpg', 'gluten', 'MAIN',
           NULL, NULL
@@ -82,10 +90,10 @@ SET search_path TO restaurant, ordering;
 
 -- Restaurants
 INSERT INTO ordering.restaurant_projection (
-    id, owner_id, owner_name, name, street, number, postal_code, city, country, email_address, cuisine_type, min_prep_time, max_prep_time, opening_time, closing_time
+    id, name, street, number, postal_code, city, country, email_address, cuisine_type, min_prep_time, max_prep_time, opening_time, closing_time
 ) VALUES
-      ('11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111112', 'Alice', 'Bella Cucina', 'Main Street', '12', '1000', 'Brussels', 'Belgium', 'alice@bella.com', 'ITALIAN', 15, 30, '11:00', '22:00'),
-      ('22222222-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222223', 'Bob', 'Sushi Palace', 'Market Street', '5', '2000', 'Antwerp', 'Belgium', 'bob@sushi.com', 'JAPANESE', 10, 25, '12:00', '21:00');
+      ('11111111-1111-1111-1111-111111111111', 'Bella Cucina', 'Main Street', '12', '1000', 'Brussels', 'Belgium', 'alice@bella.com', 'ITALIAN', 15, 30, '11:00', '22:00'),
+      ('22222222-2222-2222-2222-222222222222', 'Sushi Palace', 'Market Street', '5', '2000', 'Antwerp', 'Belgium', 'bob@sushi.com', 'JAPANESE', 10, 25, '12:00', '21:00');
 
 -- Pictures
 INSERT INTO ordering.restaurant_projection_pictures (restaurant_projection_id, url) VALUES
@@ -94,10 +102,10 @@ INSERT INTO ordering.restaurant_projection_pictures (restaurant_projection_id, u
 
 -- Open days
 INSERT INTO ordering.restaurant_projection_open_days (restaurant_projection_id, day) VALUES
-                                                                                         ('11111111-1111-1111-1111-111111111111', 'Monday'),
-                                                                                         ('11111111-1111-1111-1111-111111111111', 'Tuesday'),
-                                                                                         ('22222222-2222-2222-2222-222222222222', 'Monday'),
-                                                                                         ('22222222-2222-2222-2222-222222222222', 'Wednesday');
+                                                                                         ('11111111-1111-1111-1111-111111111111', 'MONDAY'),
+                                                                                         ('11111111-1111-1111-1111-111111111111', 'TUESDAY'),
+                                                                                         ('22222222-2222-2222-2222-222222222222', 'MONDAY'),
+                                                                                         ('22222222-2222-2222-2222-222222222222', 'WEDNESDAY');
 
 -- Food menus
 INSERT INTO ordering.food_menu_projection (restaurant_id, average_menu_price) VALUES
@@ -108,5 +116,6 @@ INSERT INTO ordering.food_menu_projection (restaurant_id, average_menu_price) VA
 INSERT INTO ordering.dish_projection (
     dish_id, food_menu_id, name, description, price, picture_url, tags, dish_type, dish_state
 ) VALUES
-      ('aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa1', '11111111-1111-1111-1111-111111111111', 'Spaghetti Carbonara', 'Classic Italian pasta with bacon and cheese', 12.50, 'https://example.com/carbonara.jpg', 'gluten', 'main', 'AVAILABLE'),
-      ('bbbbbbb2-bbbb-bbbb-bbbb-bbbbbbbbbbb2', '22222222-2222-2222-2222-222222222222', 'Miso Soup', 'Traditional Japanese soup', 3.00, 'https://example.com/miso.jpg', 'vegan', 'starter', 'AVAILABLE');
+      ('aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa1', '11111111-1111-1111-1111-111111111111', 'Spaghetti Carbonara', 'Classic Italian pasta with bacon and cheese', 12.50, 'https://www.twopeasandtheirpod.com/wp-content/uploads/2023/01/Spaghetti-Carbonara168787.jpg', 'gluten', 'MAIN', 'AVAILABLE'),
+      ('aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa2', '11111111-1111-1111-1111-111111111111', 'Margherita Pizza', 'Classic Italian Pizza with tomato sauce and cheese', 14.50, 'https://www.tasteofhome.com/wp-content/uploads/2024/03/Margherita-Pizza-_EXPS_TOHVP24_275515_MF_02_28_1.jpg', 'gluten,vegan', 'STARTER', 'AVAILABLE'),
+      ('bbbbbbb2-bbbb-bbbb-bbbb-bbbbbbbbbbb2', '22222222-2222-2222-2222-222222222222', 'Miso Soup', 'Traditional Japanese soup', 3.00, 'https://example.com/miso.jpg', 'vegan', 'STARTER', 'AVAILABLE');

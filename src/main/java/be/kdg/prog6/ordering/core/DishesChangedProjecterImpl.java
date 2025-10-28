@@ -1,5 +1,6 @@
 package be.kdg.prog6.ordering.core;
 
+import be.kdg.prog6.common.vo.DISH_TYPE;
 import be.kdg.prog6.ordering.domain.projection.DISH_AVAILABILITY;
 import be.kdg.prog6.ordering.domain.projection.DishProjection;
 import be.kdg.prog6.ordering.port.in.dish.*;
@@ -27,7 +28,7 @@ public class DishesChangedProjecterImpl implements DishesChangedProjector {
                 command.price(),
                 command.pictureUrl(),
                 command.tags(),
-                command.dishType(),
+                DISH_TYPE.valueOf(command.dishType().toUpperCase()),
                 DISH_AVAILABILITY.AVAILABLE
         );
 

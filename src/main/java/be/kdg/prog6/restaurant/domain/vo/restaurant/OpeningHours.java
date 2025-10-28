@@ -1,5 +1,7 @@
 package be.kdg.prog6.restaurant.domain.vo.restaurant;
 
+import be.kdg.prog6.common.vo.DAY;
+
 import java.time.LocalTime;
 import java.util.List;
 

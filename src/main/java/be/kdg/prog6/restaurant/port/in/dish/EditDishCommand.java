@@ -1,7 +1,7 @@
 package be.kdg.prog6.restaurant.port.in.dish;
 
 import be.kdg.prog6.restaurant.domain.vo.Price;
-import be.kdg.prog6.restaurant.domain.vo.dish.DISH_TYPE;
+import be.kdg.prog6.common.vo.DISH_TYPE;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 

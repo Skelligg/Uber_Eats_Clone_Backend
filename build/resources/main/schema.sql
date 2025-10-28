@@ -138,8 +138,6 @@ CREATE TABLE restaurant.order_projection_lines (
 -- ==============================
 CREATE TABLE ordering.restaurant_projection (
      id UUID PRIMARY KEY,
-     owner_id UUID NOT NULL,
-     owner_name VARCHAR(255) NOT NULL,
      name VARCHAR(255) NOT NULL,
      street VARCHAR(255),
      number VARCHAR(50),
