@@ -1,0 +1,48 @@
+// This creates an order as if a customer just checked out
+
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{
+  "restaurantId": "11111111-1111-1111-1111-111111111111",
+  "lines": [
+    {
+      "dishId": "aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
+      "dishName": "Pizza",
+      "quantity": 2,
+      "unitPrice": 14.99,
+      "linePrice": 29.98
+    }
+  ],
+  "totalPrice": 29.98,
+  "customerName": "Alice Johnson",
+  "customerEmail": "alice.johnson@example.com",
+  "deliveryAddress": {
+    "street": "Gijselsstraat",
+    "number": "31",
+    "postalCode": "2140",
+    "city": "Antwerp",
+    "country": "Belgium"
+  },
+  "placedAt": "2025-10-21T14:35:00"
+}
+
+### Run this to get access token with admin user first
+
+POST http://localhost:8180/realms/keepdishesgoing/protocol/openid-connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+client_id=backend-client&client_secret=IfOsqR0GHoUYmj0GlxJ6nUcx6Hm8SxxE&username=owner&password=owner&grant_type=password
+
+//saving the access token
+> {%
+    client.global.set("access_token", response.body.access_token);
+%}
+
+### This then accepts the last order to the restaurant, publishes an event both to the ordering bounded context
+### but then it should also post to rabbitmq
+
+PATCH http://localhost:8080/api/restaurants/orders/accept
+Authorization: Bearer {{access_token}}
+
+
