@@ -1,11 +1,8 @@
 package be.kdg.prog6.ordering.adaptor.out.projections;
 
 import be.kdg.prog6.ordering.domain.projection.RestaurantProjection;
-import be.kdg.prog6.ordering.port.out.LoadRestaurantsPort;
-import be.kdg.prog6.ordering.port.out.UpdateRestaurantsPort;
-import be.kdg.prog6.restaurant.adaptor.out.restaurant.RestaurantJpaEntity;
-import be.kdg.prog6.restaurant.domain.Restaurant;
-import be.kdg.prog6.restaurant.domain.vo.restaurant.*;
+import be.kdg.prog6.ordering.port.out.restaurant.LoadRestaurantsPort;
+import be.kdg.prog6.ordering.port.out.restaurant.UpdateRestaurantsPort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

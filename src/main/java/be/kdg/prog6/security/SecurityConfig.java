@@ -28,7 +28,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(HttpMethod.GET, "/api/customers/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/payments/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/payments/**").permitAll()
+                .anyRequest().authenticated()
                 ).sessionManagement(mgmt -> mgmt.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(rs -> rs.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
     return http.build();

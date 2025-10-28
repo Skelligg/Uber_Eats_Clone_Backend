@@ -33,6 +33,8 @@ dependencies {
     implementation("org.springframework.modulith:spring-modulith-events-api:1.4.1")
     implementation("org.springframework.modulith:spring-modulith-events-amqp:1.4.1")
 
+    implementation("com.stripe:stripe-java:25.0.0")
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation "org.springframework.modulith:spring-modulith-starter-test:${springModulithVersion}"

@@ -2,8 +2,8 @@ package be.kdg.prog6.ordering.core;
 
 import be.kdg.prog6.ordering.domain.projection.RestaurantProjection;
 import be.kdg.prog6.ordering.port.in.restaurant.GetRestaurantsUseCase;
-import be.kdg.prog6.ordering.port.out.LoadRestaurantsPort;
-import be.kdg.prog6.ordering.port.out.UpdateRestaurantsPort;
+import be.kdg.prog6.ordering.port.out.restaurant.LoadRestaurantsPort;
+import be.kdg.prog6.ordering.port.out.restaurant.UpdateRestaurantsPort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -3,8 +3,8 @@ package be.kdg.prog6.ordering.core;
 import be.kdg.prog6.ordering.domain.projection.DISH_AVAILABILITY;
 import be.kdg.prog6.ordering.domain.projection.DishProjection;
 import be.kdg.prog6.ordering.port.in.dish.*;
-import be.kdg.prog6.ordering.port.out.LoadDishesPort;
-import be.kdg.prog6.ordering.port.out.UpdateDishesPort;
+import be.kdg.prog6.ordering.port.out.dish.LoadDishesPort;
+import be.kdg.prog6.ordering.port.out.dish.UpdateDishesPort;
 import org.springframework.stereotype.Service;
 
 @Service

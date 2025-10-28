@@ -3,8 +3,8 @@ package be.kdg.prog6.ordering.adaptor.out;
 import be.kdg.prog6.common.vo.Address;
 import be.kdg.prog6.ordering.domain.Order;
 import be.kdg.prog6.ordering.domain.vo.*;
-import be.kdg.prog6.ordering.port.out.LoadOrderPort;
-import be.kdg.prog6.ordering.port.out.UpdateOrderPort;
+import be.kdg.prog6.ordering.port.out.order.LoadOrderPort;
+import be.kdg.prog6.ordering.port.out.order.UpdateOrderPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -68,10 +68,10 @@ public class OrderJpaAdaptor implements LoadOrderPort, UpdateOrderPort {
                 order.getCourierLocations().stream()
                         .map(l -> new CourierLocationEmbeddable(
                                 l.lat(),
-                                l.lon(),
+                                l.lng(),
                                 l.when()
-                        )).toList()
-        );
+                        )).toList(),
+        order.getPaymentSessionId());
     }
 
     // ---------- Mapping: JPA -> Domain ----------
@@ -106,7 +106,8 @@ public class OrderJpaAdaptor implements LoadOrderPort, UpdateOrderPort {
                 entity.getDeliveredAt(),
                 entity.getStatus(),
                 entity.getRejectionReason(),
-                entity.getEstimatedDeliveryMinutes()
+                entity.getEstimatedDeliveryMinutes(),
+                entity.getPaymentSessionId()
         );
     }
 

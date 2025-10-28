@@ -9,15 +9,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
-/**
- * Order aggregate representing a customer's confirmed order.
- *
- * - Immutable order contents after placement (items, prices, totals).
- * - Lifecycle: PLACED -> (ACCEPTED | REJECTED | AUTO_DECLINED) -> READY -> PICKED_UP -> DELIVERED
- * - Publishes domain events (collected in domainEvents list).
- *
- * Note: method bodies intentionally left empty per request; implement business rules inside them.
- */
 public class Order {
     // Identity
     private final OrderId orderId;
@@ -32,7 +23,7 @@ public class Order {
     private final Address deliveryAddress;
 
     // Timestamps
-    private final LocalDateTime placedAt;
+    private LocalDateTime placedAt;
     private LocalDateTime acceptedAt;
     private LocalDateTime rejectedAt;
     private LocalDateTime readyAt;
@@ -55,6 +46,8 @@ public class Order {
     // Optional: courier location updates (if tracked)
     private final List<CourierLocation> courierLocations = new ArrayList<>();
 
+    private String paymentSessionId;
+
     // ---------- Constructors / Factory ----------
     public Order(
             OrderId orderId,
@@ -62,8 +55,7 @@ public class Order {
             List<OrderLine> lines,
             Money totalPrice,
             CustomerInfo customer,
-            Address deliveryAddress,
-            LocalDateTime placedAt
+            Address deliveryAddress
     ) {
         this.orderId = orderId;
         this.restaurantId = restaurantId;
@@ -71,11 +63,10 @@ public class Order {
         this.totalPrice = totalPrice;
         this.customer = customer;
         this.deliveryAddress = deliveryAddress;
-        this.placedAt = placedAt;
-        this.status = ORDER_STATUS.PLACED;
+        this.status = ORDER_STATUS.UNPAID;
     }
 
-    public Order(OrderId orderId, RestaurantId restaurantId, List<OrderLine> lines, Money totalPrice, CustomerInfo customer, Address deliveryAddress, LocalDateTime placedAt, LocalDateTime acceptedAt, LocalDateTime rejectedAt, LocalDateTime readyAt, LocalDateTime pickedUpAt, LocalDateTime deliveredAt, ORDER_STATUS status, String rejectionReason, int estimatedDeliveryMinutes) {
+    public Order(OrderId orderId, RestaurantId restaurantId, List<OrderLine> lines, Money totalPrice, CustomerInfo customer, Address deliveryAddress, LocalDateTime placedAt, LocalDateTime acceptedAt, LocalDateTime rejectedAt, LocalDateTime readyAt, LocalDateTime pickedUpAt, LocalDateTime deliveredAt, ORDER_STATUS status, String rejectionReason, int estimatedDeliveryMinutes, String paymentSessionId) {
         this.orderId = orderId;
         this.restaurantId = restaurantId;
         this.lines = lines;
@@ -91,6 +82,7 @@ public class Order {
         this.status = status;
         this.rejectionReason = rejectionReason;
         this.estimatedDeliveryMinutes = estimatedDeliveryMinutes;
+        this.paymentSessionId = paymentSessionId;
     }
 
     // ---------- Domain behaviors (methods left intentionally empty) ----------
@@ -124,6 +116,19 @@ public class Order {
     public void markDelivered() {
         if(ORDER_STATUS.PICKED_UP == status) {status = ORDER_STATUS.DELIVERED;}
         deliveredAt = LocalDateTime.now();
+    }
+
+    public void updateCourierLocation(CourierLocation location) {
+        courierLocations.add(location);
+    }
+
+    public void assignPaymentSession(String sessionId) {
+        paymentSessionId = sessionId;
+    }
+
+    public void markPaid(){
+        status = ORDER_STATUS.PLACED;
+        placedAt = LocalDateTime.now();
     }
 
     public void addDomainEvent(DomainEvent event) {
@@ -204,6 +209,9 @@ public class Order {
         return courierLocations;
     }
 
+    public String getPaymentSessionId() {
+        return paymentSessionId;
+    }
 
     // ---------- Equals / HashCode (based on identity) ----------
     @Override

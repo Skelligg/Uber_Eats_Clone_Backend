@@ -65,6 +65,8 @@ public class OrderJpaEntity {
     // Optional: estimated delivery time in minutes
     private Integer estimatedDeliveryMinutes;
 
+    private String paymentSessionId;
+
     protected OrderJpaEntity() {
     }
 
@@ -89,7 +91,8 @@ public class OrderJpaEntity {
             LocalDateTime pickedUpAt,
             LocalDateTime deliveredAt,
             Integer estimatedDeliveryMinutes,
-            List<CourierLocationEmbeddable> courierLocations
+            List<CourierLocationEmbeddable> courierLocations,
+            String paymentSessionId
     ) {
         this.id = id;
         this.restaurantId = restaurantId;
@@ -112,6 +115,7 @@ public class OrderJpaEntity {
         this.deliveredAt = deliveredAt;
         this.estimatedDeliveryMinutes = estimatedDeliveryMinutes;
         this.courierLocations = courierLocations;
+        this.paymentSessionId = paymentSessionId;
     }
 
     // --- Getters ---
@@ -201,5 +205,9 @@ public class OrderJpaEntity {
 
     public Integer getEstimatedDeliveryMinutes() {
         return estimatedDeliveryMinutes;
+    }
+
+    public String getPaymentSessionId() {
+        return paymentSessionId;
     }
 }

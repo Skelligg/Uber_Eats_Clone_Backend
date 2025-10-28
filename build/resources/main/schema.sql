@@ -225,7 +225,8 @@ CREATE TABLE ordering.orders (
                                  picked_up_at TIMESTAMP,
                                  delivered_at TIMESTAMP,
 
-                                 estimated_delivery_minutes INTEGER
+                                 estimated_delivery_minutes INTEGER,
+                                 payment_session_id VARCHAR(100)
 );
 
 -- Order lines (ElementCollection)

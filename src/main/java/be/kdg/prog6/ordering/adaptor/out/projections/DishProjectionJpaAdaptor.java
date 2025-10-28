@@ -1,8 +1,8 @@
 package be.kdg.prog6.ordering.adaptor.out.projections;
 
 import be.kdg.prog6.ordering.domain.projection.DishProjection;
-import be.kdg.prog6.ordering.port.out.LoadDishesPort;
-import be.kdg.prog6.ordering.port.out.UpdateDishesPort;
+import be.kdg.prog6.ordering.port.out.dish.LoadDishesPort;
+import be.kdg.prog6.ordering.port.out.dish.UpdateDishesPort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

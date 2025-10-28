@@ -27,6 +27,14 @@ Content-Type: application/json
   "placedAt": "2025-10-21T14:35:00"
 }
 
+###
+
+POST http://localhost:8080/api/payments/order/5382d82f-ecdc-4f16-9716-9f2da78004fc
+
+###
+
+GET http://localhost:8080/api/payments/order/5382d82f-ecdc-4f16-9716-9f2da78004fc/verify/cs_test_a1cIMzXOSytnEqYX3GzbEOkkEK8TRTyvDwuYfmszSCvM98LqmPE1vTQGdZ
+
 ### Run this to get access token with admin user first
 
 POST http://localhost:8180/realms/keepdishesgoing/protocol/openid-connect/token HTTP/1.1

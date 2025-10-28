@@ -1,10 +1,11 @@
 package be.kdg.prog6.ordering.core;
 
+import be.kdg.prog6.ordering.domain.vo.CourierLocation;
 import be.kdg.prog6.ordering.domain.vo.OrderId;
 import be.kdg.prog6.ordering.port.in.order.*;
 
-import be.kdg.prog6.ordering.port.out.LoadOrderPort;
-import be.kdg.prog6.ordering.port.out.UpdateOrderPort;
+import be.kdg.prog6.ordering.port.out.order.LoadOrderPort;
+import be.kdg.prog6.ordering.port.out.order.UpdateOrderPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,6 +72,7 @@ public class OrderProjectionEventProjectorImpl implements OrderProjectionEventPr
 //            throw new IllegalArgumentException("Order does not exist");
         }
         order.get().pickedUp();
+        order.get().updateCourierLocation(new CourierLocation(command.lat(),command.lng(),command.occurredAt()));
         this.updateOrderPorts.forEach(port -> port.update(order.get()));
     }
 

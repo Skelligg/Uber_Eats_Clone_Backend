@@ -1,7 +1,7 @@
 package be.kdg.prog6.ordering.adaptor.out;
 
 import be.kdg.prog6.ordering.domain.Order;
-import be.kdg.prog6.ordering.port.out.UpdateOrderPort;
+import be.kdg.prog6.ordering.port.out.order.UpdateOrderPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;

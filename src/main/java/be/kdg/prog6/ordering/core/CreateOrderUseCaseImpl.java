@@ -8,10 +8,10 @@ import be.kdg.prog6.ordering.domain.vo.OrderLine;
 import be.kdg.prog6.ordering.domain.vo.RestaurantId;
 import be.kdg.prog6.ordering.port.in.order.CreateOrderCommand;
 import be.kdg.prog6.ordering.port.in.order.CreateOrderUseCase;
-import be.kdg.prog6.ordering.port.out.LoadDishesPort;
-import be.kdg.prog6.ordering.port.out.LoadOrderPort;
-import be.kdg.prog6.ordering.port.out.LoadRestaurantsPort;
-import be.kdg.prog6.ordering.port.out.UpdateOrderPort;
+import be.kdg.prog6.ordering.port.out.dish.LoadDishesPort;
+import be.kdg.prog6.ordering.port.out.order.LoadOrderPort;
+import be.kdg.prog6.ordering.port.out.restaurant.LoadRestaurantsPort;
+import be.kdg.prog6.ordering.port.out.order.UpdateOrderPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -57,30 +57,8 @@ public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
                 command.lines(),
                 command.totalPrice(),
                 command.customer(),
-                command.deliveryAddress(),
-                command.placedAt()
+                command.deliveryAddress()
         );
-
-
-        order.addDomainEvent(new OrderCreatedEvent(
-                order.getOrderId().id(),
-                order.getRestaurantId().id(),
-                order.getLines().stream()
-                        .map(l -> new OrderLineEventInfo(
-                                l.dishId().id(),
-                                l.dishName(),
-                                l.quantity(),
-                                l.unitPrice().price().doubleValue(),
-                                l.linePrice().price().doubleValue()
-                        ))
-                        .toList(),
-                order.getTotalPrice().price().doubleValue(),
-                order.getDeliveryAddress(),
-                order.getPlacedAt(),
-                order.getStatus().name()
-        ));
-
-
 
         this.updateOrderPorts.forEach(port -> port.update(order));
         return order;
