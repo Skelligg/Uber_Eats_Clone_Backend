@@ -7,6 +7,6 @@
 /dataSources/
 /dataSources.local.xml
 
-../idp_mysql_data
-../rabbitmq
-../postgresql
+idp_mysql_data/
+rabbitmq/
+postgresql/
