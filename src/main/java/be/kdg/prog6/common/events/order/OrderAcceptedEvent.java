@@ -15,7 +15,7 @@ public record OrderAcceptedEvent(
         LocalDateTime occurredAt,
         UUID restaurantId,
         UUID orderId,
-        RabbitMQAddress pickUpAddress,
+        RabbitMQAddress pickupAddress,
         Coordinates pickupCoordinates,
         RabbitMQAddress dropoffAddress,
         Coordinates dropoffCoordinates

@@ -45,4 +45,18 @@ client_id=backend-client&client_secret=IfOsqR0GHoUYmj0GlxJ6nUcx6Hm8SxxE&username
 PATCH http://localhost:8080/api/restaurants/orders/accept
 Authorization: Bearer {{access_token}}
 
+###
 
+PATCH http://localhost:8080/api/restaurants/orders/7215135f-5342-482d-8045-7df8fbd81350/reject
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "reason": "We close in five minutes"
+}
+###
+
+###
+
+PATCH http://localhost:8080/api/restaurants/orders/5a598b6c-c3aa-4580-a081-6e367c6fc033/readyforpickup
+Authorization: Bearer {{access_token}}

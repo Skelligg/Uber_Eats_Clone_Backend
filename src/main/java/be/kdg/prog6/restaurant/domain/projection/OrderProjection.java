@@ -70,6 +70,19 @@ public class OrderProjection {
         acceptedAt = LocalDateTime.now();
     }
 
+    public void markReadyForPickUp(){
+        status = ORDER_STATUS.READY;
+        readyAt = LocalDateTime.now();
+    }
+
+    public void reject(String reason) {
+        status = ORDER_STATUS.REJECTED;
+        rejectedAt = LocalDateTime.now();
+        rejectionReason = reason;
+    }
+
+    //getters & setters
+
     public UUID getOrderId() {
         return orderId;
     }

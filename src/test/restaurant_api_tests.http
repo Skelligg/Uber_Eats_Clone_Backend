@@ -146,5 +146,5 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:8080/api/restaurants/orders/0ca4784f-3a74-4796-82e6-6b01cb42fcf4/accept
+PATCH http://localhost:8080/api/restaurants/orders/0d08d632-35e1-4ada-bce5-79e02ece8f6b/accept
 Authorization: Bearer {{access_token}}

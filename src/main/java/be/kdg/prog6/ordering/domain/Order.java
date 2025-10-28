@@ -95,76 +95,41 @@ public class Order {
 
     // ---------- Domain behaviors (methods left intentionally empty) ----------
 
-    /**
-     * Accept the order by the restaurant.
-     * Should:
-     * - only allow when status == PLACED
-     * - set acceptedAt and status = ACCEPTED
-     * - publish OrderAcceptedEvent (routing key restaurant.{id}.order.accepted.v1)
-     */
     public void accepted() {
         if(ORDER_STATUS.PLACED == status) {status = ORDER_STATUS.ACCEPTED;}
         acceptedAt = LocalDateTime.now();
     }
 
-    /**
-     * Reject the order, with an optional reason.
-     * Should:
-     * - only allow when status == PLACED
-     * - set rejectedAt and status = REJECTED
-     * - publish OrderRejectedEvent
-     */
-    public void reject(String reason, LocalDateTime when) {
+    public void rejected(String reason) {
+        if(ORDER_STATUS.PLACED == status) {status = ORDER_STATUS.REJECTED;}
+        rejectionReason = reason;
+        rejectedAt = LocalDateTime.now();
     }
 
-    /**
-     * Automatically decline the order if the restaurant decision window (5 minutes) has elapsed.
-     * Should:
-     * - be callable by a scheduler that periodically checks open orders
-     * - set status = AUTO_DECLINED and publish OrderAutoDeclinedEvent
-     */
     public void autoDeclineIfTimedOut(LocalDateTime now) {
     }
 
-    /**
-     * Mark an accepted order as ready for pickup by the kitchen.
-     * Should:
-     * - only allow when status == ACCEPTED
-     * - set readyAt and status = READY
-     * - publish OrderReadyForPickupEvent (routing key restaurant.{id}.order.ready.v1)
-     */
-    public void markReadyForPickup(LocalDateTime when) {
+    public void markReadyForPickup() {
+        if(ORDER_STATUS.ACCEPTED == status) {status = ORDER_STATUS.READY;}
+        readyAt = LocalDateTime.now();
     }
 
-    /**
-     * Mark an order as picked up by the courier (consumed from delivery service).
-     * Should:
-     * - only allow when status == READY (or perhaps ACCEPTED depending on design)
-     * - set pickedUpAt and status = PICKED_UP
-     * - publish OrderPickedUpEvent (this event may be produced by delivery service; your system needs to handle inbound messages)
-     */
-    public void markPickedUp(LocalDateTime when, String courierId) {
+    public void pickedUp() {
+        if(ORDER_STATUS.READY == status) {status = ORDER_STATUS.PICKED_UP;}
+        if (pickedUpAt == null){
+            pickedUpAt = LocalDateTime.now();
+        }
     }
 
-    /**
-     * Mark an order as delivered. Should:
-     * - set deliveredAt and status = DELIVERED
-     * - publish OrderDeliveredEvent
-     */
-    public void markDelivered(LocalDateTime when) {
+    public void markDelivered() {
+        if(ORDER_STATUS.PICKED_UP == status) {status = ORDER_STATUS.DELIVERED;}
+        deliveredAt = LocalDateTime.now();
     }
 
-
-    /**
-     * Add a domain event to the internal list.
-     */
     public void addDomainEvent(DomainEvent event) {
         domainEvents.add(event);
     }
 
-    /**
-     * Return and clear events (useful for publishers).
-     */
     public List<DomainEvent> pullDomainEvents() {
         return null;
     }

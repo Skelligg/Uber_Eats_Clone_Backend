@@ -1,7 +1,7 @@
 package be.kdg.prog6.ordering.core;
 
 import be.kdg.prog6.ordering.domain.vo.OrderId;
-import be.kdg.prog6.ordering.port.in.order.OrderProjectionEventProjector;
+import be.kdg.prog6.ordering.port.in.order.*;
 
 import be.kdg.prog6.ordering.port.out.LoadOrderPort;
 import be.kdg.prog6.ordering.port.out.UpdateOrderPort;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
+@Transactional
 public class OrderProjectionEventProjectorImpl implements OrderProjectionEventProjector {
 
     private final LoadOrderPort loadOrdersPort;
@@ -23,13 +23,64 @@ public class OrderProjectionEventProjectorImpl implements OrderProjectionEventPr
     }
 
     @Override
-    @Transactional
-    public void project(UUID orderId) {
-        var order = loadOrdersPort.findById(OrderId.of(orderId));
+    public void project(OrderAcceptedCommand command) {
+        var order = loadOrdersPort.findById(OrderId.of(command.orderId()));
         if( order.isEmpty()) {
             throw new IllegalArgumentException("Order does not exist");
         }
         order.get().accepted();
+        this.updateOrderPorts.forEach(port -> port.update(order.get()));
+    }
+
+    @Override
+    public void project(OrderReadyForPickupCommand command) {
+        var order = loadOrdersPort.findById(OrderId.of(command.orderId()));
+        if( order.isEmpty()) {
+            throw new IllegalArgumentException("Order does not exist");
+        }
+        order.get().markReadyForPickup();
+        this.updateOrderPorts.forEach(port -> port.update(order.get()));
+    }
+
+    @Override
+    public void project(OrderPickedUpCommand command) {
+        var order = loadOrdersPort.findById(OrderId.of(command.orderId()));
+        if( order.isEmpty()) {
+            throw new IllegalArgumentException("Order does not exist");
+        }
+        order.get().pickedUp();
+        this.updateOrderPorts.forEach(port -> port.update(order.get()));
+    }
+
+    @Override
+    public void project(OrderDeliveredCommand command) {
+        var order = loadOrdersPort.findById(OrderId.of(command.orderId()));
+        if( order.isEmpty()) {
+            return;
+            //throw new IllegalArgumentException("Order does not exist");
+        }
+        order.get().markDelivered();
+        this.updateOrderPorts.forEach(port -> port.update(order.get()));
+    }
+
+    @Override
+    public void project(OrderLocationUpdatedCommand command) {
+        var order = loadOrdersPort.findById(OrderId.of(command.orderId()));
+        if( order.isEmpty()) {
+            return;
+//            throw new IllegalArgumentException("Order does not exist");
+        }
+        order.get().pickedUp();
+        this.updateOrderPorts.forEach(port -> port.update(order.get()));
+    }
+
+    @Override
+    public void project(OrderRejectedCommand command) {
+        var order = loadOrdersPort.findById(OrderId.of(command.orderId()));
+        if( order.isEmpty()) {
+            throw new IllegalArgumentException("Order does not exist");
+        }
+        order.get().rejected(command.reason());
         this.updateOrderPorts.forEach(port -> port.update(order.get()));
     }
 }
