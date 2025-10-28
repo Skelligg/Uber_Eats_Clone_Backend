@@ -9,4 +9,5 @@ import java.util.UUID;
 public interface LoadOrdersPort {
     List<OrderProjection> loadAllByRestaurantId(RestaurantId restaurantId);
     OrderProjection loadOrderById(UUID orderId);
+    List<OrderProjection> loadAll();
 }

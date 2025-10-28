@@ -9,7 +9,6 @@ import be.kdg.prog6.ordering.domain.vo.RestaurantId;
 import be.kdg.prog6.ordering.port.in.order.CreateOrderCommand;
 import be.kdg.prog6.ordering.port.in.order.CreateOrderUseCase;
 import be.kdg.prog6.ordering.port.out.dish.LoadDishesPort;
-import be.kdg.prog6.ordering.port.out.order.LoadOrderPort;
 import be.kdg.prog6.ordering.port.out.restaurant.LoadRestaurantsPort;
 import be.kdg.prog6.ordering.port.out.order.UpdateOrderPort;
 import org.slf4j.Logger;
@@ -24,13 +23,11 @@ import java.util.UUID;
 public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
     private final Logger logger = LoggerFactory.getLogger(CreateOrderUseCaseImpl.class.getName());
 
-    private final LoadOrderPort loadOrderPort;
     private final List<UpdateOrderPort> updateOrderPorts;
     private final LoadRestaurantsPort loadRestaurantsPort;
     private final LoadDishesPort loadDishesPort;
 
-    public CreateOrderUseCaseImpl(LoadOrderPort loadOrderPort, List<UpdateOrderPort> updateOrderPorts, LoadRestaurantsPort loadRestaurantsPort, LoadDishesPort loadDishesPort) {
-        this.loadOrderPort = loadOrderPort;
+    public CreateOrderUseCaseImpl(List<UpdateOrderPort> updateOrderPorts, LoadRestaurantsPort loadRestaurantsPort, LoadDishesPort loadDishesPort) {
         this.updateOrderPorts = updateOrderPorts;
         this.loadRestaurantsPort = loadRestaurantsPort;
         this.loadDishesPort = loadDishesPort;
@@ -59,6 +56,26 @@ public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
                 command.customer(),
                 command.deliveryAddress()
         );
+
+        order.markPaid();
+
+        order.addDomainEvent(new OrderCreatedEvent(
+                order.getOrderId().id(),
+                order.getRestaurantId().id(),
+                order.getLines().stream()
+                        .map(l -> new OrderLineEventInfo(
+                                l.dishId().id(),
+                                l.dishName(),
+                                l.quantity(),
+                                l.unitPrice().price().doubleValue(),
+                                l.linePrice().price().doubleValue()
+                        ))
+                        .toList(),
+                order.getTotalPrice().price().doubleValue(),
+                order.getDeliveryAddress(),
+                order.getPlacedAt(),
+                order.getStatus().name()
+        ));
 
         this.updateOrderPorts.forEach(port -> port.update(order));
         return order;

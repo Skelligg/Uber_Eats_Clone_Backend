@@ -5,7 +5,6 @@ public enum ORDER_STATUS {
     PLACED,
     ACCEPTED,
     REJECTED,
-    AUTO_REJECTED,
     READY,
     PICKED_UP,
     DELIVERED

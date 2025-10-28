@@ -74,6 +74,11 @@ public class OrderProjectionJpaAdaptor implements LoadOrdersPort, UpdateOrdersPo
         return repository.findById(orderId).map(this::toDomain).orElse(null);
     }
 
+    @Override
+    public List<OrderProjection> loadAll() {
+        return repository.findAll().stream().map(this::toDomain).toList();
+    }
+
     public OrderProjection toDomain(OrderProjectionJpaEntity entity) {
         List<OrderLineProjection> lines = entity.getLines().stream()
                 .map(l -> new OrderLineProjection(

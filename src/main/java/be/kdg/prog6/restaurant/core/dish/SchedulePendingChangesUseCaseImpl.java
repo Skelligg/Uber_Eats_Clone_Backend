@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service;
 public class SchedulePendingChangesUseCaseImpl implements SchedulePendingChangesUseCase {
     private final LoadFoodMenuPort loadFoodMenuPort;
     private final UpdateFoodMenuPort updateFoodMenuPort;
-    private final PublishDishEventPort publishDishEventPort;
 
-    public SchedulePendingChangesUseCaseImpl(LoadFoodMenuPort loadFoodMenuPort, UpdateFoodMenuPort updateFoodMenuPort, PublishDishEventPort publishDishEventPort) {
+    public SchedulePendingChangesUseCaseImpl(LoadFoodMenuPort loadFoodMenuPort, UpdateFoodMenuPort updateFoodMenuPort) {
         this.loadFoodMenuPort = loadFoodMenuPort;
         this.updateFoodMenuPort = updateFoodMenuPort;
-        this.publishDishEventPort = publishDishEventPort;
     }
 
     @Override
