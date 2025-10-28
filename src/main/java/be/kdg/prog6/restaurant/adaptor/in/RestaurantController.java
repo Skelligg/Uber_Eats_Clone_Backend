@@ -141,4 +141,40 @@ public class RestaurantController {
         ));
     }
 
+    @PatchMapping("/orders/accept")
+    @PreAuthorize("hasAuthority('owner')")
+    public ResponseEntity<OrderDto> acceptLastOrder( @AuthenticationPrincipal Jwt jwt) {
+        String subject = jwt.getClaimAsString("sub");
+        UUID ownerId = UUID.fromString(subject);
+
+        OrderProjection order = acceptOrderUseCase.acceptLastOrder(ownerId);
+
+        return ResponseEntity.ok(new OrderDto(
+                order.getOrderId(),
+                order.getAddress().street(),
+                order.getAddress().number(),
+                order.getAddress().postalCode(),
+                order.getAddress().city(),
+                order.getAddress().country(),
+                order.getTotalPrice(),
+                order.getPlacedAt(),
+                order.getStatus(),
+                order.getRejectionReason(),
+                order.getAcceptedAt() != null ? order.getAcceptedAt(): null,
+                order.getReadyAt() != null ? order.getReadyAt(): null,
+                order.getRejectedAt() != null ? order.getRejectedAt(): null,
+                order.getPickedUpAt() != null ? order.getPickedUpAt(): null,
+                order.getDeliveredAt() != null ? order.getDeliveredAt(): null,
+                order.getLines().stream()
+                        .map(l -> new OrderlineDto(
+                                l.dishId().id(),
+                                l.dishName(),
+                                l.quantity(),
+                                l.unitPrice(),
+                                l.linePrice()
+                        ))
+                        .toList()
+        ));
+    }
+
 }

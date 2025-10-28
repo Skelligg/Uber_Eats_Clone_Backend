@@ -19,7 +19,7 @@ public class OrderEventPublisher implements UpdateOrderPort {
 
     @Override
     public Order update(Order order) {
-        log.info("Publishing {} events for order {}", order.getDomainEvents().size(), order.getOrderId());
+        //log.info("Publishing {} events for order {}", order.getDomainEvents().size(), order.getOrderId());
         order.getDomainEvents().forEach(applicationEventPublisher::publishEvent);
         return order;
     }
