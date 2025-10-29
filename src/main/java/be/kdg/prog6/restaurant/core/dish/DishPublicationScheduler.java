@@ -4,7 +4,7 @@ import be.kdg.prog6.common.events.dish.DishPublishedToMenuEvent;
 import be.kdg.prog6.common.events.dish.DishUnpublishedToMenuEvent;
 import be.kdg.prog6.restaurant.domain.FoodMenu;
 import be.kdg.prog6.restaurant.port.out.foodmenu.LoadFoodMenuPort;
-import be.kdg.prog6.restaurant.port.out.dish.PublishDishEventPort;
+import be.kdg.prog6.restaurant.port.out.dish.UpdateDishPort;
 import be.kdg.prog6.restaurant.port.out.foodmenu.UpdateFoodMenuPort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,13 +16,13 @@ import java.util.List;
 @Component
 public class DishPublicationScheduler {
     private final LoadFoodMenuPort loadFoodMenuPort;
-    private final UpdateFoodMenuPort updateFoodMenuPort;
-    private final PublishDishEventPort publishDishEventPort;
+    private final List<UpdateFoodMenuPort> updateFoodMenuPorts;
+    private final UpdateDishPort updateDishPort;
 
-    public DishPublicationScheduler(LoadFoodMenuPort loadFoodMenuPort, UpdateFoodMenuPort updateFoodMenuPort, PublishDishEventPort publishDishEventPort) {
+    public DishPublicationScheduler(LoadFoodMenuPort loadFoodMenuPort, List<UpdateFoodMenuPort> updateFoodMenuPorts, UpdateDishPort updateDishPort) {
         this.loadFoodMenuPort = loadFoodMenuPort;
-        this.updateFoodMenuPort = updateFoodMenuPort;
-        this.publishDishEventPort = publishDishEventPort;
+        this.updateFoodMenuPorts = updateFoodMenuPorts;
+        this.updateDishPort = updateDishPort;
     }
 
     @Scheduled(fixedRate = 60000) // every minute
@@ -65,9 +65,9 @@ public class DishPublicationScheduler {
                                 )
                         );
                     }
-                    publishDishEventPort.updateDish(d);
+                    updateDishPort.updateDish(d);
                 });
-                updateFoodMenuPort.updateFoodMenu(menu);
+                this.updateFoodMenuPorts.forEach(port -> port.updateFoodMenu(menu));
             }
         });
     }

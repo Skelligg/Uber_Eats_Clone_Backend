@@ -4,18 +4,19 @@ import be.kdg.prog6.restaurant.domain.FoodMenu;
 import be.kdg.prog6.restaurant.port.in.dish.ScheduleChangesCommand;
 import be.kdg.prog6.restaurant.port.in.dish.SchedulePendingChangesUseCase;
 import be.kdg.prog6.restaurant.port.out.foodmenu.LoadFoodMenuPort;
-import be.kdg.prog6.restaurant.port.out.dish.PublishDishEventPort;
 import be.kdg.prog6.restaurant.port.out.foodmenu.UpdateFoodMenuPort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SchedulePendingChangesUseCaseImpl implements SchedulePendingChangesUseCase {
     private final LoadFoodMenuPort loadFoodMenuPort;
-    private final UpdateFoodMenuPort updateFoodMenuPort;
+    private final List<UpdateFoodMenuPort> updateFoodMenuPorts;
 
-    public SchedulePendingChangesUseCaseImpl(LoadFoodMenuPort loadFoodMenuPort, UpdateFoodMenuPort updateFoodMenuPort) {
+    public SchedulePendingChangesUseCaseImpl(LoadFoodMenuPort loadFoodMenuPort, List<UpdateFoodMenuPort> updateFoodMenuPorts) {
         this.loadFoodMenuPort = loadFoodMenuPort;
-        this.updateFoodMenuPort = updateFoodMenuPort;
+        this.updateFoodMenuPorts = updateFoodMenuPorts;
     }
 
     @Override
@@ -25,7 +26,7 @@ public class SchedulePendingChangesUseCaseImpl implements SchedulePendingChanges
 
         foodMenu.scheduleDishes(command.dishIds(),command.publicationTime(),command.stateToBecome());
 
-        updateFoodMenuPort.updateFoodMenu(foodMenu);
+        this.updateFoodMenuPorts.forEach(updateFoodMenuPort -> updateFoodMenuPort.updateFoodMenu(foodMenu));
 
         return foodMenu;
     }

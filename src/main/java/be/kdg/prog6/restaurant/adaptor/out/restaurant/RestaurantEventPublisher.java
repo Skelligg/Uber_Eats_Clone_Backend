@@ -1,12 +1,12 @@
 package be.kdg.prog6.restaurant.adaptor.out.restaurant;
 
 import be.kdg.prog6.restaurant.domain.Restaurant;
-import be.kdg.prog6.restaurant.port.out.restaurant.PublishRestaurantEventPort;
+import be.kdg.prog6.restaurant.port.out.restaurant.UpdateRestaurantPort;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RestaurantEventPublisher implements PublishRestaurantEventPort {
+public class RestaurantEventPublisher implements UpdateRestaurantPort {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
@@ -14,11 +14,11 @@ public class RestaurantEventPublisher implements PublishRestaurantEventPort {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-
     @Override
-    public void publishRestaurantCreated(Restaurant restaurant) {
+    public Restaurant updateRestaurant(Restaurant restaurant) {
         restaurant.getDomainEvents().forEach(applicationEventPublisher::publishEvent);
         restaurant.clearDomainEvents();
+        return restaurant;
     }
 
 

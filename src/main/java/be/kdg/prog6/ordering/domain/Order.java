@@ -10,19 +10,16 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Order {
-    // Identity
+
     private final OrderId orderId;
     private final RestaurantId restaurantId;
 
-    // Snapshot of what was ordered (immutable after creation)
     private final List<OrderLine> lines;
     private final Money totalPrice;
 
-    // Customer & delivery
     private final CustomerInfo customer;
     private final Address deliveryAddress;
 
-    // Timestamps
     private LocalDateTime placedAt;
     private LocalDateTime acceptedAt;
     private LocalDateTime rejectedAt;
@@ -30,14 +27,12 @@ public class Order {
     private LocalDateTime pickedUpAt;
     private LocalDateTime deliveredAt;
 
-    // State
     private ORDER_STATUS status;
-    private String rejectionReason; // optional when REJECTED
+    private String rejectionReason;
 
     // Order decision window (five minutes)
     private final Duration restaurantDecisionWindow = Duration.ofMinutes(5);
 
-    // Domain events collected by aggregate
     private final List<DomainEvent> domainEvents = new ArrayList<>();
 
     // Optional: estimated delivery time snapshot (in minutes) at placement
@@ -48,7 +43,6 @@ public class Order {
 
     private String paymentSessionId;
 
-    // ---------- Constructors / Factory ----------
     public Order(
             OrderId orderId,
             RestaurantId restaurantId,
@@ -85,7 +79,6 @@ public class Order {
         this.paymentSessionId = paymentSessionId;
     }
 
-    // ---------- Domain behaviors (methods left intentionally empty) ----------
 
     public void accepted() {
         if(ORDER_STATUS.PLACED == status) {status = ORDER_STATUS.ACCEPTED;}
@@ -98,8 +91,6 @@ public class Order {
         rejectedAt = LocalDateTime.now();
     }
 
-    public void autoDeclineIfTimedOut(LocalDateTime now) {
-    }
 
     public void markReadyForPickup() {
         if(ORDER_STATUS.ACCEPTED == status) {status = ORDER_STATUS.READY;}
@@ -134,12 +125,6 @@ public class Order {
     public void addDomainEvent(DomainEvent event) {
         domainEvents.add(event);
     }
-
-    public List<DomainEvent> pullDomainEvents() {
-        return null;
-    }
-
-    // ---------- Queries / Getters ----------
 
     public OrderId getOrderId() {
         return orderId;
@@ -213,7 +198,6 @@ public class Order {
         return paymentSessionId;
     }
 
-    // ---------- Equals / HashCode (based on identity) ----------
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

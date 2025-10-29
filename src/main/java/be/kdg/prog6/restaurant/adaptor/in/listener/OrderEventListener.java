@@ -1,12 +1,10 @@
 package be.kdg.prog6.restaurant.adaptor.in.listener;
 
-import be.kdg.prog6.common.config.RabbitMQTopology;
 import be.kdg.prog6.common.events.order.OrderCreatedEvent;
-import be.kdg.prog6.restaurant.port.in.order.OrderEventProjector;
-import be.kdg.prog6.restaurant.port.in.order.OrderPlacedCommand;
+import be.kdg.prog6.restaurant.port.in.orderProjection.OrderEventProjector;
+import be.kdg.prog6.restaurant.port.in.orderProjection.OrderPlacedCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 

@@ -4,7 +4,7 @@ import be.kdg.prog6.common.events.dish.DishMarkedAvailableEvent;
 import be.kdg.prog6.common.events.dish.DishMarkedOutOfStockEvent;
 import be.kdg.prog6.common.events.dish.DishPublishedToMenuEvent;
 import be.kdg.prog6.common.events.dish.DishUnpublishedToMenuEvent;
-import be.kdg.prog6.ordering.port.in.dish.*;
+import be.kdg.prog6.ordering.port.in.dishProjection.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;

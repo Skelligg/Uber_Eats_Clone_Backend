@@ -11,9 +11,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Aggregate root representing the restaurant's published and draft menu.
- */
 public class FoodMenu {
     private final RestaurantId restaurantId;
     private final List<Dish> dishes;

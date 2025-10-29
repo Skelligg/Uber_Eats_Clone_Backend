@@ -3,8 +3,8 @@ package be.kdg.prog6.ordering.adaptor.out.projections;
 import be.kdg.prog6.common.vo.CUISINE_TYPE;
 import be.kdg.prog6.common.vo.DAY;
 import be.kdg.prog6.ordering.domain.projection.RestaurantProjection;
-import be.kdg.prog6.ordering.port.out.restaurant.LoadRestaurantsPort;
-import be.kdg.prog6.ordering.port.out.restaurant.UpdateRestaurantsPort;
+import be.kdg.prog6.ordering.port.out.restaurantProjection.LoadRestaurantsPort;
+import be.kdg.prog6.ordering.port.out.restaurantProjection.UpdateRestaurantsPort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

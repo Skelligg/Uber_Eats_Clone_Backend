@@ -7,7 +7,6 @@ import be.kdg.prog6.restaurant.domain.vo.restaurant.Picture;
 import be.kdg.prog6.restaurant.port.in.restaurant.CreateRestaurantCommand;
 import be.kdg.prog6.restaurant.port.in.restaurant.CreateRestaurantUseCase;
 import be.kdg.prog6.restaurant.port.out.restaurant.LoadRestaurantPort;
-import be.kdg.prog6.restaurant.port.out.restaurant.PublishRestaurantEventPort;
 import be.kdg.prog6.restaurant.port.out.restaurant.UpdateRestaurantPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,17 +14,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 @Service
 public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
     private final Logger logger = LoggerFactory.getLogger(DefaultCreateRestaurantUseCase.class.getName());
 
-    private final UpdateRestaurantPort updateRestaurantPort;
-    private final PublishRestaurantEventPort publishRestaurantEventPort;
     private final LoadRestaurantPort loadRestaurantPort;
+    private final List<UpdateRestaurantPort> updateRestaurantPorts;
 
-    public DefaultCreateRestaurantUseCase(UpdateRestaurantPort updateRestaurantPort, PublishRestaurantEventPort publishRestaurantEventPort, LoadRestaurantPort loadRestaurantPort){
-        this.updateRestaurantPort = updateRestaurantPort;
-        this.publishRestaurantEventPort = publishRestaurantEventPort;
+    public DefaultCreateRestaurantUseCase(List<UpdateRestaurantPort> updateRestaurantPorts, LoadRestaurantPort loadRestaurantPort){
+        this.updateRestaurantPorts = updateRestaurantPorts;
         this.loadRestaurantPort = loadRestaurantPort;
     }
 
@@ -48,11 +47,8 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
                 command.defaultPrepTime(),
                 command.openingHours());
 
-        // **add the domain event**
         restaurant.addDomainEvent(new RestaurantCreatedEvent(
                 restaurant.getRestaurantId().id().toString(),
-                restaurant.getOwnerId().id().toString(),
-                restaurant.getOwnerId().name(),
                 restaurant.getName(),
                 restaurant.getAddress().street(),
                 restaurant.getAddress().number(),
@@ -71,10 +67,7 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
                         .toList()
         ));
 
-
-
-        this.updateRestaurantPort.addRestaurant(restaurant);
-        this.publishRestaurantEventPort.publishRestaurantCreated(restaurant);
+        this.updateRestaurantPorts.forEach(port -> port.updateRestaurant(restaurant)) ;
         return restaurant;
     }
 }

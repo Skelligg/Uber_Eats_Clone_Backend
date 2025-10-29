@@ -10,17 +10,19 @@ import be.kdg.prog6.restaurant.port.out.foodmenu.LoadFoodMenuPort;
 import be.kdg.prog6.restaurant.port.out.foodmenu.UpdateFoodMenuPort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EditDishUseCaseImpl implements EditDishUseCase {
 
     private final LoadDishPort loadDishPort;
     private final LoadFoodMenuPort loadFoodMenuPort;
-    private final UpdateFoodMenuPort updateFoodMenuPort;
+    private final List<UpdateFoodMenuPort> updateFoodMenuPorts;
 
-    public EditDishUseCaseImpl(LoadDishPort loadDishPort, LoadFoodMenuPort loadFoodMenuPort, UpdateFoodMenuPort updateFoodMenuPort) {
+    public EditDishUseCaseImpl(LoadDishPort loadDishPort, LoadFoodMenuPort loadFoodMenuPort, List<UpdateFoodMenuPort> updateFoodMenuPorts) {
         this.loadDishPort = loadDishPort;
         this.loadFoodMenuPort = loadFoodMenuPort;
-        this.updateFoodMenuPort = updateFoodMenuPort;
+        this.updateFoodMenuPorts = updateFoodMenuPorts;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class EditDishUseCaseImpl implements EditDishUseCase {
         dish.editDraft(draft);
         foodMenu.updateDish(dish);
 
-        updateFoodMenuPort.updateFoodMenu(foodMenu);
+        this.updateFoodMenuPorts.forEach(port -> port.updateFoodMenu(foodMenu));
         return dish;
     }
 }

@@ -27,7 +27,8 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(HttpMethod.GET, "/api/customers/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/restaurants").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/payments/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/payments/**").permitAll()
                 .anyRequest().authenticated()

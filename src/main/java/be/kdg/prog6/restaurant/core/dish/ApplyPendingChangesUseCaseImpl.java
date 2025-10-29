@@ -5,7 +5,7 @@ import be.kdg.prog6.restaurant.domain.FoodMenu;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 import be.kdg.prog6.restaurant.port.in.dish.ApplyPendingChangesUseCase;
 import be.kdg.prog6.restaurant.port.out.foodmenu.LoadFoodMenuPort;
-import be.kdg.prog6.restaurant.port.out.dish.PublishDishEventPort;
+import be.kdg.prog6.restaurant.port.out.dish.UpdateDishPort;
 import be.kdg.prog6.restaurant.port.out.foodmenu.UpdateFoodMenuPort;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +14,13 @@ import java.util.List;
 @Service
 public class ApplyPendingChangesUseCaseImpl implements ApplyPendingChangesUseCase {
     private final LoadFoodMenuPort loadFoodMenuPort;
-    private final UpdateFoodMenuPort updateFoodMenuPort;
-    private final PublishDishEventPort publishDishEventPort;
+    private final List<UpdateFoodMenuPort> updateFoodMenuPorts;
+    private final UpdateDishPort updateDishPort;
 
-    public ApplyPendingChangesUseCaseImpl(LoadFoodMenuPort loadFoodMenuPort, UpdateFoodMenuPort updateFoodMenuPort, PublishDishEventPort publishDishEventPort) {
+    public ApplyPendingChangesUseCaseImpl(LoadFoodMenuPort loadFoodMenuPort, List<UpdateFoodMenuPort> updateFoodMenuPorts, UpdateDishPort updateDishPort) {
         this.loadFoodMenuPort = loadFoodMenuPort;
-        this.updateFoodMenuPort = updateFoodMenuPort;
-        this.publishDishEventPort = publishDishEventPort;
+        this.updateFoodMenuPorts = updateFoodMenuPorts;
+        this.updateDishPort = updateDishPort;
     }
 
     @Override
@@ -30,9 +30,9 @@ public class ApplyPendingChangesUseCaseImpl implements ApplyPendingChangesUseCas
 
         List<Dish> appliedDishes = foodMenu.applyPendingDrafts();
 
-        updateFoodMenuPort.updateFoodMenu(foodMenu);
+        this.updateFoodMenuPorts.forEach(updateFoodMenuPort -> updateFoodMenuPort.updateFoodMenu(foodMenu));
         for(Dish dish : appliedDishes) {
-            publishDishEventPort.updateDish(dish);
+            updateDishPort.updateDish(dish);
         }
 
         return foodMenu;

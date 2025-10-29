@@ -42,6 +42,7 @@ public class OrderProjectionEventListener {
                 event.reason()));
     }
 
+    // not working in delivery service so commented out and picked up handled below
 //    @RabbitListener(queues = RabbitMQTopology.ORDER_PICKED_UP_QUEUE)
 //    public void orderPickedUp(OrderPickedUpEvent event) {
 //        logger.info("orderPickedUpEvent received");

@@ -11,9 +11,9 @@ import be.kdg.prog6.restaurant.core.restaurant.DefaultCreateRestaurantUseCase;
 import be.kdg.prog6.restaurant.domain.Restaurant;
 import be.kdg.prog6.restaurant.domain.projection.OrderProjection;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.*;
-import be.kdg.prog6.restaurant.port.in.order.HandleOrderUseCase;
-import be.kdg.prog6.restaurant.port.in.order.GetOrderProjectionsUseCase;
-import be.kdg.prog6.restaurant.port.in.order.MarkOrderReadyForPickUpUseCase;
+import be.kdg.prog6.restaurant.port.in.orderProjection.HandleOrderUseCase;
+import be.kdg.prog6.restaurant.port.in.orderProjection.GetOrderProjectionsUseCase;
+import be.kdg.prog6.restaurant.port.in.orderProjection.MarkOrderReadyForPickUpUseCase;
 import be.kdg.prog6.restaurant.port.in.restaurant.CreateRestaurantCommand;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,7 +44,6 @@ public class RestaurantController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<RestaurantDto> createRestaurant(@RequestBody CreateRestaurantRequest request) {
         CreateRestaurantCommand command = new CreateRestaurantCommand(
                 OwnerId.of(request.ownerId()),

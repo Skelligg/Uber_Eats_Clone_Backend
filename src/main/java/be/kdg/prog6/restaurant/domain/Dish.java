@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * Dish aggregate that keeps track of a published version and an optional draft version.
- */
 public class Dish {
     private final DishId dishId;
     private DishVersion publishedVersion;
@@ -39,15 +36,11 @@ public class Dish {
         this.scheduledToBecomeState = scheduledToBecomeState;
     }
 
-    /**
-     * Convenience: set the whole draft from a DishVersion instance.
-     */
     public void editDraft(DishVersion newDraft) {
         if (newDraft == null) throw new IllegalArgumentException("newDraft must not be null");
         this.draftVersion = newDraft;
     }
 
-    // --- Publish the draft immediately ---
     public void publish() {
         if (draftVersion == null)
             throw new IllegalStateException("No draft to publish");
@@ -71,7 +64,6 @@ public class Dish {
         this.scheduledToBecomeState = newState;
     }
 
-    // --- Unpublish a dish entirely ---
     public void unpublish() {
         this.state = DISH_STATE.DRAFT;
         this.draftVersion = publishedVersion;
@@ -101,18 +93,6 @@ public class Dish {
 
     public Optional<LocalDateTime> getScheduledPublishTime() {
         return Optional.ofNullable(scheduledPublishTime);
-    }
-
-    public void setPublishedVersion(DishVersion publishedVersion) {
-        this.publishedVersion = publishedVersion;
-    }
-
-    public void setDraftVersion(DishVersion draftVersion) {
-        this.draftVersion = draftVersion;
-    }
-
-    public void setState(DISH_STATE state) {
-        this.state = state;
     }
 
     public List<DomainEvent> getDomainEvents() {

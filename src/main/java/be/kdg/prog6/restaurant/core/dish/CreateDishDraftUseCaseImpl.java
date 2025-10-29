@@ -12,16 +12,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CreateDishDraftUseCaseImpl implements CreateDishDraftUseCase {
 
     private final Logger logger = LoggerFactory.getLogger(CreateDishDraftUseCaseImpl.class.getName());
 
-    private final UpdateFoodMenuPort updateFoodMenuPort;
+    private final List<UpdateFoodMenuPort> updateFoodMenuPorts;
     private final LoadFoodMenuPort loadFoodMenuPort;
 
-    public CreateDishDraftUseCaseImpl(UpdateFoodMenuPort updateFoodMenuPort, LoadFoodMenuPort loadFoodMenuPort) {
-        this.updateFoodMenuPort = updateFoodMenuPort;
+    public CreateDishDraftUseCaseImpl(List<UpdateFoodMenuPort> updateFoodMenuPorts, LoadFoodMenuPort loadFoodMenuPort) {
+        this.updateFoodMenuPorts = updateFoodMenuPorts;
          this.loadFoodMenuPort = loadFoodMenuPort;
     }
 
@@ -48,7 +50,7 @@ public class CreateDishDraftUseCaseImpl implements CreateDishDraftUseCase {
 
         foodMenu.get().addDish(dish);
 
-        this.updateFoodMenuPort.addDishToMenu(dish,foodMenu.get());
+        this.updateFoodMenuPorts.forEach(port -> port.updateFoodMenu(foodMenu.get()));
         return dish;
     }
 }

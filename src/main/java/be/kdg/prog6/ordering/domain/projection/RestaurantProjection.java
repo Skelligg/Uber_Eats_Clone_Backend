@@ -2,7 +2,6 @@ package be.kdg.prog6.ordering.domain.projection;
 
 import be.kdg.prog6.common.vo.CUISINE_TYPE;
 import be.kdg.prog6.common.vo.DAY;
-import be.kdg.prog6.ordering.domain.vo.PRICE_RANGE;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -71,8 +70,6 @@ public class RestaurantProjection {
     }
 
 
-    // Getters (you might not need setters if projection is append-only)
-
     public UUID getRestaurantId() {
         return restaurantId;
     }
@@ -127,11 +124,6 @@ public class RestaurantProjection {
 
     public LocalTime getClosingTime() {
         return closingTime;
-    }
-
-    public boolean isOpenNow() {
-        LocalTime now = LocalTime.now();
-        return !now.isBefore(openingTime) && !now.isAfter(closingTime);
     }
 
     public List<DAY> getOpenDays() {

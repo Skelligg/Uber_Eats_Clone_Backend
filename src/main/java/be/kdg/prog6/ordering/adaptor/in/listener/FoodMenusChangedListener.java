@@ -2,7 +2,7 @@
 package be.kdg.prog6.ordering.adaptor.in.listener;
 
 import be.kdg.prog6.common.events.foodmenu.FoodMenuCreatedEvent;
-import be.kdg.prog6.ordering.port.in.foodmenu.FoodMenusChangedProjector;
+import be.kdg.prog6.ordering.port.in.foodMenuProjection.FoodMenusChangedProjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;

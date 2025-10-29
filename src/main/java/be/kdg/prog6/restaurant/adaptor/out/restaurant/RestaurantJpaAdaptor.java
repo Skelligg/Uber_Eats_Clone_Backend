@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
@@ -36,15 +35,10 @@ public class RestaurantJpaAdaptor implements UpdateRestaurantPort, LoadRestauran
     }
 
     @Override
-    public Restaurant addRestaurant(Restaurant restaurant) {
+    public Restaurant updateRestaurant(Restaurant restaurant) {
         logger.info("Pictures before saving: {}", restaurant.getPictureList().stream().map(Picture::url).toList());
         restaurants.save(toJpaEntity(restaurant));
         return restaurant;
-    }
-
-    @Override
-    public Restaurant updateRestaurant(Restaurant restaurant) {
-        return null;
     }
 
     private Restaurant toDomain(RestaurantJpaEntity entity) {
@@ -71,9 +65,9 @@ public class RestaurantJpaAdaptor implements UpdateRestaurantPort, LoadRestauran
 
     private RestaurantJpaEntity toJpaEntity(Restaurant restaurant) {
         return new RestaurantJpaEntity(
-                restaurant.getRestaurantId().id(),                     // UUID
-                restaurant.getOwnerId().id(),               // ownerId as String
-                restaurant.getOwnerId().name(),                        // ownerName
+                restaurant.getRestaurantId().id(),
+                restaurant.getOwnerId().id(),
+                restaurant.getOwnerId().name(),
                 restaurant.getName(),
                 restaurant.getAddress().street(),
                 restaurant.getAddress().number(),

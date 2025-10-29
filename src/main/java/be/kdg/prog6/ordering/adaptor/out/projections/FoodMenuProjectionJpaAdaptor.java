@@ -1,8 +1,8 @@
 package be.kdg.prog6.ordering.adaptor.out.projections;
 
 import be.kdg.prog6.ordering.domain.projection.FoodMenuProjection;
-import be.kdg.prog6.ordering.port.out.foodmenu.LoadFoodMenusPort;
-import be.kdg.prog6.ordering.port.out.foodmenu.UpdateFoodMenusPort;
+import be.kdg.prog6.ordering.port.out.foodmenuProjection.LoadFoodMenusPort;
+import be.kdg.prog6.ordering.port.out.foodmenuProjection.UpdateFoodMenusPort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

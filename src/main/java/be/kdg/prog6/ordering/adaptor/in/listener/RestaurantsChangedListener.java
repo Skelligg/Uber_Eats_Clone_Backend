@@ -1,8 +1,8 @@
 package be.kdg.prog6.ordering.adaptor.in.listener;
 
 import be.kdg.prog6.common.events.restaurant.RestaurantCreatedEvent;
-import be.kdg.prog6.ordering.port.in.restaurant.RestaurantAddedProjectionCommand;
-import be.kdg.prog6.ordering.port.in.restaurant.RestaurantsChangedProjector;
+import be.kdg.prog6.ordering.port.in.restaurantProjection.RestaurantAddedProjectionCommand;
+import be.kdg.prog6.ordering.port.in.restaurantProjection.RestaurantsChangedProjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -19,6 +19,7 @@ public class RestaurantsChangedListener {
 
     @EventListener(RestaurantCreatedEvent.class)
     public void restaurantsChanged(RestaurantCreatedEvent restaurantCreatedEvent) {
+        logger.info("RestaurantCreatedEvent received");
         projector.project(RestaurantAddedProjectionCommand.fromEvent(restaurantCreatedEvent));
     }
 }

@@ -78,7 +78,6 @@ public class RestaurantProjectionJpaEntity {
         this.openDays = openDays;
     }
 
-    // Getters only (projections are usually read-only)
 
     public UUID getId() {
         return id;

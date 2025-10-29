@@ -4,18 +4,19 @@ import be.kdg.prog6.common.events.foodmenu.FoodMenuCreatedEvent;
 import be.kdg.prog6.restaurant.domain.FoodMenu;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 import be.kdg.prog6.restaurant.port.in.foodmenu.CreateFoodMenuUseCase;
-import be.kdg.prog6.restaurant.port.out.foodmenu.PublishFoodMenuEventPort;
 import be.kdg.prog6.restaurant.port.out.foodmenu.UpdateFoodMenuPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
+@Transactional
 public class CreateFoodMenuUseCaseImpl implements CreateFoodMenuUseCase {
-    private final UpdateFoodMenuPort updateFoodMenuPort;
-    private final PublishFoodMenuEventPort publishFoodMenuEventPort;
+    private final List<UpdateFoodMenuPort> updateFoodMenuPorts;
 
-    public CreateFoodMenuUseCaseImpl(UpdateFoodMenuPort updateFoodMenuPort, PublishFoodMenuEventPort publishFoodMenuEventPort) {
-        this.updateFoodMenuPort = updateFoodMenuPort;
-        this.publishFoodMenuEventPort = publishFoodMenuEventPort;
+    public CreateFoodMenuUseCaseImpl(List<UpdateFoodMenuPort> updateFoodMenuPorts) {
+        this.updateFoodMenuPorts = updateFoodMenuPorts;
     }
 
     @Override
@@ -23,7 +24,6 @@ public class CreateFoodMenuUseCaseImpl implements CreateFoodMenuUseCase {
         FoodMenu foodMenu = new FoodMenu(restaurantId);
 
         foodMenu.addDomainEvent(new FoodMenuCreatedEvent(foodMenu.getRestaurantId().id()));
-        this.updateFoodMenuPort.addFoodMenu(foodMenu);
-        this.publishFoodMenuEventPort.publishFoodMenuCreated(foodMenu);
+        this.updateFoodMenuPorts.forEach(port -> port.updateFoodMenu(foodMenu));
     }
 }

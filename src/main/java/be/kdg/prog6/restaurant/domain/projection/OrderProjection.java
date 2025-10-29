@@ -81,7 +81,7 @@ public class OrderProjection {
         rejectionReason = reason;
     }
 
-    //getters & setters
+    //getters
 
     public UUID getOrderId() {
         return orderId;
