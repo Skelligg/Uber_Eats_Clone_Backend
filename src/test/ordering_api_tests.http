@@ -38,6 +38,5 @@ Content-Type: application/json
     "postalCode": "2140",
     "city": "Antwerp",
     "country": "Belgium"
-  },
-  "placedAt": "2025-10-21T14:35:00"
+  }
 }

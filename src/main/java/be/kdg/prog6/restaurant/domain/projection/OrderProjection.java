@@ -81,6 +81,11 @@ public class OrderProjection {
         rejectionReason = reason;
     }
 
+    public void markDelivered() {
+        status = ORDER_STATUS.DELIVERED;
+        deliveredAt = LocalDateTime.now();
+    }
+
     //getters
 
     public UUID getOrderId() {

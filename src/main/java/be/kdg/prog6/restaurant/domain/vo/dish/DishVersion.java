@@ -13,10 +13,6 @@ public record DishVersion(
         String tags,
         DISH_TYPE dishType
 ) {
-    public DishVersion {
-        Objects.requireNonNull(name);
-        Objects.requireNonNull(price);
-    }
 
     public DishVersion update(String name, String description, Price price,  String pictureUrl, String tags,  DISH_TYPE dishType) {
         return new DishVersion(

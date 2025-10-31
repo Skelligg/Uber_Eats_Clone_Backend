@@ -6,7 +6,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 public record CreateRestaurantRequest(
-        String ownerId,
         String name,
         AddressRequest address,
         String emailAddress,

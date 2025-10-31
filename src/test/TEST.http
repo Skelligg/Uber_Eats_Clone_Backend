@@ -29,11 +29,15 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/api/payments/order/5382d82f-ecdc-4f16-9716-9f2da78004fc
+POST http://localhost:8080/api/payments/order/51ad4074-87dc-4d7c-a667-45329989d4ac
 
 ###
 
-GET http://localhost:8080/api/payments/order/5382d82f-ecdc-4f16-9716-9f2da78004fc/verify/cs_test_a1cIMzXOSytnEqYX3GzbEOkkEK8TRTyvDwuYfmszSCvM98LqmPE1vTQGdZ
+GET http://localhost:8080/api/orders/926c05c6-f9b1-4bf7-8a60-f26bdcd27031
+
+###
+
+GET http://localhost:8080/api/payments/order/51ad4074-87dc-4d7c-a667-45329989d4ac/verify/cs_test_a1OKs3X9JCQE81t3eyfIcheD9LWVQYB7iFctBRpe6Dtz6FqgAdWlFvHTvK
 
 ### Run this to get access token with admin user first
 
@@ -55,7 +59,7 @@ Authorization: Bearer {{access_token}}
 
 ###
 
-PATCH http://localhost:8080/api/restaurants/orders/7215135f-5342-482d-8045-7df8fbd81350/reject
+PATCH http://localhost:8080/api/restaurants/orders/9e15817d-267b-4953-a232-db1c316391d1/reject
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 

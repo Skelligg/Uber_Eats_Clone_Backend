@@ -1,5 +1,7 @@
 package be.kdg.prog6.ordering.core.order;
 
+import be.kdg.prog6.common.events.order.OrderCreatedEvent;
+import be.kdg.prog6.common.vo.OrderLineEventInfo;
 import be.kdg.prog6.ordering.domain.Order;
 import be.kdg.prog6.ordering.domain.vo.OrderId;
 import be.kdg.prog6.ordering.domain.vo.OrderLine;
@@ -45,7 +47,7 @@ public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
                 throw new IllegalArgumentException("Dish does not exist");
             }
         }
-
+        // go to constructor to change PLACED TO UNPAID
         Order order = new Order(
                 OrderId.newId(),
                 RestaurantId.of(command.restaurantId().id()),

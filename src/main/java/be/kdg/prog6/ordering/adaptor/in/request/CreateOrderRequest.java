@@ -8,7 +8,6 @@ public record CreateOrderRequest (
     double totalPrice,
     String customerName,
     String customerEmail,
-    AddressRequest deliveryAddress,
-    LocalDateTime placedAt
+    AddressRequest deliveryAddress
 ){
 }

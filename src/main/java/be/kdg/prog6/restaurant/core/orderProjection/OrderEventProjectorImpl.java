@@ -7,6 +7,7 @@ import be.kdg.prog6.restaurant.domain.projection.OrderProjection;
 import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.port.in.orderProjection.OrderEventProjector;
 import be.kdg.prog6.restaurant.port.in.orderProjection.OrderPlacedCommand;
+import be.kdg.prog6.restaurant.port.out.orderProjection.LoadOrdersPort;
 import be.kdg.prog6.restaurant.port.out.orderProjection.UpdateOrdersPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,4 +51,5 @@ public class OrderEventProjectorImpl implements OrderEventProjector {
                         )).toList()
         )));
     }
+
 }

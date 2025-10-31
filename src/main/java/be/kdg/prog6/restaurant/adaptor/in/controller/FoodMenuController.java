@@ -1,5 +1,6 @@
 package be.kdg.prog6.restaurant.adaptor.in.controller;
 
+import be.kdg.prog6.common.vo.DISH_TYPE;
 import be.kdg.prog6.restaurant.adaptor.in.request.CreateDishDraftRequest;
 import be.kdg.prog6.restaurant.adaptor.in.request.EditDishRequest;
 import be.kdg.prog6.restaurant.adaptor.in.request.SchedulePublicationRequest;
@@ -12,10 +13,12 @@ import be.kdg.prog6.restaurant.domain.vo.dish.DishId;
 import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 import be.kdg.prog6.restaurant.port.in.dish.*;
 import be.kdg.prog6.restaurant.port.in.foodmenu.GetFoodMenuUseCase;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -94,7 +97,7 @@ public class FoodMenuController {
                 Price.of(request.price()),
                 request.pictureUrl(),
                 request.tags(),
-                request.dishType()
+                DISH_TYPE.valueOf(request.dishType().toUpperCase())
         );
 
         Dish created = createDishDraftUseCase.createDishDraftForFoodMenu(command);
@@ -121,7 +124,7 @@ public class FoodMenuController {
     }
 
     @PatchMapping("/{restaurantId}/dishes/{dishId}/publish")
-    public ResponseEntity<DishDto> publishDish(
+    public ResponseEntity<?> publishDish(
             @PathVariable String restaurantId,
             @PathVariable String dishId) {
 
@@ -130,28 +133,49 @@ public class FoodMenuController {
                 DishId.of(UUID.fromString(dishId))
         );
 
-        Dish published = publishDishUseCase.publishDish(command);
+        try {
+            Dish published = publishDishUseCase.publishDish(command);
 
-        DishVersionDto publishedDto = published.getPublishedVersion()
-                .map(v -> new DishVersionDto(
-                        v.name(),
-                        v.description(),
-                        v.price().asDouble(),
-                        v.pictureUrl(),
-                        v.tags(),
-                        v.dishType().toString()
-                ))
-                .orElse(null);
+            DishVersionDto publishedDto = published.getPublishedVersion()
+                    .map(v -> new DishVersionDto(
+                            v.name(),
+                            v.description(),
+                            v.price().asDouble(),
+                            v.pictureUrl(),
+                            v.tags(),
+                            v.dishType().toString()
+                    ))
+                    .orElse(null);
 
-        return ResponseEntity.ok(new DishDto(
-                published.getDishId().id(),
-                publishedDto,
-                null,
-                published.getState().name(),
-                published.getScheduledPublishTime().orElse(null),
-                published.getScheduledToBecomeState()
-        ));
+            DishDto responseDto = new DishDto(
+                    published.getDishId().id(),
+                    publishedDto,
+                    null,
+                    published.getState().name(),
+                    published.getScheduledPublishTime().orElse(null),
+                    published.getScheduledToBecomeState()
+            );
+
+            return ResponseEntity.ok(responseDto);
+
+        } catch (IllegalStateException e) {
+            // Handle the "more than 10 dishes" rule
+            return ResponseEntity
+                    .badRequest()
+                    .body(Map.of("error", "Cannot publish more than 10 dishes."));
+        } catch (IllegalArgumentException e) {
+            // Dish or menu not found
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            // Fallback for unexpected errors
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Something went wrong: " + e.getMessage()));
+        }
     }
+
 
     @PatchMapping("/{restaurantId}/dishes/{dishId}/unpublish")
     public ResponseEntity<DishDto> unpublishDish(
@@ -271,8 +295,6 @@ public class FoodMenuController {
                 availableDish.getScheduledToBecomeState()
         ));
     }
-    // ask about restful api conventions, am I allowed to have actions at the end of apis, more DDD to do so than
-    // following restful principles
 
     @PatchMapping("/{restaurantId}/dishes/{dishId}")
     public ResponseEntity<DishDto> editDish(
@@ -376,6 +398,30 @@ public class FoodMenuController {
 
         FoodMenu foodMenu = schedulePendingChangesUseCase.scheduleChanges(command);
 
-        return ResponseEntity.ok().build();
+        List<DishDto> publishedDishes = new java.util.ArrayList<>();
+        for (Dish dish : foodMenu.getAllDishes()){
+            DishVersionDto publishedDto = dish.getPublishedVersion()
+                    .map(v -> new DishVersionDto(
+                            v.name(),
+                            v.description(),
+                            v.price().asDouble(),
+                            v.pictureUrl(),
+                            v.tags(),
+                            v.dishType().toString()
+                    ))
+                    .orElse(null);
+
+            publishedDishes.add(new DishDto(
+                            dish.getDishId().id(),
+                            publishedDto,
+                            null,
+                            dish.getState().name(),
+                            dish.getScheduledPublishTime().orElse(null),
+                            dish.getScheduledToBecomeState()
+                    )
+            );
+        }
+
+        return ResponseEntity.ok(publishedDishes);
     }
 }

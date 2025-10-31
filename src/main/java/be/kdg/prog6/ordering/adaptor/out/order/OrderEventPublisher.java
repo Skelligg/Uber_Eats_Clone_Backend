@@ -21,6 +21,7 @@ public class OrderEventPublisher implements UpdateOrderPort {
     public Order update(Order order) {
         //log.info("Publishing {} events for order {}", order.getDomainEvents().size(), order.getOrderId());
         order.getDomainEvents().forEach(applicationEventPublisher::publishEvent);
+        order.clearDomainEvents();
         return order;
     }
 }

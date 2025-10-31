@@ -65,6 +65,9 @@ public class DishJpaEntity {
             this.draftTags = draft.tags();
             this.draftDishType = draft.dishType().name();
         });
+
+        this.scheduledPublishTime= dish.getScheduledPublishTime().orElse(null);
+        this.scheduledToBecomeState = dish.getScheduledToBecomeState();
     }
 
     public UUID getId() {

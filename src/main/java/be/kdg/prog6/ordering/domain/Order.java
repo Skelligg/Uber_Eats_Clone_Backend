@@ -58,6 +58,7 @@ public class Order {
         this.customer = customer;
         this.deliveryAddress = deliveryAddress;
         this.status = ORDER_STATUS.UNPAID;
+        this.placedAt = LocalDateTime.now();
     }
 
     public Order(OrderId orderId, RestaurantId restaurantId, List<OrderLine> lines, Money totalPrice, CustomerInfo customer, Address deliveryAddress, LocalDateTime placedAt, LocalDateTime acceptedAt, LocalDateTime rejectedAt, LocalDateTime readyAt, LocalDateTime pickedUpAt, LocalDateTime deliveredAt, ORDER_STATUS status, String rejectionReason, int estimatedDeliveryMinutes, String paymentSessionId) {
@@ -178,12 +179,16 @@ public class Order {
         return status;
     }
 
-    public Optional<String> getRejectionReason() {
-        return Optional.ofNullable(rejectionReason);
+    public String getRejectionReason() {
+        return rejectionReason;
     }
 
     public List<DomainEvent> getDomainEvents() {
         return Collections.unmodifiableList(domainEvents);
+    }
+
+    public void clearDomainEvents() {
+        domainEvents.clear();
     }
 
     public int getEstimatedDeliveryMinutes() {

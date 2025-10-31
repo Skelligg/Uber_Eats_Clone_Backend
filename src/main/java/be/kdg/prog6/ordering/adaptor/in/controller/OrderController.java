@@ -5,6 +5,7 @@ import be.kdg.prog6.ordering.adaptor.in.request.CreateOrderRequest;
 import be.kdg.prog6.ordering.adaptor.in.response.AddressDto;
 import be.kdg.prog6.ordering.adaptor.in.response.OrderDto;
 import be.kdg.prog6.ordering.adaptor.in.response.OrderLineDto;
+import be.kdg.prog6.ordering.adaptor.in.response.OrderPaidDto;
 import be.kdg.prog6.ordering.domain.Order;
 import be.kdg.prog6.ordering.domain.vo.*;
 import be.kdg.prog6.ordering.port.in.order.CreateOrderCommand;
@@ -46,13 +47,13 @@ public class OrderController {
                         request.deliveryAddress().postalCode(),
                         request.deliveryAddress().city(),
                         request.deliveryAddress().country()
-                        ),
-                request.placedAt()
+                        )
         );
 
         Order orderCreated = createOrderUseCase.createOrder(command);
 
         return ResponseEntity.ok(new OrderDto(
+                orderCreated.getOrderId().id().toString(),
                 orderCreated.getRestaurantId().id().toString(),
                 orderCreated.getLines().stream()
                         .map(l -> new OrderLineDto(
@@ -79,10 +80,11 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderDto> getOrder(@PathVariable UUID orderId) {
+    public ResponseEntity<OrderPaidDto> getOrder(@PathVariable UUID orderId) {
         Order order = getOrdersUseCase.getOrder(orderId);
 
-        return ResponseEntity.ok(new OrderDto(
+        return ResponseEntity.ok(new OrderPaidDto(
+                order.getOrderId().id().toString(),
                 order.getRestaurantId().id().toString(),
                 order.getLines().stream()
                         .map(l -> new OrderLineDto(
@@ -104,7 +106,9 @@ public class OrderController {
                         order.getDeliveryAddress().country()
                 ),
                 order.getPlacedAt(),
-                order.getStatus().toString()
+                order.getStatus().toString(),
+                order.getRejectionReason(),
+                order.getPaymentSessionId()
         ));
     }
 }

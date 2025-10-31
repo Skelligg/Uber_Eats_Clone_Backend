@@ -56,6 +56,13 @@ public class FoodMenu {
                 .collect(Collectors.toList());
     }
 
+    public void publishDish(Dish dish) {
+        if (countPublishedDishes() == MAX_PUBLISHED_DISHES){
+            throw new IllegalStateException("Cannot publish more than " + MAX_PUBLISHED_DISHES + " dishes at a time");
+        }
+        dish.publish();
+    }
+
     public List<Dish> applyPendingDrafts() {
         List<Dish> appliedDishes = new ArrayList<>();
         for (Dish dish : dishes) {

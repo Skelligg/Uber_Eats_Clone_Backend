@@ -98,7 +98,7 @@ public class HandleOrderUseCaseImpl implements HandleOrderUseCase {
     @Override
     public OrderProjection acceptLastOrder(UUID ownerId) {
 
-        var restaurant = loadRestaurantPort.findByOwnerId(OwnerId.of(ownerId,"owner"));
+        var restaurant = loadRestaurantPort.findByOwnerId(ownerId);
 
         if (restaurant.isEmpty() || !restaurant.get().getOwnerId().id().equals(ownerId)) {
             throw new IllegalArgumentException("Order does not belong to restaurant");

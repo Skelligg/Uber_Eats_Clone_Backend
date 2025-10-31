@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
@@ -23,8 +24,8 @@ public class RestaurantJpaAdaptor implements UpdateRestaurantPort, LoadRestauran
     }
 
     @Override
-    public Optional<Restaurant> findByOwnerId(OwnerId ownerId) {
-        return restaurants.findByOwnerId(ownerId.id())
+    public Optional<Restaurant> findByOwnerId(UUID ownerId) {
+        return restaurants.findByOwnerId(ownerId)
                 .map(this::toDomain);
     }
 

@@ -43,7 +43,7 @@ public class PublishDishUseCaseImpl implements PublishDishUseCase {
                 .orElseThrow(() -> new IllegalArgumentException("FoodMenu not found for restaurant: " + command.restaurantId()));
 
         try {
-            dish.publish();
+            foodMenu.publishDish(dish);
 
             foodMenu.updateDish(dish);
 

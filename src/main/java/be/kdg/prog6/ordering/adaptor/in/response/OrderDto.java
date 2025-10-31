@@ -4,13 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record OrderDto(
-    String restaurantId,
-    List<OrderLineDto> lines,
-    double totalPrice,
-    String customerName,
-    String customerEmail,
-    AddressDto deliveryAddress,
-    LocalDateTime placedAt,
-    String orderStatus
+        String orderId,
+        String restaurantId,
+        List<OrderLineDto> lines,
+        double totalPrice,
+        String customerName,
+        String customerEmail,
+        AddressDto deliveryAddress,
+        LocalDateTime placedAt,
+        String orderStatus
     ){
 }

@@ -61,6 +61,7 @@ public class OrderProjectionEventProjectorImpl implements OrderProjectionEventPr
             //throw new IllegalArgumentException("Order does not exist");
         }
         order.get().markDelivered();
+
         this.updateOrderPorts.forEach(port -> port.update(order.get()));
     }
 
@@ -74,6 +75,7 @@ public class OrderProjectionEventProjectorImpl implements OrderProjectionEventPr
         }
         order.get().pickedUp();
         order.get().updateCourierLocation(new CourierLocation(command.lat(),command.lng(),command.occurredAt()));
+
         this.updateOrderPorts.forEach(port -> port.update(order.get()));
     }
 

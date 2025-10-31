@@ -28,7 +28,7 @@ public class DishPublicationScheduler {
     @Scheduled(fixedRate = 60000) // every minute
     @Transactional
     public void publishScheduledDishes() {
-        // Load all food menus (you might want to make a port that fetches all)
+        // Load all food menus
         List<FoodMenu> allMenus = loadFoodMenuPort.loadAll();
 
         LocalDateTime now = LocalDateTime.now();
@@ -50,7 +50,7 @@ public class DishPublicationScheduler {
                         ) );
                     }
                     else{
-                        d.publish();
+                        menu.publishDish(d);
                         menu.addDish(d);
                         d.addDomainEvent(new DishPublishedToMenuEvent(
                                         d.getDishId().id(),

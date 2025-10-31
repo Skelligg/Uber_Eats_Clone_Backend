@@ -32,13 +32,13 @@ public class DefaultCreateRestaurantUseCase implements CreateRestaurantUseCase {
     @Transactional
     public Restaurant createRestaurant(CreateRestaurantCommand command) {
         OwnerId ownerId = command.ownerId();
-        if (loadRestaurantPort.findByOwnerId(ownerId).isPresent()) {
+        if (loadRestaurantPort.findByOwnerId(ownerId.id()).isPresent()) {
             logger.info("Restaurant exists with owner id:" + ownerId);
-            return loadRestaurantPort.findByOwnerId(ownerId).get();
+            return loadRestaurantPort.findByOwnerId(ownerId.id()).get();
         }
 
         Restaurant restaurant = new Restaurant(
-                OwnerId.MICHAEL,
+                OwnerId.of(command.ownerId().id(),command.ownerId().name()),
                 command.name(),
                 command.address(),
                 command.emailAddress(),

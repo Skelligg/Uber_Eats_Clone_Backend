@@ -35,14 +35,6 @@ public class FoodMenuJpaEntity {
         this.restaurantId = restaurantId;
     }
 
-    public double getAverageMenuPrice() {
-        return averageMenuPrice;
-    }
-
-    public void setAverageMenuPrice(double averageMenuPrice) {
-        this.averageMenuPrice = averageMenuPrice;
-    }
-
     public List<DishJpaEntity> getDishes() {
         return dishes;
     }

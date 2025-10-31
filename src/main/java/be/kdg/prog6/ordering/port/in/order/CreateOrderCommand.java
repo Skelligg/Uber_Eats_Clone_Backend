@@ -11,6 +11,4 @@ public record CreateOrderCommand(
         List<OrderLine> lines,
         Money totalPrice,
         CustomerInfo customer,
-        Address deliveryAddress,
-        LocalDateTime placedAt
-) { }
+        Address deliveryAddress) { }

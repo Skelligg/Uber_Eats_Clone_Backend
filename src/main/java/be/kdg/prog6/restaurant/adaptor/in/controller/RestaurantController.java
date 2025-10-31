@@ -15,6 +15,7 @@ import be.kdg.prog6.restaurant.port.in.orderProjection.HandleOrderUseCase;
 import be.kdg.prog6.restaurant.port.in.orderProjection.GetOrderProjectionsUseCase;
 import be.kdg.prog6.restaurant.port.in.orderProjection.MarkOrderReadyForPickUpUseCase;
 import be.kdg.prog6.restaurant.port.in.restaurant.CreateRestaurantCommand;
+import be.kdg.prog6.restaurant.port.in.restaurant.GetRestaurantUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,8 +26,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-// have to secure these controllers now.. do preauthorize('owner'), then have to
-// either find restaurant/foodmenu with owner id first or check owner id with restaurants ownerid.
+
 @RestController
 @RequestMapping("/api/restaurants")
 public class RestaurantController {
@@ -34,19 +34,58 @@ public class RestaurantController {
     private final GetOrderProjectionsUseCase getOrderProjectionsUseCase;
     private final HandleOrderUseCase handleOrderUseCase;
     private final MarkOrderReadyForPickUpUseCase markOrderReadyForPickUp ;
+    private final GetRestaurantUseCase getRestaurantUseCase;
 
     public RestaurantController(
-            DefaultCreateRestaurantUseCase createRestaurantUseCase, GetOrderProjectionsUseCase getOrderProjectionsUseCase, HandleOrderUseCase handleOrderUseCase, MarkOrderReadyForPickUpUseCase markOrderReadyForPickUp) {
+            DefaultCreateRestaurantUseCase createRestaurantUseCase, GetOrderProjectionsUseCase getOrderProjectionsUseCase, HandleOrderUseCase handleOrderUseCase, MarkOrderReadyForPickUpUseCase markOrderReadyForPickUp, GetRestaurantUseCase getRestaurantUseCase) {
         this.createRestaurantUseCase = createRestaurantUseCase;
         this.getOrderProjectionsUseCase = getOrderProjectionsUseCase;
         this.handleOrderUseCase = handleOrderUseCase;
         this.markOrderReadyForPickUp = markOrderReadyForPickUp;
+        this.getRestaurantUseCase = getRestaurantUseCase;
     }
 
+    @GetMapping
+    public ResponseEntity<RestaurantDto> getRestaurant(@AuthenticationPrincipal Jwt jwt) {
+        String subject = jwt.getClaimAsString("sub");
+        UUID ownerId = UUID.fromString(subject);
+
+        try {
+            Restaurant restaurant = getRestaurantUseCase.getRestaurant(ownerId);
+
+            RestaurantDto dto = new RestaurantDto(
+                    restaurant.getRestaurantId().id().toString(),
+                    restaurant.getName(),
+                    restaurant.getAddress().street(),
+                    restaurant.getAddress().number(),
+                    restaurant.getAddress().postalCode(),
+                    restaurant.getAddress().city(),
+                    restaurant.getAddress().country(),
+                    restaurant.getEmailAddress().emailAddress(),
+                    restaurant.getPictureList().stream().map(Picture::url).toList(),
+                    restaurant.getCuisineType().name(),
+                    restaurant.getDefaultPrepTime().minTime(),
+                    restaurant.getDefaultPrepTime().maxTime(),
+                    restaurant.getOpeningHours().openingTime().toString(),
+                    restaurant.getOpeningHours().closingTime().toString(),
+                    restaurant.getOpeningHours().openDays().stream().map(Enum::name).toList()
+            );
+
+            return ResponseEntity.ok(dto);
+        } catch (IllegalArgumentException e) {
+            // restaurant not found
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
     @PostMapping
-    public ResponseEntity<RestaurantDto> createRestaurant(@RequestBody CreateRestaurantRequest request) {
+    public ResponseEntity<RestaurantDto> createRestaurant(@RequestBody CreateRestaurantRequest request, @AuthenticationPrincipal Jwt jwt) {
+        UUID ownerId = UUID.fromString(jwt.getClaimAsString("sub"));
+        String ownerName = jwt.getClaimAsString("name");
+
         CreateRestaurantCommand command = new CreateRestaurantCommand(
-                OwnerId.of(request.ownerId()),
+                OwnerId.of(ownerId,ownerName),
                 request.name(),
                 new Address(
                         request.address().street(),
@@ -64,10 +103,23 @@ public class RestaurantController {
                 new OpeningHours(request.openingTime(), request.closingTime(), request.openDays())
         );
 
-        Restaurant restaurantCreated = createRestaurantUseCase.createRestaurant(command);
+        Restaurant restaurant = createRestaurantUseCase.createRestaurant(command);
         return ResponseEntity.ok(new RestaurantDto(
-                restaurantCreated.getRestaurantId().id().toString(),
-                restaurantCreated.getName()
+                restaurant.getRestaurantId().id().toString(),
+                restaurant.getName(),
+                restaurant.getAddress().street(),
+                restaurant.getAddress().number(),
+                restaurant.getAddress().postalCode(),
+                restaurant.getAddress().city(),
+                restaurant.getAddress().country(),
+                restaurant.getEmailAddress().emailAddress(),
+                restaurant.getPictureList().stream().map(Picture::url).toList(),
+                restaurant.getCuisineType().name(),
+                restaurant.getDefaultPrepTime().minTime(),
+                restaurant.getDefaultPrepTime().maxTime(),
+                restaurant.getOpeningHours().openingTime().toString(),
+                restaurant.getOpeningHours().closingTime().toString(),
+                restaurant.getOpeningHours().openDays().stream().map(Enum::name).toList()
         ));
     }
 

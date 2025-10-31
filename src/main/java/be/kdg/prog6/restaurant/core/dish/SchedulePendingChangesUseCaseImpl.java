@@ -6,6 +6,7 @@ import be.kdg.prog6.restaurant.port.in.dish.SchedulePendingChangesUseCase;
 import be.kdg.prog6.restaurant.port.out.foodmenu.LoadFoodMenuPort;
 import be.kdg.prog6.restaurant.port.out.foodmenu.UpdateFoodMenuPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class SchedulePendingChangesUseCaseImpl implements SchedulePendingChanges
     }
 
     @Override
+    @Transactional
     public FoodMenu scheduleChanges(ScheduleChangesCommand command) {
         FoodMenu foodMenu = loadFoodMenuPort.loadBy(command.restaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("FoodMenu not found for restaurant: " + command.restaurantId()));

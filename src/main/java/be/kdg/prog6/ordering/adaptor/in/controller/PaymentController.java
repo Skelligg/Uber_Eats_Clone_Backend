@@ -1,13 +1,14 @@
 package be.kdg.prog6.ordering.adaptor.in.controller;
 
 import be.kdg.prog6.ordering.adaptor.in.response.AddressDto;
-import be.kdg.prog6.ordering.adaptor.in.response.OrderDto;
 import be.kdg.prog6.ordering.adaptor.in.response.OrderLineDto;
+import be.kdg.prog6.ordering.adaptor.in.response.OrderPaidDto;
 import be.kdg.prog6.ordering.domain.Order;
 import be.kdg.prog6.ordering.port.in.payment.MakePaymentUseCase;
 import com.stripe.exception.StripeException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.Map;
 import java.util.UUID;
@@ -34,10 +35,11 @@ public class PaymentController {
     }
 
     @GetMapping("/order/{orderId}/verify/{sessionId}")
-    public ResponseEntity<OrderDto> verifyPayment(@PathVariable UUID orderId, @PathVariable String sessionId) {
+    public ResponseEntity<OrderPaidDto> verifyPayment(@PathVariable UUID orderId, @PathVariable String sessionId) {
         Order paid = makePaymentUseCase.verifyPayment(orderId,sessionId);
 
-        OrderDto dto = new OrderDto(
+        OrderPaidDto dto = new OrderPaidDto(
+                paid.getOrderId().id().toString(),
                 paid.getRestaurantId().id().toString(),
                 paid.getLines().stream()
                         .map(l -> new OrderLineDto(
@@ -59,7 +61,9 @@ public class PaymentController {
                         paid.getDeliveryAddress().country()
                 ),
                 paid.getPlacedAt(),
-                paid.getStatus().toString()
+                paid.getStatus().toString(),
+                paid.getRejectionReason(),
+                paid.getPaymentSessionId()
         );
 
         return ResponseEntity.ok(dto);

@@ -11,7 +11,9 @@ import be.kdg.prog6.restaurant.domain.vo.restaurant.RestaurantId;
 import be.kdg.prog6.restaurant.port.out.foodmenu.LoadFoodMenuPort;
 import be.kdg.prog6.restaurant.port.out.foodmenu.UpdateFoodMenuPort;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,16 +26,64 @@ public class FoodMenuJpaAdaptor implements UpdateFoodMenuPort, LoadFoodMenuPort 
     }
 
     @Override
+    @Transactional
     public FoodMenu updateFoodMenu(FoodMenu menu) {
-        FoodMenuJpaEntity entity = new FoodMenuJpaEntity(menu);
+        FoodMenuJpaEntity entity = repository.findById(menu.getRestaurantId().id())
+                .orElse(null);
+
+        if (entity == null) {
+            // Create new FoodMenu
+            entity = new FoodMenuJpaEntity(menu);
+
+            for (Dish domainDish : menu.getAllDishes()) {
+                entity.addDish(new DishJpaEntity(domainDish, entity));
+            }
+
+            repository.save(entity);
+            return toDomain(entity);
+        }
 
         for (Dish domainDish : menu.getAllDishes()) {
-            entity.addDish(new DishJpaEntity(domainDish, entity));
+            // Find existing dish in JPA entity
+            DishJpaEntity existingDish = entity.getDishes().stream()
+                    .filter(d -> d.getId().equals(domainDish.getDishId().id()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (existingDish != null) {
+                existingDish.setScheduledPublishTime(domainDish.getScheduledPublishTime().orElse(null));
+                existingDish.setScheduledToBecomeState(domainDish.getScheduledToBecomeState());
+                existingDish.setState(domainDish.getState());
+
+                // Optional: update other fields if draft/published versions changed
+                if (domainDish.getPublishedVersion().isPresent()) {
+                    var v = domainDish.getPublishedVersion().get();
+                    existingDish.setPublishedName(v.name());
+                    existingDish.setPublishedDescription(v.description());
+                    existingDish.setPublishedPrice(BigDecimal.valueOf(v.price().asDouble()));
+                    existingDish.setPublishedPictureUrl(v.pictureUrl());
+                    existingDish.setPublishedTags(v.tags());
+                    existingDish.setPublishedDishType(v.dishType().name());
+                }
+                if (domainDish.getDraftVersion().isPresent()) {
+                    var v = domainDish.getDraftVersion().get();
+                    existingDish.setDraftName(v.name());
+                    existingDish.setDraftDescription(v.description());
+                    existingDish.setDraftPrice(BigDecimal.valueOf(v.price().asDouble()));
+                    existingDish.setDraftPictureUrl(v.pictureUrl());
+                    existingDish.setDraftTags(v.tags());
+                    existingDish.setDraftDishType(v.dishType().name());
+                }
+            } else {
+                // 🧩 Add new dish if not found
+                entity.addDish(new DishJpaEntity(domainDish, entity));
+            }
         }
 
         repository.save(entity);
         return toDomain(entity);
     }
+
 
     @Override
     public Optional<FoodMenu> loadBy(RestaurantId restaurantId) {

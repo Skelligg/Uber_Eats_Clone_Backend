@@ -9,7 +9,7 @@ public record CreateDishDraftRequest(
         double price,
         String pictureUrl,
         String tags,
-        DISH_TYPE dishType
+        String dishType
 ) {
 
 }

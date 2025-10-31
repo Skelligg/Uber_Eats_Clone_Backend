@@ -57,7 +57,7 @@ public class OrderJpaAdaptor implements LoadOrderPort, UpdateOrderPort {
                         .collect(Collectors.toList()),
                 order.getTotalPrice().price().doubleValue(),
                 order.getStatus(),
-                order.getRejectionReason().orElse(null),
+                order.getRejectionReason(),
                 order.getPlacedAt(),
                 order.getAcceptedAt().orElse(null),
                 order.getRejectedAt().orElse(null),
