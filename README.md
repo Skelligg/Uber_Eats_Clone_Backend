@@ -1,5 +1,7 @@
 # KEEP DISHES GOING BACKEND
 
+Full-stack Spring Boot application for recipe management, user accounts, and payments (Stripe). Built with hexagonal architecture, asynchronous workflows (RabbitMQ), secured REST API (OAuth2/JWT), PostgreSQL via JPA, and Docker deployment. 
+
 ## Challenges & Accomplishments
 
 I found the backend of this project to be very insighftul to teaching me about DDD
