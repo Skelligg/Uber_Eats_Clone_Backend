@@ -1,110 +1,92 @@
-# KEEP DISHES GOING BACKEND
+# KeepDishesGoing
 
-Full-stack Spring Boot application for recipe management, user accounts, and payments (Stripe). Built with hexagonal architecture, asynchronous workflows (RabbitMQ), secured REST API (OAuth2/JWT), PostgreSQL via JPA, and Docker deployment. 
+KeepDishesGoing (KDG) is a full-stack food ordering platform where restaurants manage their menus and customers place and track orders in real time. It emphasizes reliability, modular design, and clear user experience for both restaurant owners and customers.
 
-## Challenges & Accomplishments
+## Overview
 
-I found the backend of this project to be very insighftul to teaching me about DDD
-and hexagonal architecture. While scope was very big, I liked the variety of technologies
-that were used. I am proud of the fact that I managed to implement most of the user
-stories in the time allotted.
+* Restaurants can register, manage their dishes, and handle incoming orders.
+* Customers can browse restaurants, build baskets, and track order progress without signing in.
+* The platform handles order status changes asynchronously and integrates with external delivery services via RabbitMQ.
 
-I did however think there were too many user stories for the time given since there was
-so many new things to learn. On finishing this project, I can already see areas for
-improvement and where I wasted time in the beginning, but that is the learning process
-after all.
+## Core Features
 
----
+### Restaurant Owner
 
-## ✅ Finished Features
+* Sign up and create a restaurant (name, address, email, type, photos, opening hours).
+* Add, edit, publish/unpublish, or schedule dish updates.
+* Mark dishes out of stock instantly.
+* Accept or reject orders (auto-reject after 5 min).
+* Mark orders ready for pickup.
+* Manually open/close the restaurant.
 
-List of all user stories that were successfully implemented and tested.
+### Customer
 
-| N  | AS A      | USER STORY                                                                                                      |
-|----|------------|----------------------------------------------------------------------------------------------------------------|
-| 1  | OWNER      | As an owner, I want to sign up/sign in to access my restaurant management area.                               |
-| 2  | OWNER      | As an owner, I want to create my restaurant by submitting name, full address, contact email, picture(s) URL, default preparation time, type of cuisine, and opening hours. |
-| 3  | OWNER      | As an owner, I want to edit a dish as a draft without affecting the live menu.                                |
-| 4  | OWNER      | As an owner, I want to publish a dish so it becomes available to customers.                                   |
-| 5  | OWNER      | As an owner, I want to unpublish a dish so it is no longer available to customers.                            |
-| 6  | OWNER      | As an owner, I want to apply all pending dish changes in one action.                                          |
-| 7  | OWNER      | As an owner, I want to schedule a set of publishes/unpublishes to go live together at a chosen time.          |
-| 8  | OWNER      | As an owner, I want to mark a dish out of stock or back in stock immediately.                                 |
-| 10 | OWNER      | As an owner, I want to accept or reject new orders and provide a reason on rejection.                         |
-| 11 | OWNER      | As an owner, I want orders without a decision within five minutes to be automatically declined.               |
-| 12 | OWNER      | As an owner, I want to mark an accepted order ready for pickup.                                               |
-| 13 | CUSTOMER   | As a customer, I want the landing page to let me continue as a customer.                                      |
-| 14 | CUSTOMER   | As a customer, I want to explore restaurants in a list or on a map.                                           |
-| 15 | CUSTOMER   | As a customer, I want to view a restaurant’s details and dishes.                                              |
-| 16 | CUSTOMER   | As a customer, I want to filter restaurants by type of cuisine, price range, ~~distance, and guesstimated delivery time.~~ |
-| 17 | CUSTOMER   | As a customer, I want to filter dishes by type (e.g., starter or dessert) and by food tags (lactose, gluten, vegan, …). |
-| 18 | CUSTOMER   | As a customer, I want sensible sorting options (e.g., price) when viewing dishes.                             |
-| 19 | CUSTOMER   | As a customer, I want to build a basket from a single restaurant’s published dishes.                          |
-| 20 | CUSTOMER   | As a customer, I want checkout to be blocked if any dish in my basket becomes out of stock or unpublished while I’m browsing. |
-| 22 | CUSTOMER   | As a customer, I want to provide my name, delivery address, and contact email at checkout.                    |
-| 23 | CUSTOMER   | As a customer, I want to pay using the payment provider during checkout.                                      |
-| 24 | CUSTOMER   | As a customer, I want a confirmation with a link so I can return to track my order.                           |
-| 25 | CUSTOMER   | As a customer, I want to track the progress of my order as its status changes.                                |
-| 27 | KDG        | As KDG, I want no more than 10 dishes to be available to customers at any moment.                             |
-| 28 | KDG        | As KDG, I want to publish messages for the delivery service when an order is accepted and when it is ready for pickup. |
-| 29 | KDG        | As KDG, I want to consume delivery service messages for picked up, delivered, and courier locations to update orders. |
-| 30 | KDG        | As KDG, I want customers to be able to order without signing up or signing in.                                |
-| 31 | KDG        | As KDG, I want each owner to manage exactly one restaurant.                                                   |
+* Explore restaurants in a list or on a map.
+* Filter by cuisine, price range, distance, or delivery time.
+* View restaurant details and dishes, filter by type or dietary tags.
+* Build and edit a basket (one restaurant per order).
+* Checkout with name, address, email, and Stripe payment.
+* Track order status in real time.
 
+## Technologies
 
----
+### Backend
 
-## ❌ Unfinished / Planned Features
+* Java 21, Spring Boot, Gradle Kotlin DSL
+* Hexagonal Architecture + Domain-Driven Design
+* Spring Data JPA, PostgreSQL
+* Spring Security (OAuth2 / JWT / Keycloak)
+* RabbitMQ for asynchronous communication
+* Stripe payment integration
+* Spring Modulith for modular events
+* Docker for deployment
 
-List features that are planned, in progress, or not yet implemented.
+### Frontend
 
+* React 19 + TypeScript + Vite
+* Material UI (MUI)
+* React Query for data fetching
+* React Router for routing
+* Axios for API requests
+* Keycloak for authentication
+* SASS for styling
 
-| N  | AS A      | USER STORY                                                                                                      |
-|----|-----------|----------------------------------------------------------------------------------------------------------------|
-| 9  | OWNER     | As an owner, I want to set opening hours and manually open/close the restaurant at any moment.                |
-| 20 | CUSTOMER  | As a customer, I want to see a guesstimated delivery time based on location, default preparation time, and busyness. |
+## Architecture
 
+* Implements Hexagonal Architecture with domain, application, and infrastructure layers clearly separated.
+* Follows DDD principles with entities, value objects, aggregates, and domain events.
+* Uses event sourcing and snapshotted aggregates for order and price-range tracking.
 
-## COMMAND & EVENT CATALOG
+## Asynchronous Workflows
 
-### Events
-| Context    | Event Name                 | Description                                            |
-| ---------- | -------------------------- | ------------------------------------------------------ |
-| Dish       | DishMarkedAvailableEvent   | Fired when a dish is marked as available.              |
-| Dish       | DishMarkedOutOfStockEvent  | Fired when a dish is marked out of stock.              |
-| Dish       | DishPublishedToMenuEvent   | Fired when a dish is published to the menu.            |
-| Dish       | DishUnpublishedToMenuEvent | Fired when a dish is unpublished from the menu.        |
-| FoodMenu   | FoodMenuCreatedEvent       | Fired when a new food menu is created.                 |
-| Order      | OrderAcceptedEvent         | Fired when an order is accepted by the restaurant.     |
-| Order      | OrderCreatedEvent          | Fired when a new order is created.                     |
-| Order      | OrderDeliveredEvent        | Fired when an order is delivered.                      |
-| Order      | OrderLocationEvent         | Fired when a courier location is updated for an order. |
-| Order      | OrderPickedUpEvent         | Fired when an order is picked up by a courier.         |
-| Order      | OrderReadyForPickupEvent   | Fired when an order is ready for pickup.               |
-| Order      | OrderRejectedEvent         | Fired when an order is rejected.                       |
-| Restaurant | RestaurantCreatedEvent     | Fired when a new restaurant is created.                |
-### Ordering Commands
-| Command Name                     | Description                                          |
-| -------------------------------- | ---------------------------------------------------- |
-| DishMarkedAvailableCommand       | Command to mark a dish as available.                 |
-| DishMarkedOutOfStockCommand      | Command to mark a dish as out of stock.              |
-| DishPublishedCommand             | Command to publish a dish to the menu.               |
-| DishUnpublishedCommand           | Command to unpublish a dish from the menu.           |
-| CreateOrderCommand               | Command to create a new order.                       |
-| OrderAcceptedCommand             | Command to accept an order.                          |
-| OrderRejectedCommand             | Command to reject an order.                          |
-| OrderReadyForPickupCommand       | Command to mark an order ready for pickup.           |
-| OrderPickedUpCommand             | Command to mark an order as picked up.               |
-| OrderDeliveredCommand            | Command to mark an order as delivered.               |
-| OrderLocationUpdatedCommand      | Command to update the courier location for an order. |
-| RestaurantAddedProjectionCommand | Command to add a restaurant projection.              |
-### Restaurant Commands
-| Command Name            | Description                                              |
-| ----------------------- | -------------------------------------------------------- |
-| CreateDishDraftCommand  | Command to create a new dish draft.                      |
-| EditDishCommand         | Command to edit an existing dish draft.                  |
-| DishStateChangeCommand  | Command to change a dish state (available/out of stock). |
-| ScheduleChangesCommand  | Command to schedule dish changes (publish/unpublish).    |
-| OrderPlacedCommand      | Command triggered when an order is placed.               |
-| CreateRestaurantCommand | Command to create a new restaurant.                      |
+* Message broker: RabbitMQ
+* Exchange: kdg.events
+* Routing pattern: `<context>.<restaurantId>.<resource>.<action>.v1`
+* Publishes:
 
+  * `restaurant.*.order.accepted.v1`
+  * `restaurant.*.order.ready.v1`
+* Consumes:
+
+  * `delivery.*.order.pickedup.v1`
+  * `delivery.*.order.delivered.v1`
+  * `delivery.*.order.location.v1`
+
+## Local Setup
+
+1. Clone repositories (backend + frontend).
+2. Start Docker services using `compose.yaml` (PostgreSQL, RabbitMQ, Keycloak).
+3. Configure environment variables (database URL, RabbitMQ host, OAuth client info, Stripe keys).
+
+### Backend
+
+```bash
+./gradlew bootRun
+```
+
+### Frontend
+
+```bash
+npm install
+npm run dev
+```
